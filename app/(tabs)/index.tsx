@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 export default function Index() {
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 router.replace("/home");
             } else {
@@ -18,4 +18,3 @@ export default function Index() {
 
     return null;
 }
-

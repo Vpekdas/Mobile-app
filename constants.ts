@@ -26,6 +26,10 @@ export const BASIC_LOGO: LogoProps = {
     },
 };
 
+export const PROFILE_PICTURE = {
+    source: require("./assets/logo/profile.png"),
+};
+
 export const BASIC_CUSTOM_BUTTON = StyleSheet.create({
     basicCustomButton: {
         width: "80%",
