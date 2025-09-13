@@ -1,4 +1,4 @@
-import { BASIC_CUSTOM_BUTTON, BASIC_CUSTOM_BUTTON_TEXT, BASIC_INPUT_FIELD, BASIC_LOGO } from "@/constants";
+import { BASIC_LOGO } from "@/constants";
 import { router } from "expo-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
@@ -48,8 +48,6 @@ export default function Login() {
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Saisissez votre mail"
                         value={email}
                         onChangeText={setEmail}
@@ -57,8 +55,6 @@ export default function Login() {
                     />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Saisissez votre mot de passe"
                         value={password}
                         onChangeText={setPassword}
@@ -67,12 +63,7 @@ export default function Login() {
 
                     <Text>Mot de passe oublié</Text>
 
-                    <CustomButton
-                        pressFunction={handleLoginPress}
-                        title={"Se connecter"}
-                        style={BASIC_CUSTOM_BUTTON.basicCustomButton}
-                        textStyle={BASIC_CUSTOM_BUTTON_TEXT.basicCustomButtonText}
-                    />
+                    <CustomButton pressFunction={handleLoginPress} title={"Se connecter"} />
                     <Pressable onPress={handleRegisterPress}>
                         <Text>Vous n’avez pas de compte ? Cliquez ici</Text>
                     </Pressable>
@@ -83,8 +74,6 @@ export default function Login() {
                         <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
                         <InputField
-                            containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                            textStyle={BASIC_INPUT_FIELD.textStyle}
                             placeholder="Saisissez votre mail"
                             value={email}
                             onChangeText={setEmail}
@@ -92,8 +81,6 @@ export default function Login() {
                         />
 
                         <InputField
-                            containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                            textStyle={BASIC_INPUT_FIELD.textStyle}
                             placeholder="Saisissez votre mot de passe"
                             value={password}
                             onChangeText={setPassword}
@@ -102,12 +89,7 @@ export default function Login() {
 
                         <Text>Mot de passe oublié</Text>
 
-                        <CustomButton
-                            pressFunction={handleLoginPress}
-                            title={"Se connecter"}
-                            style={BASIC_CUSTOM_BUTTON.basicCustomButton}
-                            textStyle={BASIC_CUSTOM_BUTTON_TEXT.basicCustomButtonText}
-                        />
+                        <CustomButton pressFunction={handleLoginPress} title={"Se connecter"} />
                         <Pressable onPress={handleRegisterPress}>
                             <Text>Vous n’avez pas de compte ? Cliquez ici</Text>
                         </Pressable>

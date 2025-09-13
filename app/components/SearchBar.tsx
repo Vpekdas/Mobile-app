@@ -1,38 +1,44 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 
-export interface InputFieldProps {
+export interface SearchBarProps {
     containerStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     placeholder?: string;
     onChangeText?: (text: string) => void;
     value?: string;
-    secureTextEntry?: boolean;
 }
 
 const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     width: "80%",
-    borderWidth: 1,
+    alignSelf: "center",
     flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
     borderColor: "#C0FDFB",
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "white",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 40,
+    backgroundColor: "#fff",
+    marginTop: 30
 };
 
 const DEFAULT_TEXT_STYLE: TextStyle = {
-    color: "#5D737E",
+    flex: 1,
     fontSize: 16,
+    color: "#000",
+    paddingVertical: 0,
 };
 
-export default function InputField(props: InputFieldProps) {
+export default function SearchBar(props: SearchBarProps) {
     return (
         <View style={[DEFAULT_CONTAINER_STYLE, props.containerStyle]}>
+            <FontAwesome5 name="search" size={20} color="#666" style={{ marginRight: 8 }} />
             <TextInput
-                style={[DEFAULT_TEXT_STYLE, { flex: 1 }, props.textStyle]}
-                placeholder={props.placeholder}
+                style={[DEFAULT_TEXT_STYLE, props.textStyle]}
+                placeholder="Chercher un etablissement"
                 value={props.value}
                 onChangeText={props.onChangeText}
-                secureTextEntry={props.secureTextEntry}
                 keyboardType="default"
                 autoCapitalize="none"
                 autoCorrect={false}

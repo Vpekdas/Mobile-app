@@ -1,4 +1,4 @@
-import { BASIC_LOGO, PROFILE_PICTURE } from "@/constants";
+import { BASIC_LOGO } from "@/constants";
 import {
     Image,
     Keyboard,
@@ -11,12 +11,10 @@ import {
     View,
 } from "react-native";
 import Logo from "../components/Logo";
-import UserHeader from "../components/UserHeader";
 
 export default function Home() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-            <UserHeader profilePicUri={PROFILE_PICTURE.source} />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />

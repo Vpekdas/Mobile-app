@@ -1,10 +1,4 @@
-import {
-    BASIC_CUSTOM_BUTTON,
-    BASIC_CUSTOM_BUTTON_TEXT,
-    BASIC_INPUT_FIELD,
-    BASIC_LOGO,
-    BASIC_PICKER,
-} from "@/constants";
+import { BASIC_LOGO, BASIC_PICKER } from "@/constants";
 import { auth, db } from "@/firebase";
 import { Picker } from "@react-native-picker/picker";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -86,8 +80,6 @@ export default function Register() {
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Prenom"
                         onChangeText={setFirstName}
                         value={firstName}
@@ -95,8 +87,6 @@ export default function Register() {
                     />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Nom de famille"
                         onChangeText={setLastName}
                         value={lastName}
@@ -104,8 +94,6 @@ export default function Register() {
                     />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Date de naissance"
                         onChangeText={setBirthDate}
                         value={birthDate}
@@ -113,35 +101,17 @@ export default function Register() {
                     />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Lieu de naissance"
                         onChangeText={setBirthPlace}
                         value={birthPlace}
                         secureTextEntry={false}
                     />
 
-                    <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
-                        placeholder="Ville"
-                        onChangeText={setCity}
-                        value={city}
-                        secureTextEntry={false}
-                    />
+                    <InputField placeholder="Ville" onChangeText={setCity} value={city} secureTextEntry={false} />
+
+                    <InputField placeholder="Commune" onChangeText={setTown} value={town} secureTextEntry={false} />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
-                        placeholder="Commune"
-                        onChangeText={setTown}
-                        value={town}
-                        secureTextEntry={false}
-                    />
-
-                    <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Quartier"
                         onChangeText={setNeighborhood}
                         value={neighborhood}
@@ -160,32 +130,16 @@ export default function Register() {
                         <Picker.Item label="Autre" value="autre" />
                     </Picker>
 
-                    <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
-                        placeholder="Profession"
-                        onChangeText={setJob}
-                        value={job}
-                        secureTextEntry={false}
-                    />
+                    <InputField placeholder="Profession" onChangeText={setJob} value={job} secureTextEntry={false} />
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Numero de telephone"
                         onChangeText={setPhone}
                         value={phone}
                         secureTextEntry={false}
                     />
 
-                    <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
-                        placeholder="Mail"
-                        onChangeText={setEmail}
-                        value={email}
-                        secureTextEntry={false}
-                    />
+                    <InputField placeholder="Mail" onChangeText={setEmail} value={email} secureTextEntry={false} />
 
                     <Picker
                         selectedValue={type}
@@ -199,20 +153,13 @@ export default function Register() {
                     </Picker>
 
                     <InputField
-                        containerStyle={BASIC_INPUT_FIELD.containerStyle}
-                        textStyle={BASIC_INPUT_FIELD.textStyle}
                         placeholder="Mot de passe"
                         onChangeText={setPassword}
                         value={password}
                         secureTextEntry={false}
                     />
 
-                    <CustomButton
-                        pressFunction={handleCreateAccountPress}
-                        title={"Creer votre compte"}
-                        style={BASIC_CUSTOM_BUTTON.basicCustomButton}
-                        textStyle={BASIC_CUSTOM_BUTTON_TEXT.basicCustomButtonText}
-                    />
+                    <CustomButton pressFunction={handleCreateAccountPress} title={"Creer votre compte"} />
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
