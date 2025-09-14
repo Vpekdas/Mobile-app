@@ -7,6 +7,7 @@ const {
     firebaseStorageBucket,
     firebaseMessagingSenderId,
     firebaseAppId,
+    googleMapsApiKey,
 } = Constants.expoConfig.extra;
 
 const firebaseConfig = {
@@ -17,5 +18,7 @@ const firebaseConfig = {
     messagingSenderId: firebaseMessagingSenderId,
     appId: firebaseAppId,
 };
+
+export const googleMapsApi = googleMapsApiKey;
 
 export default firebaseConfig;

@@ -1,6 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     FlatList,
     Keyboard,
@@ -14,11 +14,12 @@ import {
     ViewStyle,
 } from "react-native";
 
-import MultiSelect from "react-native-multiple-select";
-
 import { db } from "@/firebase";
+import { googleMapsApi } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import Geocoder from "react-native-geocoding";
+import MultiSelect from "react-native-multiple-select";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 
@@ -42,28 +43,35 @@ const DEFAULT_NAME_STYLE: TextStyle = {
     flex: 1,
 };
 
-interface FormData {
+export interface FormData {
+    logo?: string;
+    id?: string;
     facility: string;
     address: string;
+    country: string;
+    city: string;
+    postalCode: string;
     type: "hospital" | "clinic" | "office";
     sector: "public" | "private";
     telephone: string;
     specialty: string[];
-    location?: {
-        latitude: number;
-        longitude: number;
-    };
+    latitude?: number;
+    longitude?: number;
+    distance?: string;
 }
 
 export default function Pro() {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "Mon établissement",
+        facility: "Nom de l'établissement",
         address: "Adresse",
         type: "hospital",
         sector: "public",
         telephone: "Téléphone",
         specialty: ["Cardiologie"],
+        country: "Pays",
+        city: "Ville",
+        postalCode: "Code postal",
     });
 
     const fields = [
@@ -73,6 +81,9 @@ export default function Pro() {
         { key: "sector", label: "Secteur" },
         { key: "telephone", label: "Téléphone" },
         { key: "specialty", label: "Spécialité" },
+        { key: "country", label: "Pays" },
+        { key: "city", label: "Ville" },
+        { key: "postalCode", label: "Code postal" },
     ];
 
     const pickerOptions: Record<string, { label: string; value: string }[]> = {
@@ -95,6 +106,39 @@ export default function Pro() {
     ];
 
     const isPickerField = (key: string) => ["type", "sector"].includes(key);
+
+    useEffect(() => {
+        console.log("Google Maps API Key:", googleMapsApi);
+        if (googleMapsApi) {
+            Geocoder.init(googleMapsApi);
+            console.log("Geocoder initialized successfully");
+        } else {
+            console.error("Google Maps API key is missing.");
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchFacilityData = async () => {
+            const auth = getAuth();
+            const user = auth.currentUser;
+
+            if (user) {
+                const docRef = doc(db, "establishments", user.uid);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    setFormData(docSnap.data() as FormData);
+                    console.log("User facility data fetched:", docSnap.data());
+                } else {
+                    console.log("No such document! Using default values.");
+                }
+            } else {
+                console.log("No authenticated user found.");
+            }
+        };
+
+        fetchFacilityData();
+    }, []);
 
     const handleChange = (key: keyof typeof formData, value: any) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
@@ -147,9 +191,15 @@ export default function Pro() {
                             <Picker.Item label={option.label} value={option.value} key={option.value} />
                         ))}
                     </Picker>
+                ) : key === "address" ? (
+                    <InputField
+                        value={formData.address}
+                        onChangeText={(text) => handleAddressChange(text)}
+                        textStyle={DEFAULT_NAME_STYLE}
+                    />
                 ) : (
                     <InputField
-                        value={formData[key]}
+                        value={formData[key] as string}
                         onChangeText={(text) => handleChange(key, text)}
                         containerStyle={{ flex: 1 }}
                         textStyle={DEFAULT_NAME_STYLE}
@@ -166,41 +216,67 @@ export default function Pro() {
         </View>
     );
 
-    const handleSave = async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
+    const handleAddressChange = (address: string) => {
+        setFormData((prev) => ({ ...prev, address }));
+    };
 
-        if (!user) {
-            console.warn("No authenticated user found.");
+    const handleSave = async () => {
+        if (!formData.address || formData.address === "Adresse") {
+            alert("Veuillez entrer une adresse valide.");
             return;
         }
 
         try {
-            const estRef = doc(db, "establishments", user.uid);
-            await setDoc(estRef, formData);
-            setEditingField(null);
-            console.log("Form data saved successfully.");
+            const response = await Geocoder.from(formData.address);
+            console.log("Geocoder response:", response);
+
+            if (response.results.length > 0) {
+                const { lat, lng } = response.results[0].geometry.location;
+                console.log("Latitude and Longitude:", lat, lng);
+
+                const updatedFormData = { ...formData, latitude: lat, longitude: lng };
+
+                console.log("FormData before saving:", updatedFormData);
+
+                const auth = getAuth();
+                const user = auth.currentUser;
+
+                if (!user) {
+                    console.warn("No authenticated user found.");
+                    return;
+                }
+
+                const estRef = doc(db, "establishments", user.uid);
+                await setDoc(estRef, updatedFormData);
+                setEditingField(null);
+                console.log("Form data saved successfully.");
+            } else {
+                alert("Adresse introuvable. Veuillez vérifier l'adresse.");
+            }
         } catch (error) {
-            console.error("Error saving form data:", error);
+            console.error("Error geocoding address:", error);
+            alert("Une erreur s'est produite lors de la géocodification. Veuillez réessayer.");
         }
     };
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <FlatList
-                    data={fields}
-                    keyExtractor={(item) => item.key}
-                    renderItem={({ item }) => renderField(item.key as keyof typeof formData, item.label)}
-                    keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{
-                        flexGrow: 1,
-                        justifyContent: "space-evenly",
-                        padding: 16,
-                        gap: 12,
-                    }}
-                    ListFooterComponent={<CustomButton pressFunction={handleSave} title={"Sauvegarder"} />}
-                />
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={fields}
+                        keyExtractor={(item) => item.key}
+                        renderItem={({ item }) => renderField(item.key as keyof typeof formData, item.label)}
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            justifyContent: "space-evenly",
+                            padding: 16,
+                            gap: 12,
+                        }}
+                    />
+                    <CustomButton pressFunction={handleSave} title="Sauvegarder" />
+                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );

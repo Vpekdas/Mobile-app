@@ -9,11 +9,12 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-    "googleServicesFile": "./Firebase_NiE-1_App_Info.plist",
-      "supportsTablet": true,
-      "bundleIdentifier": "com.captainplouf.NiE",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+    "supportsTablet": true,
+    "bundleIdentifier": "com.captainplouf.NiE",
+    "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+         "NSLocationWhenInUseUsageDescription": "We need your location to provide relevant results based on your current location.",
+        "NSLocationAlwaysUsageDescription": "We need your location to provide relevant results even when the app is in the background."
       }
     },
     "android": {

@@ -15,6 +15,7 @@ import {
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
+import { router } from "expo-router";
 
 export interface User {
     firstName: string;
@@ -68,6 +69,7 @@ export default function Register() {
 
             await setDoc(doc(db, "users", user.uid), newUser);
             alert("Compte créé avec succès !");
+            router.replace("/home");
         } catch (error: any) {
             console.error("Erreur lors de la création du compte:", error?.message || error);
             alert(`Erreur lors de la création du compte : ${error?.message || "Veuillez réessayer."}`);
@@ -156,7 +158,7 @@ export default function Register() {
                         placeholder="Mot de passe"
                         onChangeText={setPassword}
                         value={password}
-                        secureTextEntry={false}
+                        secureTextEntry={true}
                     />
 
                     <CustomButton pressFunction={handleCreateAccountPress} title={"Creer votre compte"} />
