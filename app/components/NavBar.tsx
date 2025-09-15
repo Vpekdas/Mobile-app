@@ -1,11 +1,36 @@
+import { db } from "@/firebase";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { usePathname, useRouter } from "expo-router";
-import React from "react";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function NavBar() {
+    const [userType, setUserType] = useState(null);
     const router = useRouter();
     const pathname = usePathname();
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    useEffect(() => {
+        if (user) {
+            const userRef = doc(db, "users", user.uid);
+            const fetchUserType = async () => {
+                try {
+                    const docSnap = await getDoc(userRef);
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+                        setUserType(userData.type);
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            };
+
+            fetchUserType();
+        }
+    }, [user]);
 
     const goTo = (path: string) => {
         if (pathname !== path) {
@@ -23,10 +48,14 @@ export default function NavBar() {
                 <FontAwesome5 name="search" size={24} color="white" />
                 <Text style={iconStyle.text}>Rechercher</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
-                <FontAwesome5 name="plus-circle" size={24} color="white" />
-                <Text style={iconStyle.text}>Pro</Text>
-            </TouchableOpacity>
+
+            {userType === "professionnel" && (
+                <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
+                    <FontAwesome5 name="plus-circle" size={24} color="white" />
+                    <Text style={iconStyle.text}>Pro</Text>
+                </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/account")}>
                 <FontAwesome5 name="user" size={24} color="white" />
                 <Text style={iconStyle.text}>Compte</Text>

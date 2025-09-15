@@ -30,6 +30,7 @@ export default function Login() {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
             const user = userCredential.user;
+            router.push("/home");
             console.log("Logged in:", user.email);
         } catch (error: any) {
             console.error("Login error:", error.message);
@@ -109,5 +110,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 25,
+        backgroundColor: "white",
     },
 });

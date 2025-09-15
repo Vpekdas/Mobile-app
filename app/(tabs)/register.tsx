@@ -176,5 +176,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 25,
         paddingBottom: 100,
+        backgroundColor: "white"
     },
 });

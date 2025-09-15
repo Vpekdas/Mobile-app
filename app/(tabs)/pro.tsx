@@ -77,13 +77,13 @@ export default function Pro() {
     const fields = [
         { key: "facility", label: "Établissement" },
         { key: "address", label: "Adresse" },
+        { key: "country", label: "Pays" },
+        { key: "city", label: "Ville" },
+        { key: "postalCode", label: "Code postal" },
         { key: "type", label: "Type" },
         { key: "sector", label: "Secteur" },
         { key: "telephone", label: "Téléphone" },
         { key: "specialty", label: "Spécialité" },
-        { key: "country", label: "Pays" },
-        { key: "city", label: "Ville" },
-        { key: "postalCode", label: "Code postal" },
     ];
 
     const pickerOptions: Record<string, { label: string; value: string }[]> = {
@@ -262,7 +262,7 @@ export default function Pro() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: "white" }}>
                     <FlatList
                         data={fields}
                         keyExtractor={(item) => item.key}

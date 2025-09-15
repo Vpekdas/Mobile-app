@@ -1,8 +1,17 @@
 import { db } from "@/firebase";
+import { useNavigation } from "@react-navigation/native";
 import { getCurrentPositionAsync, requestForegroundPermissionsAsync } from "expo-location";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, View } from "react-native";
+import {
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
 import Result from "../components/Result";
 import SearchBar from "../components/SearchBar";
 import { FormData } from "./pro";
@@ -23,6 +32,8 @@ export default function Search() {
     const [queryText, setQueryText] = useState("");
     const [results, setResults] = useState<FormData[]>([]);
     const [userLocation, setUserLocation] = useState<any>(null);
+
+    const navigation = useNavigation();
 
     const getLocation = async () => {
         const { status } = await requestForegroundPermissionsAsync();
@@ -98,10 +109,14 @@ export default function Search() {
         fetchResults();
     }, [queryText, userLocation]);
 
+    const handleResultPress = (item: FormData, navigation: any) => {
+        navigation.navigate("detail", { itemData: item });
+    };
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, backgroundColor: "white" }}>
                     <SearchBar
                         value={queryText}
                         onChangeText={setQueryText}
@@ -113,14 +128,18 @@ export default function Search() {
                         contentContainerStyle={{ padding: 16, gap: 10 }}
                     >
                         {results.map((item, index) => (
-                            <Result
+                            <TouchableOpacity
                                 key={item.id || index}
-                                logo={item.logo ? { uri: item.logo } : require("../../assets/news.png")}
-                                facility={item.facility}
-                                specialist={item.specialty ? item.specialty.join(", ") : ""}
-                                address={item.address}
-                                distance={item.distance || "N/A"}
-                            />
+                                onPress={() => handleResultPress(item, navigation)}
+                            >
+                                <Result
+                                    logo={item.logo ? { uri: item.logo } : require("../../assets/news.png")}
+                                    facility={item.facility}
+                                    specialist={item.specialty ? item.specialty.join(", ") : ""}
+                                    address={item.address}
+                                    distance={item.distance || "N/A"}
+                                />
+                            </TouchableOpacity>
                         ))}
                     </ScrollView>
                 </View>

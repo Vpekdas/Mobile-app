@@ -10,17 +10,15 @@ export default function RootLayout() {
 
     const showHeaderRoutes = ["/home", "/search", "/pro", "/account"];
     const showUserHeader = showHeaderRoutes.includes(pathname);
+    const showNavBar = pathname !== "/login" && pathname !== "/register";
+
     return (
         <View style={styles.container}>
             {showUserHeader && <UserHeader profilePicUri={PROFILE_PICTURE.source} />}
             <View style={styles.content}>
-                <Stack
-                    screenOptions={({ route }) => ({
-                        headerShown: ["/home", "/search", "/pro", "/account"].includes(route.name),
-                    })}
-                />
+                <Stack />
             </View>
-            <NavBar />
+            {showNavBar && <NavBar />}
         </View>
     );
 }
