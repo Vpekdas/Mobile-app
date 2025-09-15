@@ -1,6 +1,7 @@
 import { BASIC_LOGO, BASIC_PICKER } from "@/constants";
 import { auth, db } from "@/firebase";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -15,7 +16,6 @@ import {
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
-import { router } from "expo-router";
 
 export interface User {
     firstName: string;
@@ -68,8 +68,7 @@ export default function Register() {
             };
 
             await setDoc(doc(db, "users", user.uid), newUser);
-            alert("Compte créé avec succès !");
-            router.replace("/home");
+            router.replace("/confirmMail");
         } catch (error: any) {
             console.error("Erreur lors de la création du compte:", error?.message || error);
             alert(`Erreur lors de la création du compte : ${error?.message || "Veuillez réessayer."}`);
@@ -176,6 +175,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 25,
         paddingBottom: 100,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
 });

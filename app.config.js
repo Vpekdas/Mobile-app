@@ -34,6 +34,7 @@ export default ({ config }) => ({
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
         package: "com.captainplouf.NiE",
+        googleServicesFile: "./google-services.json",
     },
 
     web: {
