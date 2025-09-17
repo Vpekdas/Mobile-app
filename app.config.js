@@ -20,18 +20,20 @@ export default ({ config }) => ({
             NSLocationAlwaysUsageDescription:
                 "We need your location to provide relevant results even when the app is in the background.",
         },
+        googleServicesFile: "./app/GoogleService-Info.plist",
+
     },
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/images/android-icon-foreground.png",
+            foregroundImage: "./assets/logo/new_logo.jpeg",
             backgroundColor: "#E6F4FE",
             monochromeImage: "./assets/images/android-icon-monochrome.png",
         },
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
         package: "com.captainplouf.NiE",
-        googleServicesFile: "./android/app/google-services.json",
+        googleServicesFile: "./app/google-services.json",
     },
 
     web: {
