@@ -42,7 +42,5 @@ app-example
 /ios
 /android
 
-*.plist
-
 .env
 .vscode/

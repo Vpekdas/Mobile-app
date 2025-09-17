@@ -1,6 +1,3 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-
 export default ({ config }) => ({
     ...config,
     owner: "captain-plouf-2",
@@ -34,7 +31,7 @@ export default ({ config }) => ({
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
         package: "com.captainplouf.NiE",
-        googleServicesFile: "./google-services.json",
+        googleServicesFile: "./android/app/google-services.json",
     },
 
     web: {
