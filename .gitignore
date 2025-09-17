@@ -44,3 +44,6 @@ app-example
 
 .env
 .vscode/
+
+app/google-services.json
+ios/GoogleService-Info.plist
