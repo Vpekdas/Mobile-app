@@ -1,24 +1,50 @@
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 
 const {
-    firebaseApiKey,
-    firebaseAuthDomain,
-    firebaseProjectId,
-    firebaseStorageBucket,
-    firebaseMessagingSenderId,
-    firebaseAppId,
+    firebaseApiKeyAndroid,
+    firebaseProjectIdAndroid,
+    firebaseStorageBucketAndroid,
+    firebaseMessagingSenderIdAndroid,
+    firebaseAppIdAndroid,
+    firebaseApiKeyIOS,
+    firebaseProjectIdIOS,
+    firebaseStorageBucketIOS,
+    firebaseMessagingSenderIdIOS,
+    firebaseAppIdIOS,
+    firebaseApiKeyWeb,
+    firebaseAuthDomainWeb,
+    firebaseProjectIdWeb,
+    firebaseStorageBucketWeb,
+    firebaseMessagingSenderIdWeb,
+    firebaseAppIdWeb,
     googleMapsApiKey,
 } = Constants.expoConfig.extra;
 
-const firebaseConfig = {
-    apiKey: firebaseApiKey,
-    authDomain: firebaseAuthDomain,
-    projectId: firebaseProjectId,
-    storageBucket: firebaseStorageBucket,
-    messagingSenderId: firebaseMessagingSenderId,
-    appId: firebaseAppId,
-};
+const firebaseConfig = Platform.select({
+    ios: {
+        apiKey: firebaseApiKeyIOS,
+        projectId: firebaseProjectIdIOS,
+        storageBucket: firebaseStorageBucketIOS,
+        messagingSenderId: firebaseMessagingSenderIdIOS,
+        appId: firebaseAppIdIOS,
+    },
+    android: {
+        apiKey: firebaseApiKeyAndroid,
+        projectId: firebaseProjectIdAndroid,
+        storageBucket: firebaseStorageBucketAndroid,
+        messagingSenderId: firebaseMessagingSenderIdAndroid,
+        appId: firebaseAppIdAndroid,
+    },
+    default: {
+        apiKey: firebaseApiKeyWeb,
+        authDomain: firebaseAuthDomainWeb,
+        projectId: firebaseProjectIdWeb,
+        storageBucket: firebaseStorageBucketWeb,
+        messagingSenderId: firebaseMessagingSenderIdWeb,
+        appId: firebaseAppIdWeb,
+    },
+});
 
 export const googleMapsApi = googleMapsApiKey;
-
 export default firebaseConfig;

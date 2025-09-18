@@ -21,7 +21,6 @@ export default ({ config }) => ({
                 "We need your location to provide relevant results even when the app is in the background.",
         },
         googleServicesFile: "./app/GoogleService-Info.plist",
-
     },
 
     android: {
@@ -73,12 +72,28 @@ export default ({ config }) => ({
     },
 
     extra: {
-        firebaseApiKey: process.env.FIREBASE_API_KEY,
-        firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
-        firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
-        firebaseStorageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-        firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        firebaseAppId: process.env.FIREBASE_APP_ID,
+        // ANDROID
+        firebaseApiKeyAndroid: process.env.FIREBASE_API_KEY_ANDROID,
+        firebaseProjectIdAndroid: process.env.FIREBASE_PROJECT_ID_ANDROID,
+        firebaseStorageBucketAndroid: process.env.FIREBASE_STORAGE_BUCKET_ANDROID,
+        firebaseMessagingSenderIdAndroid: process.env.FIREBASE_MESSAGING_SENDER_ID_ANDROID,
+        firebaseAppIdAndroid: process.env.FIREBASE_APP_ID_ANDROID,
+
+        // IOS
+        firebaseApiKeyIOS: process.env.FIREBASE_API_KEY_IOS,
+        firebaseProjectIdIOS: process.env.FIREBASE_PROJECT_ID_IOS,
+        firebaseStorageBucketIOS: process.env.FIREBASE_STORAGE_BUCKET_IOS,
+        firebaseMessagingSenderIdIOS: process.env.FIREBASE_MESSAGING_SENDER_ID_IOS,
+        firebaseAppIdIOS: process.env.FIREBASE_APP_ID_IOS,
+        
+        // WEB
+        firebaseApiKeyWeb: process.env.FIREBASE_API_KEY_WEB,
+        firebaseAuthDomainWeb: process.env.FIREBASE_AUTH_DOMAIN_WEB,
+        firebaseProjectIdWeb: process.env.FIREBASE_PROJECT_ID_WEB,
+        firebaseStorageBucketWeb: process.env.FIREBASE_STORAGE_BUCKET_WEB,
+        firebaseMessagingSenderIdWeb: process.env.FIREBASE_MESSAGING_SENDER_ID_WEB,
+        firebaseAppIdWeb: process.env.FIREBASE_APP_ID_WEB,
+
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
         eas: {
             projectId: "f9c1cb81-a7e9-4e63-a842-5f613b99a203",
