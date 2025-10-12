@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { LogoProps } from "./app/components/Logo";
 
 export const BASIC_LOGO: LogoProps = {
-    source: require("./assets/logo/new_logo.jpeg"),
+    source: require("./assets/logo/logo.jpeg"),
     size: 100,
     style: {
         marginBottom: 50,

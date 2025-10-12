@@ -1,21 +1,28 @@
 import { BASIC_LOGO, BASIC_PICKER } from "@/constants";
 import { auth, db } from "@/firebase";
 import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
 import {
+    Image,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     StyleSheet,
+    Text,
+    TouchableOpacity,
     TouchableWithoutFeedback,
+    View,
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
+const storage = getStorage();
 
 export interface User {
     firstName: string;
@@ -23,12 +30,12 @@ export interface User {
     birthDate: string;
     phone: string;
     email: string;
-    type: "Usager" | "Professionnel" | "";
+    type: "user" | "professional" | "";
     birthPlace: string;
     city: string;
     town: string;
     neighborhood: string;
-    sex: "homme" | "femme" | "autre" | "";
+    sex: "man" | "woman" | "other" | "";
     job: string;
 }
 
@@ -38,21 +45,55 @@ export default function Register() {
     const [birthDate, setBirthDate] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState("default");
     const [birthPlace, setBirthPlace] = useState("");
     const [city, setCity] = useState("");
     const [town, setTown] = useState("");
     const [neighborhood, setNeighborhood] = useState("");
-    const [sex, setSex] = useState("");
+    const [sex, setSex] = useState("default");
     const [job, setJob] = useState("");
     const [password, setPassword] = useState("");
+    const [profileImage, setProfileImage] = useState<string | null>(null);
 
     const handleCreateAccountPress = async () => {
+        if (
+            !firstName ||
+            !lastName ||
+            !birthDate ||
+            !phone ||
+            !email ||
+            !birthPlace ||
+            !city ||
+            !town ||
+            !neighborhood ||
+            !job ||
+            !password ||
+            type === "default" ||
+            sex === "default"
+        ) {
+            alert("Please fill all mandatory fields marked with *");
+            return;
+        }
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            const newUser: User = {
+            await sendEmailVerification(user);
+
+            let profileImageUrl = null;
+
+            if (profileImage) {
+                const response = await fetch(profileImage);
+                const blob = await response.blob();
+
+                const storageRef = ref(storage, `profileImages/${user.uid}.jpg`);
+                await uploadBytes(storageRef, blob);
+
+                profileImageUrl = await getDownloadURL(storageRef);
+            }
+
+            const newUser: User & { profileImageUrl?: string } = {
                 firstName,
                 lastName,
                 birthDate,
@@ -65,59 +106,111 @@ export default function Register() {
                 neighborhood,
                 sex: sex as User["sex"],
                 job,
+                ...(profileImageUrl && { profileImageUrl }),
             };
 
             await setDoc(doc(db, "users", user.uid), newUser);
             router.replace("/confirmMail");
         } catch (error: any) {
-            console.error("Erreur lors de la création du compte:", error?.message || error);
-            alert(`Erreur lors de la création du compte : ${error?.message || "Veuillez réessayer."}`);
+            console.error("Error creating account", error?.message || error);
         }
     };
+
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ["images"],
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            console.log("Selected image URI:", imageUri);
+            setProfileImage(imageUri);
+        } else {
+            console.log("User canceled image picking");
+        }
+    };
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField
-                        placeholder="Prenom"
-                        onChangeText={setFirstName}
-                        value={firstName}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            First Name <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="FirstName"
+                            onChangeText={setFirstName}
+                            value={firstName}
+                            secureTextEntry={false}
+                        />
+                    </View>
 
-                    <InputField
-                        placeholder="Nom de famille"
-                        onChangeText={setLastName}
-                        value={lastName}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Last Name <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="LastName"
+                            onChangeText={setLastName}
+                            value={lastName}
+                            secureTextEntry={false}
+                        />
+                    </View>
 
-                    <InputField
-                        placeholder="Date de naissance"
-                        onChangeText={setBirthDate}
-                        value={birthDate}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Birth Date <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="BirthDate"
+                            onChangeText={setBirthDate}
+                            value={birthDate}
+                            secureTextEntry={false}
+                        />
+                    </View>
 
-                    <InputField
-                        placeholder="Lieu de naissance"
-                        onChangeText={setBirthPlace}
-                        value={birthPlace}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Birth Place <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="BirthPlace"
+                            onChangeText={setBirthPlace}
+                            value={birthPlace}
+                            secureTextEntry={false}
+                        />
+                    </View>
 
-                    <InputField placeholder="Ville" onChangeText={setCity} value={city} secureTextEntry={false} />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            City <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField placeholder="City" onChangeText={setCity} value={city} secureTextEntry={false} />
+                    </View>
 
-                    <InputField placeholder="Commune" onChangeText={setTown} value={town} secureTextEntry={false} />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Town <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField placeholder="Town" onChangeText={setTown} value={town} secureTextEntry={false} />
+                    </View>
 
-                    <InputField
-                        placeholder="Quartier"
-                        onChangeText={setNeighborhood}
-                        value={neighborhood}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Neighborhood <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="Neighborhood"
+                            onChangeText={setNeighborhood}
+                            value={neighborhood}
+                            secureTextEntry={false}
+                        />
+                    </View>
 
                     <Picker
                         selectedValue={sex}
@@ -125,22 +218,32 @@ export default function Register() {
                         style={BASIC_PICKER.pickerContainer}
                         itemStyle={BASIC_PICKER.picker}
                     >
-                        <Picker.Item label="Sexe" value="default" />
-                        <Picker.Item label="Homme" value="homme" />
-                        <Picker.Item label="Femme" value="femme" />
-                        <Picker.Item label="Autre" value="autre" />
+                        <Picker.Item label="Sex" value="default" />
+                        <Picker.Item label="man" value="man" />
+                        <Picker.Item label="woman" value="woman" />
+                        <Picker.Item label="other" value="other" />
                     </Picker>
 
-                    <InputField placeholder="Profession" onChangeText={setJob} value={job} secureTextEntry={false} />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Job <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField placeholder="Job" onChangeText={setJob} value={job} secureTextEntry={false} />
+                    </View>
 
-                    <InputField
-                        placeholder="Numero de telephone"
-                        onChangeText={setPhone}
-                        value={phone}
-                        secureTextEntry={false}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Phone <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField placeholder="Phone" onChangeText={setPhone} value={phone} secureTextEntry={false} />
+                    </View>
 
-                    <InputField placeholder="Mail" onChangeText={setEmail} value={email} secureTextEntry={false} />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Email <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField placeholder="Mail" onChangeText={setEmail} value={email} secureTextEntry={false} />
+                    </View>
 
                     <Picker
                         selectedValue={type}
@@ -148,19 +251,48 @@ export default function Register() {
                         style={BASIC_PICKER.pickerContainer}
                         itemStyle={BASIC_PICKER.picker}
                     >
-                        <Picker.Item label="Type d'utilisateur" value="default" />
-                        <Picker.Item label="Usager" value="usager" />
-                        <Picker.Item label="Professionnel" value="professionnel" />
+                        <Picker.Item label="User Type" value="default" />
+                        <Picker.Item label="user" value="user" />
+                        <Picker.Item label="professional" value="professional" />
                     </Picker>
 
-                    <InputField
-                        placeholder="Mot de passe"
-                        onChangeText={setPassword}
-                        value={password}
-                        secureTextEntry={true}
-                    />
+                    <View style={styles.labeledField}>
+                        <Text style={styles.label}>
+                            Password <Text style={styles.required}>*</Text>
+                        </Text>
+                        <InputField
+                            placeholder="Password"
+                            onChangeText={setPassword}
+                            value={password}
+                            secureTextEntry={true}
+                        />
+                    </View>
 
-                    <CustomButton pressFunction={handleCreateAccountPress} title={"Creer votre compte"} />
+                    <View style={{ alignItems: "center", marginBottom: 20 }}>
+                        <TouchableOpacity onPress={pickImage} style={{ marginBottom: 10 }}>
+                            {profileImage ? (
+                                <Image
+                                    source={{ uri: profileImage }}
+                                    style={{ width: 100, height: 100, borderRadius: 50 }}
+                                />
+                            ) : (
+                                <View
+                                    style={{
+                                        width: 100,
+                                        height: 100,
+                                        borderRadius: 50,
+                                        backgroundColor: "#ccc",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Text>Select Profile Image</Text>
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    </View>
+
+                    <CustomButton pressFunction={handleCreateAccountPress} title={"Create account"} />
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -176,5 +308,19 @@ const styles = StyleSheet.create({
         gap: 25,
         paddingBottom: 100,
         backgroundColor: "white",
+    },
+    labeledField: {
+        width: "100%",
+        alignItems: "center",
+        gap: 4,
+    },
+    label: {
+        width: "80%",
+        fontWeight: "bold",
+        fontSize: 16,
+        color: "#333",
+    },
+    required: {
+        color: "#070670",
     },
 });

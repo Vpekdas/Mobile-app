@@ -1,6 +1,8 @@
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 
 export interface InputFieldProps {
+    label?: string;
+    required?: boolean;
     containerStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     placeholder?: string;
@@ -22,6 +24,18 @@ const DEFAULT_CONTAINER_STYLE: ViewStyle = {
 const DEFAULT_TEXT_STYLE: TextStyle = {
     color: "#5D737E",
     fontSize: 16,
+};
+
+const LABEL_STYLE: TextStyle = {
+    width: "80%",
+    marginBottom: 4,
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#333",
+};
+
+const REQUIRED_STAR_STYLE: TextStyle = {
+    color: "#070670",
 };
 
 export default function InputField(props: InputFieldProps) {

@@ -3,7 +3,6 @@ import { router } from "expo-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import {
-    Alert,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
@@ -12,6 +11,7 @@ import {
     StyleSheet,
     Text,
     TouchableWithoutFeedback,
+    View,
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
@@ -34,12 +34,15 @@ export default function Login() {
             console.log("Logged in:", user.email);
         } catch (error: any) {
             console.error("Login error:", error.message);
-            Alert.alert("Login Failed", error.message);
         }
     };
 
     const handleRegisterPress = () => {
         router.push("/register");
+    };
+
+    const handleForgotPassword = async () => {
+        router.push("/resetPassword");
     };
 
     return (
@@ -48,52 +51,55 @@ export default function Login() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField
-                        placeholder="Saisissez votre mail"
-                        value={email}
-                        onChangeText={setEmail}
-                        secureTextEntry={false}
-                    />
+                    <InputField placeholder="Mail" value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                     <InputField
-                        placeholder="Saisissez votre mot de passe"
+                        placeholder="Password"
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={true}
                     />
 
-                    <Text>Mot de passe oublié</Text>
-
-                    <CustomButton pressFunction={handleLoginPress} title={"Se connecter"} />
-                    <Pressable onPress={handleRegisterPress}>
-                        <Text>Vous n’avez pas de compte ? Cliquez ici</Text>
+                    <Pressable onPress={handleForgotPassword}>
+                        <Text style={{ color: "blue", textDecorationLine: "underline" }}>Forgot Password?</Text>
                     </Pressable>
+
+                    <CustomButton pressFunction={handleLoginPress} title={"Login"} />
+                    
+                    <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
+                        <Text style={{ fontSize: 16 }}>No account? </Text>
+                        <Pressable onPress={handleRegisterPress}>
+                            <Text style={{ color: "blue", fontSize: 16 }}>Click here</Text>
+                        </Pressable>
+                    </View>
+
                 </ScrollView>
             ) : (
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                         <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                        <InputField
-                            placeholder="Saisissez votre mail"
-                            value={email}
-                            onChangeText={setEmail}
-                            secureTextEntry={false}
-                        />
+                        <InputField placeholder="Mail" value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                         <InputField
-                            placeholder="Saisissez votre mot de passe"
+                            placeholder="Password"
                             value={password}
                             onChangeText={setPassword}
                             secureTextEntry={true}
                         />
 
-                        <Text>Mot de passe oublié</Text>
-
-                        <CustomButton pressFunction={handleLoginPress} title={"Se connecter"} />
-                        <Pressable onPress={handleRegisterPress}>
-                            <Text>Vous n’avez pas de compte ? Cliquez ici</Text>
+                        <Pressable onPress={handleForgotPassword}>
+                            <Text style={{ color: "blue", textDecorationLine: "underline" }}>Forgot Password?</Text>
                         </Pressable>
+
+                        <CustomButton pressFunction={handleLoginPress} title={"Login"} />
+
+                        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
+                            <Text style={{ fontSize: 16 }}>No account? </Text>
+                            <Pressable onPress={handleRegisterPress}>
+                                <Text style={{ color: "blue", fontSize: 16 }}>Click here</Text>
+                            </Pressable>
+                        </View>
                     </ScrollView>
                 </TouchableWithoutFeedback>
             )}

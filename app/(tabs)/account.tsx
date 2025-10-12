@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
-import { Alert, StyleSheet, Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextStyle, TouchableOpacity, View } from "react-native";
 
 export default function Account() {
     const handleLogoutPress = async () => {
@@ -8,34 +8,32 @@ export default function Account() {
 
         try {
             await signOut(auth);
-            Alert.alert("Logged out", "You have been logged out successfully.");
             router.replace("/login");
         } catch (error) {
-            Alert.alert("Error", "Something went wrong while logging out.");
             console.error(error);
         }
     };
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => console.log("Compte clicked")}>
-                <Text style={textStyle}>Compte</Text>
+            <TouchableOpacity onPress={() => console.log("Account clicked")}>
+                <Text style={textStyle}>Account</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log("Preference clicked")}>
                 <Text style={textStyle}>Preference</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Appareil / Securite clicked")}>
-                <Text style={textStyle}>Appareil / Securite</Text>
+            <TouchableOpacity onPress={() => console.log("Device / Security clicked")}>
+                <Text style={textStyle}>Device / Security</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Abonnement / Facturation clicked")}>
-                <Text style={textStyle}>Abonnement / Facturation</Text>
+            <TouchableOpacity onPress={() => console.log("Billing clicked")}>
+                <Text style={textStyle}>Billing</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Support & Avis clicked")}>
-                <Text style={textStyle}>Support & Avis</Text>
+            <TouchableOpacity onPress={() => console.log("Support clicked")}>
+                <Text style={textStyle}>Support</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log("Legal clicked")}>
@@ -43,7 +41,7 @@ export default function Account() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleLogoutPress}>
-                <Text style={textStyle}>Se deconnecter</Text>
+                <Text style={logoutTextStyle}>Logout</Text>
             </TouchableOpacity>
         </View>
     );
@@ -64,5 +62,10 @@ const textStyle: TextStyle = {
     color: "#5D737E",
     fontWeight: "600",
     marginBottom: 12,
-    padding: 16
+    padding: 16,
+};
+
+const logoutTextStyle: TextStyle = {
+    ...textStyle,
+    color: "#070670",
 };

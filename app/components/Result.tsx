@@ -55,7 +55,7 @@ const newsImage: ImageSourcePropType = require("../../assets/news.png");
 export default function Result(props: ResultProps) {
     return (
         <View style={DEFAULT_CONTAINER_STYLE}>
-            <Image source={newsImage} style={DEFAULT_LOGO_STYLE} resizeMode="cover" />
+            <Image source={props.logo || newsImage} style={DEFAULT_LOGO_STYLE} resizeMode="cover" />
             <View style={DEFAULT_RESULT_CONTAINER_STYLE}>
                 <Text style={DEFAULT_NAME_STYLE}>{props.facility}</Text>
                 <Text style={DEFAULT_DETAIL_STYLE}>{props.specialist}</Text>

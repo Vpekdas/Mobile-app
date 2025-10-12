@@ -28,6 +28,14 @@ const haversine = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     return R * c;
 };
 
+function normalizeString(str: string) {
+    return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
 export default function Search() {
     const [queryText, setQueryText] = useState("");
     const [results, setResults] = useState<FormData[]>([]);
@@ -38,7 +46,6 @@ export default function Search() {
     const getLocation = async () => {
         const { status } = await requestForegroundPermissionsAsync();
         if (status !== "granted") {
-            alert("Permission to access location was denied.");
             return;
         }
 
@@ -58,17 +65,19 @@ export default function Search() {
 
         const fetchResults = async () => {
             try {
+                const normalizedQuery = normalizeString(queryText);
+
                 const colRef = collection(db, "establishments");
 
-                const q = query(
+                const qFacility = query(
                     colRef,
-                    where("facility", ">=", queryText),
-                    where("facility", "<=", queryText + "\uf8ff")
+                    where("facility_search", ">=", normalizedQuery),
+                    where("facility_search", "<=", normalizedQuery + "\uf8ff")
                 );
 
-                const qSpecialty = query(colRef, where("specialty", "array-contains", queryText));
+                const qSpecialty = query(colRef, where("specialty_search", "array-contains", normalizedQuery));
 
-                const snapshotFacility = await getDocs(q);
+                const snapshotFacility = await getDocs(qFacility);
                 const snapshotSpecialty = await getDocs(qSpecialty);
 
                 const merged: FormData[] = [
@@ -117,11 +126,7 @@ export default function Search() {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={{ flex: 1, backgroundColor: "white" }}>
-                    <SearchBar
-                        value={queryText}
-                        onChangeText={setQueryText}
-                        placeholder="Chercher un établissement ou spécialité"
-                    />
+                    <SearchBar value={queryText} onChangeText={setQueryText} placeholder="Search facility" />
                     <ScrollView
                         style={{ flex: 1 }}
                         keyboardShouldPersistTaps="handled"
@@ -137,7 +142,7 @@ export default function Search() {
                                     facility={item.facility}
                                     specialist={item.specialty ? item.specialty.join(", ") : ""}
                                     address={item.address}
-                                    distance={item.distance || "N/A"}
+                                    distance={item.distance + " km" || "N/A"}
                                 />
                             </TouchableOpacity>
                         ))}

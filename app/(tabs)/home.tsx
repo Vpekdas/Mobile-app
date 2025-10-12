@@ -21,8 +21,8 @@ export default function Home() {
                     <View style={news.container}>
                         <View
                         style={textContainer.container}>
-                            <Text> Nous vous aidons à trouver vos professionnels</Text>
-                            <Text> La suite c'est vous qui décider</Text>
+                            <Text> Text</Text>
+                            <Text> Text</Text>
                         </View>
                         <Image
                             source={require("../../assets/news.png")}

@@ -25,7 +25,7 @@ export default ({ config }) => ({
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/logo/new_logo.jpeg",
+            foregroundImage: "./assets/logo/app_logo.jpeg",
             backgroundColor: "#E6F4FE",
             monochromeImage: "./assets/images/android-icon-monochrome.png",
         },
@@ -61,9 +61,11 @@ export default ({ config }) => ({
             {
                 ios: {
                     useFrameworks: "static",
+                    "buildReactNativeFromSource": true
                 },
             },
         ],
+        "expo-web-browser"
     ],
 
     experiments: {

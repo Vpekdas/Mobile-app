@@ -42,20 +42,18 @@ export default function NavBar() {
         <View style={styles.container}>
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/home")}>
                 <FontAwesome5 name="home" size={24} color="white" />
-                <Text style={iconStyle.text}>Accueil</Text>
+                <Text style={iconStyle.text}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/search")}>
                 <FontAwesome5 name="search" size={24} color="white" />
-                <Text style={iconStyle.text}>Rechercher</Text>
+                <Text style={iconStyle.text}>Search</Text>
             </TouchableOpacity>
-
-            {userType === "professionnel" && (
+            {userType === "professional" && (
                 <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
                     <FontAwesome5 name="plus-circle" size={24} color="white" />
                     <Text style={iconStyle.text}>Pro</Text>
                 </TouchableOpacity>
             )}
-
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/account")}>
                 <FontAwesome5 name="user" size={24} color="white" />
                 <Text style={iconStyle.text}>Compte</Text>

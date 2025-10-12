@@ -10,7 +10,11 @@ export default function RootLayout() {
 
     const showHeaderRoutes = ["/home", "/search", "/pro", "/account"];
     const showUserHeader = showHeaderRoutes.includes(pathname);
-    const showNavBar = pathname !== "/login" && pathname !== "/register";
+    const showNavBar =
+        pathname !== "/login" &&
+        pathname !== "/register" &&
+        pathname !== "/confirmMail" &&
+        pathname !== "/resetPassword";
 
     return (
         <View style={styles.container}>

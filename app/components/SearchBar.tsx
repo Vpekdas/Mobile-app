@@ -36,7 +36,7 @@ export default function SearchBar(props: SearchBarProps) {
             <FontAwesome5 name="search" size={20} color="#666" style={{ marginRight: 8 }} />
             <TextInput
                 style={[DEFAULT_TEXT_STYLE, props.textStyle]}
-                placeholder="Chercher un etablissement"
+                placeholder="Search facilities"
                 value={props.value}
                 onChangeText={props.onChangeText}
                 keyboardType="default"

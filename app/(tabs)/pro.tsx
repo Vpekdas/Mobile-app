@@ -2,10 +2,11 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList,
+    Image,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
+    ScrollView,
     Text,
     TextStyle,
     TouchableOpacity,
@@ -13,15 +14,19 @@ import {
     View,
     ViewStyle,
 } from "react-native";
+import Geocoder from "react-native-geocoding";
+import MultiSelect from "react-native-multiple-select";
+
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { db } from "@/firebase";
 import { googleMapsApi } from "@/firebaseConfig";
-import { getAuth } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import Geocoder from "react-native-geocoding";
-import MultiSelect from "react-native-multiple-select";
+import * as ImagePicker from "expo-image-picker";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
+const storage = getStorage();
 
 const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     width: "80%",
@@ -58,57 +63,66 @@ export interface FormData {
     latitude?: number;
     longitude?: number;
     distance?: string;
+    facility_search?: string;
+    specialty_search?: string[];
+}
+
+function normalizeString(str: string) {
+    return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
 }
 
 export default function Pro() {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "Nom de l'établissement",
-        address: "Adresse",
+        facility: "facility",
+        address: "address",
         type: "hospital",
         sector: "public",
-        telephone: "Téléphone",
-        specialty: ["Cardiologie"],
-        country: "Pays",
-        city: "Ville",
-        postalCode: "Code postal",
+        telephone: "telephone",
+        specialty: ["specialty"],
+        country: "country",
+        city: "city",
+        postalCode: "postalCode",
     });
 
     const fields = [
-        { key: "facility", label: "Établissement" },
-        { key: "address", label: "Adresse" },
-        { key: "country", label: "Pays" },
-        { key: "city", label: "Ville" },
-        { key: "postalCode", label: "Code postal" },
+        { key: "facility", label: "Facility" },
+        { key: "address", label: "Address" },
+        { key: "country", label: "Country" },
+        { key: "city", label: "City" },
+        { key: "postalCode", label: "Postal Code" },
         { key: "type", label: "Type" },
-        { key: "sector", label: "Secteur" },
-        { key: "telephone", label: "Téléphone" },
-        { key: "specialty", label: "Spécialité" },
+        { key: "sector", label: "Sector" },
+        { key: "telephone", label: "Telephone" },
+        { key: "specialty", label: "Specialty" },
     ];
 
     const pickerOptions: Record<string, { label: string; value: string }[]> = {
         type: [
-            { label: "Hôpital", value: "hospital" },
-            { label: "Clinique", value: "clinic" },
-            { label: "Cabinet", value: "office" },
+            { label: "Hospital", value: "hospital" },
+            { label: "Clinic", value: "clinic" },
+            { label: "Office", value: "office" },
         ],
         sector: [
             { label: "Public", value: "public" },
-            { label: "Privé", value: "private" },
+            { label: "Private", value: "private" },
         ],
     };
 
     const specialties = [
-        { id: "Cardiologie", name: "Cardiologie" },
-        { id: "Dermatologie", name: "Dermatologie" },
-        { id: "Généraliste", name: "Généraliste" },
-        { id: "Pédiatrie", name: "Pédiatrie" },
+        { id: "cardiology", name: "Cardiology" },
+        { id: "neurology", name: "Neurology" },
+        { id: "pediatrics", name: "Pediatrics" },
+        { id: "orthopedics", name: "Orthopedics" },
     ];
 
     const isPickerField = (key: string) => ["type", "sector"].includes(key);
 
     useEffect(() => {
-        console.log("Google Maps API Key:", googleMapsApi);
         if (googleMapsApi) {
             Geocoder.init(googleMapsApi);
             console.log("Geocoder initialized successfully");
@@ -140,11 +154,28 @@ export default function Pro() {
         fetchFacilityData();
     }, []);
 
-    const handleChange = (key: keyof typeof formData, value: any) => {
+    const handleChange = (key: keyof FormData, value: any) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
     };
+    const [profileImage, setProfileImage] = useState<string | null>(null);
 
-    const renderField = (key: keyof typeof formData, label: string) => (
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ["images"],
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            console.log("Selected image URI:", imageUri);
+            setProfileImage(imageUri);
+        } else {
+            console.log("User canceled image picking");
+        }
+    };
+
+    const renderField = (key: keyof FormData, label: string) => (
         <View key={key} style={DEFAULT_CONTAINER_STYLE}>
             {editingField === key ? (
                 key === "specialty" ? (
@@ -155,8 +186,8 @@ export default function Pro() {
                             uniqueKey="id"
                             onSelectedItemsChange={(selectedItems) => handleChange("specialty", selectedItems)}
                             selectedItems={formData.specialty}
-                            selectText="Choisir spécialités"
-                            searchInputPlaceholderText="Rechercher spécialité..."
+                            selectText="Choose specialty"
+                            searchInputPlaceholderText="Search specialty"
                             tagRemoveIconColor="#CCC"
                             tagBorderColor="#CCC"
                             tagTextColor="#5D737E"
@@ -166,7 +197,7 @@ export default function Pro() {
                             displayKey="name"
                             searchInputStyle={{ color: "#CCC" }}
                             submitButtonColor="#070670"
-                            submitButtonText="Valider"
+                            submitButtonText="Validate"
                             styleDropdownMenu={{
                                 backgroundColor: "#e0f7fa",
                                 borderRadius: 8,
@@ -191,12 +222,6 @@ export default function Pro() {
                             <Picker.Item label={option.label} value={option.value} key={option.value} />
                         ))}
                     </Picker>
-                ) : key === "address" ? (
-                    <InputField
-                        value={formData.address}
-                        onChangeText={(text) => handleAddressChange(text)}
-                        textStyle={DEFAULT_NAME_STYLE}
-                    />
                 ) : (
                     <InputField
                         value={formData[key] as string}
@@ -207,36 +232,53 @@ export default function Pro() {
                 )
             ) : (
                 <Text style={DEFAULT_NAME_STYLE}>
-                    {key === "specialty" ? formData.specialty.join(", ") : formData[key]}
+                    {key === "specialty" ? formData.specialty.join(", ") : (formData[key] as string)}
                 </Text>
             )}
+
             <TouchableOpacity onPress={() => setEditingField(editingField === key ? null : key)}>
                 <FontAwesome5 name="edit" size={24} color="#4D4CB1" />
             </TouchableOpacity>
         </View>
     );
 
-    const handleAddressChange = (address: string) => {
-        setFormData((prev) => ({ ...prev, address }));
-    };
-
     const handleSave = async () => {
-        if (!formData.address || formData.address === "Adresse") {
-            alert("Veuillez entrer une adresse valide.");
-            return;
-        }
-
         try {
+            let profileImageUrl = null;
+
+            if (profileImage) {
+                const response = await fetch(profileImage);
+                const blob = await response.blob();
+
+                const auth = getAuth();
+                const user = auth.currentUser;
+
+                if (!user) {
+                    console.warn("No authenticated user found.");
+                    return;
+                }
+
+                const storageRef = ref(storage, `profileImages/${user.uid}.jpg`);
+                await uploadBytes(storageRef, blob);
+                profileImageUrl = await getDownloadURL(storageRef);
+            }
+
             const response = await Geocoder.from(formData.address);
-            console.log("Geocoder response:", response);
 
             if (response.results.length > 0) {
                 const { lat, lng } = response.results[0].geometry.location;
-                console.log("Latitude and Longitude:", lat, lng);
 
-                const updatedFormData = { ...formData, latitude: lat, longitude: lng };
+                const facility_search = normalizeString(formData.facility);
+                const specialty_search = formData.specialty.map(normalizeString);
 
-                console.log("FormData before saving:", updatedFormData);
+                const updatedFormData = {
+                    ...formData,
+                    latitude: lat,
+                    longitude: lng,
+                    facility_search,
+                    specialty_search,
+                    ...(profileImageUrl && { logo: profileImageUrl }),
+                };
 
                 const auth = getAuth();
                 const user = auth.currentUser;
@@ -250,33 +292,55 @@ export default function Pro() {
                 await setDoc(estRef, updatedFormData);
                 setEditingField(null);
                 console.log("Form data saved successfully.");
-            } else {
-                alert("Adresse introuvable. Veuillez vérifier l'adresse.");
             }
         } catch (error) {
-            console.error("Error geocoding address:", error);
-            alert("Une erreur s'est produite lors de la géocodification. Veuillez réessayer.");
+            console.error("Error saving data:", error);
         }
     };
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={{ flex: 1, backgroundColor: "white" }}>
-                    <FlatList
-                        data={fields}
-                        keyExtractor={(item) => item.key}
-                        renderItem={({ item }) => renderField(item.key as keyof typeof formData, item.label)}
-                        keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={{
-                            flexGrow: 1,
-                            justifyContent: "space-evenly",
-                            padding: 16,
-                            gap: 12,
-                        }}
-                    />
-                    <CustomButton pressFunction={handleSave} title="Sauvegarder" />
-                </View>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        padding: 16,
+                        gap: 30,
+                        alignItems: "center",
+                    }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <View style={{ flex: 1, backgroundColor: "white" }}>
+                        {fields.map((field) => renderField(field.key as keyof FormData, field.label))}
+
+                        <View style={{ alignItems: "center", marginBottom: 20 }}>
+                            <TouchableOpacity onPress={pickImage} style={{ marginBottom: 10 }}>
+                                {profileImage ? (
+                                    <Image
+                                        source={{ uri: profileImage }}
+                                        style={{ width: 100, height: 100, borderRadius: 50 }}
+                                    />
+                                ) : (
+                                    <View
+                                        style={{
+                                            width: 100,
+                                            height: 100,
+                                            borderRadius: 50,
+                                            backgroundColor: "#ccc",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Text>Select Profile Image</Text>
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                        </View>
+
+                        <CustomButton pressFunction={handleSave} title="Save" />
+                    </View>
+                </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );

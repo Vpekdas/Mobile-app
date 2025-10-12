@@ -2,14 +2,11 @@ import { auth, db } from "@/firebase";
 import { User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-interface UserHeaderProps {
-    profilePicUri: ImageSourcePropType;
-}
-
-export default function UserHeader({ profilePicUri }: UserHeaderProps) {
+export default function UserHeader() {
     const [firstName, setFirstName] = useState<string>("");
+    const [profilePicUri, setProfilePicUri] = useState<string | null>(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user: FirebaseUser | null) => {
@@ -21,6 +18,7 @@ export default function UserHeader({ profilePicUri }: UserHeaderProps) {
                     if (userDocSnap.exists()) {
                         const userData = userDocSnap.data();
                         setFirstName(userData.firstName || "");
+                        setProfilePicUri(userData.profileImageUrl || null);
                     } else {
                         const displayName = user.displayName || "";
                         const first = displayName.split(" ")[0];
@@ -29,9 +27,11 @@ export default function UserHeader({ profilePicUri }: UserHeaderProps) {
                 } catch (error) {
                     console.error("Failed to fetch user document:", error);
                     setFirstName("");
+                    setProfilePicUri(null);
                 }
             } else {
                 setFirstName("");
+                setProfilePicUri(null);
             }
         });
 
@@ -41,7 +41,11 @@ export default function UserHeader({ profilePicUri }: UserHeaderProps) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Bonjour {firstName || ""}!</Text>
-            <Image source={profilePicUri} style={styles.image} />
+            {profilePicUri ? (
+                <Image source={{ uri: profilePicUri }} style={styles.image} />
+            ) : (
+                <View style={[styles.image, { backgroundColor: "#ccc" }]} />
+            )}
         </View>
     );
 }
