@@ -138,7 +138,7 @@ export default function Search() {
                                 onPress={() => handleResultPress(item, navigation)}
                             >
                                 <Result
-                                    logo={item.logo ? { uri: item.logo } : require("../../assets/news.png")}
+                                    logo={{ uri: item.logo }}
                                     facility={item.facility}
                                     specialist={item.specialty ? item.specialty.join(", ") : ""}
                                     address={item.address}

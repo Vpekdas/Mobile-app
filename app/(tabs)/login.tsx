@@ -65,14 +65,13 @@ export default function Login() {
                     </Pressable>
 
                     <CustomButton pressFunction={handleLoginPress} title={"Login"} />
-                    
+
                     <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
                         <Text style={{ fontSize: 16 }}>No account? </Text>
                         <Pressable onPress={handleRegisterPress}>
                             <Text style={{ color: "blue", fontSize: 16 }}>Click here</Text>
                         </Pressable>
                     </View>
-
                 </ScrollView>
             ) : (
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -100,6 +99,19 @@ export default function Login() {
                                 <Text style={{ color: "blue", fontSize: 16 }}>Click here</Text>
                             </Pressable>
                         </View>
+
+                        <View style={styles.contactWrapper}>
+                            <Pressable onPress={() => router.push("/contact")}>
+                                <Text style={{ color: "blue", fontSize: 16 }}>Contact</Text>
+                            </Pressable>
+                        </View>
+
+                        <View style={styles.legalWrapper}>
+                            <Pressable onPress={() => router.push("/legal")}>
+                                <Text style={{ color: "blue", fontSize: 16 }}>Legal</Text>
+                            </Pressable>
+                        </View>
+
                     </ScrollView>
                 </TouchableWithoutFeedback>
             )}
@@ -117,5 +129,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 25,
         backgroundColor: "white",
+    },
+    contactWrapper: {
+        position: "absolute",
+        bottom: "3%",
+        right: "5%",
+    },
+    legalWrapper: {
+        position: "absolute",
+        bottom: "3%",
+        left: "5%",
     },
 });

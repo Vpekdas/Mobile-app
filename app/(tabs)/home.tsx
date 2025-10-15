@@ -1,5 +1,6 @@
-import { BASIC_LOGO } from "@/constants";
+import React from "react";
 import {
+    Dimensions,
     Image,
     Keyboard,
     KeyboardAvoidingView,
@@ -10,25 +11,20 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
-import Logo from "../components/Logo";
+
+const { height: screenHeight } = Dimensions.get("window");
 
 export default function Home() {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
+                    <Image source={require("../../assets/logo/home.jpeg")} style={styles.image} resizeMode="cover" />
                     <View style={news.container}>
-                        <View
-                        style={textContainer.container}>
-                            <Text> Text</Text>
-                            <Text> Text</Text>
+                        <View style={textContainer.container}>
+                            <Text style={textContainer.text}>HELLO THIS IS A TEXT</Text>
+                            <Text style={textContainer.text}>More text here</Text>
                         </View>
-                        <Image
-                            source={require("../../assets/news.png")}
-                            style={{ width: "90%", height: "50%", marginBottom: 20 }}
-                            resizeMode="cover"
-                        />
                     </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
@@ -38,35 +34,40 @@ export default function Home() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        width: "100%",
-        height: "100%",
+        flexGrow: 1,
         padding: 20,
         justifyContent: "flex-start",
         alignItems: "center",
         backgroundColor: "white",
     },
+    image: {
+        width: "100%",
+        height: screenHeight * 0.45,
+        marginBottom: 20,
+        borderRadius: 10,
+    },
 });
 
 const textContainer = StyleSheet.create({
     container: {
-        flex: 1,
         width: "100%",
-        height: "100%",
         justifyContent: "space-evenly",
         alignItems: "center",
+    },
+    text: {
+        fontSize: 18,
+        color: "#333",
     },
 });
 
 const news = StyleSheet.create({
     container: {
-        flex: 1,
         width: "100%",
         alignItems: "center",
-        backgroundColor: "#DAFFEF",
+        backgroundColor: "white",
         padding: 15,
         borderRadius: 10,
-        gap: 60,
+        gap: 20,
         // iOS shadow
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
@@ -74,6 +75,6 @@ const news = StyleSheet.create({
         shadowRadius: 6,
         // Android shadow
         elevation: 5,
-        justifyContent: "space-around"
+        justifyContent: "space-around",
     },
 });

@@ -87,7 +87,7 @@ export default function Register() {
                 const response = await fetch(profileImage);
                 const blob = await response.blob();
 
-                const storageRef = ref(storage, `profileImages/${user.uid}.jpg`);
+                const storageRef = ref(storage, `profileImages/${user.uid}/profile.jpg`);
                 await uploadBytes(storageRef, blob);
 
                 profileImageUrl = await getDownloadURL(storageRef);

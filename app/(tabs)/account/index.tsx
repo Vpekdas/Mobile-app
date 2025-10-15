@@ -16,8 +16,8 @@ export default function Account() {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => console.log("Account clicked")}>
-                <Text style={textStyle}>Account</Text>
+            <TouchableOpacity onPress={() => router.push("/(tabs)/account/info")}>
+                <Text style={textStyle}>Account Information</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log("Preference clicked")}>

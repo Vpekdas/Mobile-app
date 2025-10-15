@@ -32,7 +32,7 @@ export default function ResetPassword() {
         try {
             await sendPasswordResetEmail(auth, email);
             Alert.alert("Success", "Password reset email sent. Please check your inbox.");
-            setEmail(""); // optionally clear email input
+            setEmail("");
         } catch (error: any) {
             console.error("Password reset error:", error.message);
 
@@ -58,12 +58,7 @@ export default function ResetPassword() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        secureTextEntry={false}
-                    />
+                    <InputField placeholder="Email" value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                     <CustomButton
                         pressFunction={handleForgotPassword}
@@ -75,12 +70,7 @@ export default function ResetPassword() {
                     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                         <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                        <InputField
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
-                            secureTextEntry={false}
-                        />
+                        <InputField placeholder="Email" value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                         <CustomButton
                             pressFunction={handleForgotPassword}

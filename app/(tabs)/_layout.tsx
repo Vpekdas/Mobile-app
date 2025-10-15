@@ -14,7 +14,9 @@ export default function RootLayout() {
         pathname !== "/login" &&
         pathname !== "/register" &&
         pathname !== "/confirmMail" &&
-        pathname !== "/resetPassword";
+        pathname !== "/resetPassword" &&
+        pathname !== "/contact" &&
+        pathname !== "/legal";
 
     return (
         <View style={styles.container}>
