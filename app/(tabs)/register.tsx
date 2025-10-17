@@ -19,9 +19,11 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import ImageResizer from "react-native-image-resizer";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
+
 const storage = getStorage();
 
 export interface User {
@@ -118,7 +120,6 @@ export default function Register() {
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ["images"],
             allowsEditing: true,
             quality: 1,
         });
@@ -126,9 +127,18 @@ export default function Register() {
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
             console.log("Selected image URI:", imageUri);
-            setProfileImage(imageUri);
+
+            try {
+                const resizedImage = await ImageResizer.createResizedImage(imageUri, 800, 800, "JPEG", 80, 0);
+
+                console.log("Resized image URI:", resizedImage.uri);
+
+                setProfileImage(resizedImage.uri);
+            } catch (error) {
+                console.error("Error resizing image:", error);
+            }
         } else {
-            console.log("User canceled image picking");
+            console.log("User canceled image picking.");
         }
     };
 
