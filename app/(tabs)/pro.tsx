@@ -23,7 +23,9 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { db } from "@/firebase";
 import { googleMapsApi } from "@/firebaseConfig";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
+
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import ImageResizer from "react-native-image-resizer";
 import CustomButton from "../components/CustomButton";
@@ -50,6 +52,18 @@ const DEFAULT_NAME_STYLE: TextStyle = {
     flex: 1,
 };
 
+export interface TeamMember {
+    name: string;
+    specialty: string[];
+    phone: string;
+}
+
+export interface OpeningHours {
+    day: string;
+    start: string;
+    end: string;
+}
+
 export interface FormData {
     logo?: string;
     id?: string;
@@ -68,12 +82,7 @@ export interface FormData {
     facility_search?: string;
     specialty_search?: string[];
     team?: TeamMember[];
-}
-
-export interface TeamMember {
-    name: string;
-    specialty: string[];
-    phone: string;
+    openingHours?: OpeningHours[];
 }
 
 function normalizeString(str: string) {
@@ -85,25 +94,6 @@ function normalizeString(str: string) {
 }
 
 export default function Pro() {
-    const [editingField, setEditingField] = useState<string | null>(null);
-    const [formData, setFormData] = useState<FormData>({
-        facility: "facility",
-        address: "address",
-        type: "hospital",
-        sector: "public",
-        telephone: "telephone",
-        specialty: [],
-        country: "country",
-        city: "city",
-        postalCode: "postalCode",
-        team: [],
-    });
-    const [newTeamMember, setNewTeamMember] = useState<TeamMember>({
-        name: "",
-        specialty: [],
-        phone: "",
-    });
-
     const fields = [
         { key: "facility", label: "Facility" },
         { key: "address", label: "Address" },
@@ -115,6 +105,7 @@ export default function Pro() {
         { key: "telephone", label: "Telephone" },
         { key: "specialty", label: "Specialty" },
         { key: "team", label: "Team Members" },
+        { key: "openingHours", label: "Opening Hours" },
     ];
 
     const pickerOptions: Record<string, { label: string; value: string }[]> = {
@@ -135,6 +126,36 @@ export default function Pro() {
         { id: "pediatrics", name: "Pediatrics" },
         { id: "orthopedics", name: "Orthopedics" },
     ];
+
+    const defaultOpeningHours: OpeningHours[] = [
+        { day: "Monday", start: "", end: "" },
+        { day: "Tuesday", start: "", end: "" },
+        { day: "Wednesday", start: "", end: "" },
+        { day: "Thursday", start: "", end: "" },
+        { day: "Friday", start: "", end: "" },
+        { day: "Saturday", start: "", end: "" },
+        { day: "Sunday", start: "", end: "" },
+    ];
+
+    const [editingField, setEditingField] = useState<string | null>(null);
+    const [formData, setFormData] = useState<FormData>({
+        facility: "facility",
+        address: "address",
+        type: "hospital",
+        sector: "public",
+        telephone: "telephone",
+        specialty: [],
+        country: "country",
+        city: "city",
+        postalCode: "postalCode",
+        team: [],
+        openingHours: defaultOpeningHours,
+    });
+    const [newTeamMember, setNewTeamMember] = useState<TeamMember>({
+        name: "",
+        specialty: [],
+        phone: "",
+    });
 
     const isPickerField = (key: string) => ["type", "sector"].includes(key);
 
@@ -158,7 +179,10 @@ export default function Pro() {
 
                 if (docSnap.exists()) {
                     const data = docSnap.data() as FormData;
-                    setFormData(data);
+                    setFormData({
+                        ...data,
+                        openingHours: data.openingHours ?? defaultOpeningHours,
+                    });
 
                     if (data.logo) {
                         setFacilityImage(data.logo);
@@ -202,6 +226,105 @@ export default function Pro() {
             console.log("User canceled image picking.");
         }
     };
+
+    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [timePickerDayIndex, setTimePickerDayIndex] = useState<number | null>(null);
+    const [timePickerType, setTimePickerType] = useState<"start" | "end" | null>(null);
+    const [timePickerValue, setTimePickerValue] = useState(new Date());
+
+    const openTimePicker = (dayIndex: number, type: "start" | "end") => {
+        setTimePickerDayIndex(dayIndex);
+        setTimePickerType(type);
+
+        const timeStr = formData.openingHours?.[dayIndex]?.[type] || "08:00";
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        const date = new Date();
+        date.setHours(hours);
+        date.setMinutes(minutes);
+        setTimePickerValue(date);
+
+        setShowTimePicker(true);
+    };
+
+    const onTimeChange = (event: any, selectedDate?: Date) => {
+        if (event.type === "dismissed") {
+            setShowTimePicker(false);
+            return;
+        }
+
+        if (selectedDate && timePickerDayIndex !== null && timePickerType) {
+            const hours = selectedDate.getHours().toString().padStart(2, "0");
+            const minutes = selectedDate.getMinutes().toString().padStart(2, "0");
+            const timeFormatted = `${hours}:${minutes}`;
+
+            setFormData((prev) => {
+                const newOpeningHours = [...(prev.openingHours || [])];
+                if (!newOpeningHours[timePickerDayIndex]) {
+                    newOpeningHours[timePickerDayIndex] = { day: "", start: "", end: "" };
+                }
+                newOpeningHours[timePickerDayIndex] = {
+                    ...newOpeningHours[timePickerDayIndex],
+                    [timePickerType]: timeFormatted,
+                };
+                return { ...prev, openingHours: newOpeningHours };
+            });
+        }
+
+        setShowTimePicker(false);
+    };
+
+    const renderOpeningHoursField = () => (
+        <View style={{ width: "100%", paddingHorizontal: 16 }}>
+            {(formData.openingHours ?? defaultOpeningHours).map((day, index) => (
+                <View
+                    key={day.day}
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginVertical: 8,
+                    }}
+                >
+                    <Text style={{ flex: 1 }}>{day.day}</Text>
+
+                    <TouchableOpacity
+                        onPress={() => openTimePicker(index, "start")}
+                        style={{
+                            flex: 1,
+                            padding: 8,
+                            backgroundColor: "#DAFFEF",
+                            borderRadius: 6,
+                            marginRight: 8,
+                        }}
+                    >
+                        <Text>{day.start || "Start"}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => openTimePicker(index, "end")}
+                        style={{
+                            flex: 1,
+                            padding: 8,
+                            backgroundColor: "#DAFFEF",
+                            borderRadius: 6,
+                        }}
+                    >
+                        <Text>{day.end || "End"}</Text>
+                    </TouchableOpacity>
+                </View>
+            ))}
+
+            {showTimePicker && (
+                <DateTimePicker
+                    value={timePickerValue}
+                    mode="time"
+                    is24Hour={true}
+                    display="default"
+                    onChange={onTimeChange}
+                />
+            )}
+        </View>
+    );
 
     const renderField = (key: keyof FormData, label: string) => (
         <View key={key} style={DEFAULT_CONTAINER_STYLE}>
@@ -335,6 +458,63 @@ export default function Pro() {
                             </TouchableOpacity>
                         </View>
                     </View>
+                ) : key === "openingHours" ? (
+                    <View style={{ flex: 1, width: "100%" }}>
+                        {(formData.openingHours || defaultOpeningHours).map((day, index) => (
+                            <View
+                                key={day.day}
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    marginBottom: 10,
+                                    padding: 10,
+                                    borderWidth: 1,
+                                    borderColor: "#64B6AC",
+                                    borderRadius: 8,
+                                }}
+                            >
+                                <Text style={{ flex: 1 }}>{day.day}</Text>
+
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        marginRight: 8,
+                                        padding: 8,
+                                        backgroundColor: "#DAFFEF",
+                                        borderRadius: 6,
+                                        alignItems: "center",
+                                    }}
+                                    onPress={() => openTimePicker(index, "start")}
+                                >
+                                    <Text>{day.start || "Start"}</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        padding: 8,
+                                        backgroundColor: "#DAFFEF",
+                                        borderRadius: 6,
+                                        alignItems: "center",
+                                    }}
+                                    onPress={() => openTimePicker(index, "end")}
+                                >
+                                    <Text>{day.end || "End"}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+
+                        {showTimePicker && (
+                            <DateTimePicker
+                                value={timePickerValue}
+                                mode="time"
+                                is24Hour={true}
+                                display="default"
+                                onChange={onTimeChange}
+                            />
+                        )}
+                    </View>
                 ) : key === "specialty" ? (
                     <View style={{ flex: 1 }}>
                         <MultiSelect
@@ -395,6 +575,12 @@ export default function Pro() {
                         ? formData.team && formData.team.length > 0
                             ? formData.team.map((member) => member.name).join(", ")
                             : "No team members"
+                        : key === "openingHours"
+                        ? formData.openingHours && formData.openingHours.length > 0
+                            ? formData.openingHours
+                                  .map(({ day, start, end }) => `${day}: ${start || "N/A"} - ${end || "N/A"}`)
+                                  .join(", ")
+                            : "No opening hours"
                         : (formData[key] as string)}
                 </Text>
             )}
