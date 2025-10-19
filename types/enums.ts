@@ -8,3 +8,14 @@ export enum Sector {
     PUBLIC = "public",
     PRIVATE = "private",
 }
+
+export enum UserType {
+    USER = "user",
+    PROFESSIONAL = "professional"
+}
+
+export enum Sex {
+    MAN = "man",
+    WOMAN = "woman",
+    OTHER = "other"
+}

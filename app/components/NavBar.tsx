@@ -1,36 +1,29 @@
-import { db } from "@/firebase";
+import { DEFAULT_TEXT_STYLE } from "@/constants";
+import { useUser } from "@/contexts/UserContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { usePathname, useRouter } from "expo-router";
-import { getAuth } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
+import React from "react";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function NavBar() {
-    const [userType, setUserType] = useState(null);
+    const { userData, loading, error } = useUser();
     const router = useRouter();
     const pathname = usePathname();
-    const auth = getAuth();
-    const user = auth.currentUser;
 
-    useEffect(() => {
-        if (user) {
-            const userRef = doc(db, "users", user.uid);
-            const fetchUserType = async () => {
-                try {
-                    const docSnap = await getDoc(userRef);
-                    if (docSnap.exists()) {
-                        const userData = docSnap.data();
-                        setUserType(userData.type);
-                    }
-                } catch (error) {
-                    console.error("Error fetching user data:", error);
-                }
-            };
+    if (loading) {
+        return (
+            <View style={styles.container}>
+                <Text style={DEFAULT_TEXT_STYLE}>Loading...</Text>
+            </View>
+        );
+    }
 
-            fetchUserType();
-        }
-    }, [user]);
+    if (error) {
+        return (
+            <View style={styles.container}>
+                <Text style={DEFAULT_TEXT_STYLE}>Error loading user data</Text>
+            </View>
+        );
+    }
 
     const goTo = (path: string) => {
         if (pathname !== path) {
@@ -49,10 +42,17 @@ export default function NavBar() {
                 <Text style={iconStyle.text}>Search</Text>
             </TouchableOpacity>
 
-            {userType === "professional" && (
+            {userData?.type === "professional" && (
                 <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
                     <FontAwesome5 name="plus-circle" size={24} color="white" />
                     <Text style={iconStyle.text}>Pro</Text>
+                </TouchableOpacity>
+            )}
+
+            {userData?.type === "user" && (
+                <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/offer")}>
+                    <FontAwesome5 name="tags" size={24} color="white" />
+                    <Text style={iconStyle.text}>Offer</Text>
                 </TouchableOpacity>
             )}
 
@@ -67,7 +67,7 @@ export default function NavBar() {
 const styles = StyleSheet.create({
     container: {
         position: "absolute",
-        bottom: 0,
+        bottom: Platform.OS === "android" ? 20 : 0,
         left: 0,
         right: 0,
         height: 60,

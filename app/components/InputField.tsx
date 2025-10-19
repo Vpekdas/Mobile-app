@@ -1,3 +1,5 @@
+// InputField.tsx
+import React from "react";
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 
 export interface InputFieldProps {
@@ -9,6 +11,8 @@ export interface InputFieldProps {
     onChangeText?: (text: string) => void;
     value?: string;
     secureTextEntry?: boolean;
+    editable?: boolean;
+    onFocus?: () => void;
 }
 
 const DEFAULT_CONTAINER_STYLE: ViewStyle = {
@@ -26,30 +30,29 @@ const DEFAULT_TEXT_STYLE: TextStyle = {
     fontSize: 16,
 };
 
-const LABEL_STYLE: TextStyle = {
-    width: "80%",
-    marginBottom: 4,
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#333",
-};
-
-const REQUIRED_STAR_STYLE: TextStyle = {
-    color: "#070670",
-};
-
-export default function InputField(props: InputFieldProps) {
+export default function InputField({
+    containerStyle,
+    textStyle,
+    placeholder,
+    onChangeText,
+    value,
+    secureTextEntry,
+    editable,
+    onFocus,
+}: InputFieldProps) {
     return (
-        <View style={[DEFAULT_CONTAINER_STYLE, props.containerStyle]}>
+        <View style={[DEFAULT_CONTAINER_STYLE, containerStyle]}>
             <TextInput
-                style={[DEFAULT_TEXT_STYLE, { flex: 1 }, props.textStyle]}
-                placeholder={props.placeholder}
-                value={props.value}
-                onChangeText={props.onChangeText}
-                secureTextEntry={props.secureTextEntry}
+                style={[DEFAULT_TEXT_STYLE, { flex: 1 }, textStyle]}
+                placeholder={placeholder}
+                value={value}
+                onChangeText={onChangeText}
+                secureTextEntry={secureTextEntry}
                 keyboardType="default"
                 autoCapitalize="none"
                 autoCorrect={false}
+                editable={editable}
+                onFocus={onFocus}
             />
         </View>
     );

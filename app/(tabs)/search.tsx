@@ -33,7 +33,11 @@ async function fetchSearchResults(queryText: string, userLocation: LocationObjec
         where("facility_search", "<=", normalizedQuery + "\uf8ff")
     );
 
-    const qSpecialty = query(colRef, where("specialty_search", "array-contains", normalizedQuery));
+    const qSpecialty = query(
+        colRef,
+        where("specialty_search", ">=", normalizedQuery),
+        where("specialty_search", "<=", normalizedQuery + "\uf8ff")
+    );
 
     const [snapshotFacility, snapshotSpecialty] = await Promise.all([getDocs(qFacility), getDocs(qSpecialty)]);
 
@@ -123,7 +127,7 @@ export default function Search() {
 
                     <FlatList
                         data={results}
-                        keyExtractor={(item) => item.id || item.facility}
+                        keyExtractor={(item, index) => `${normalizeString(item.facility)}-${index}`}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => handleResultPress(item, navigation)}>
                                 <Result

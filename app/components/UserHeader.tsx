@@ -1,6 +1,7 @@
+import { DEFAULT_PROFILE_PICTURE } from "@/constants";
 import { useUser } from "@/contexts/UserContext";
 import React from "react";
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Platform, StyleSheet, Text, View } from "react-native";
 
 export default function UserHeader() {
     const { userData, profileImage, loading } = useUser();
@@ -15,12 +16,12 @@ export default function UserHeader() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Bonjour {userData?.firstName || ""}</Text>
-            {profileImage ? (
-                <Image source={{ uri: profileImage }} style={styles.image} />
-            ) : (
-                <View style={[styles.image, { backgroundColor: "#ccc" }]} />
-            )}
+            <Text style={styles.text}>Bonjour {userData?.firstName || "User"}</Text>
+
+            <Image
+                source={profileImage ? { uri: profileImage } : DEFAULT_PROFILE_PICTURE.source}
+                style={styles.image}
+            />
         </View>
     );
 }
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        top: Platform.OS === "android" ? 20 : 0,
     },
     image: {
         width: 64,

@@ -1,10 +1,9 @@
 import TextWithBorder from "@/app/components/TextWithBorder";
-import { BASIC_LOGO } from "@/constants";
+import { BASIC_LOGO, USER_FIELDS } from "@/constants";
+import { useUser } from "@/contexts/UserContext";
+
 import { User } from "@/types/user";
-import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
-import { useEffect, useState } from "react";
+import React from "react";
 import {
     Image,
     Keyboard,
@@ -17,40 +16,24 @@ import {
 } from "react-native";
 import Logo from "../../components/Logo";
 
-const auth = getAuth();
-const firestore = getFirestore();
-const storage = getStorage();
-
 export default function Info() {
-    const [userData, setUserData] = useState<User | null>(null);
-    const [profileImage, setProfileImage] = useState<string | null>(null);
+    const { userData, profileImage, loading, error } = useUser();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const user = auth.currentUser;
-            if (!user) {
-                return;
-            }
+    if (loading) {
+        return (
+            <View style={styles.centered}>
+                <TextWithBorder>Loading...</TextWithBorder>
+            </View>
+        );
+    }
 
-            try {
-                const docRef = doc(firestore, "users", user.uid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data() as User;
-                    setUserData(data);
-                }
-
-                const imageRef = ref(storage, `profileImages/${user.uid}.jpg`);
-                const url = await getDownloadURL(imageRef);
-                setProfileImage(url);
-            } catch (error) {
-                console.error("Failed to fetch user data:", error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
+    if (error) {
+        return (
+            <View style={styles.centered}>
+                <TextWithBorder>Error loading user data</TextWithBorder>
+            </View>
+        );
+    }
 
     if (!userData) {
         return (
@@ -59,7 +42,6 @@ export default function Info() {
             </View>
         );
     }
-
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -68,18 +50,11 @@ export default function Info() {
 
                     {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
-                    <TextWithBorder>{`First Name: ${userData.firstName}`}</TextWithBorder>
-                    <TextWithBorder>{`Last Name: ${userData.lastName}`}</TextWithBorder>
-                    <TextWithBorder>{`Email: ${userData.email}`}</TextWithBorder>
-                    <TextWithBorder>{`Phone: ${userData.phone}`}</TextWithBorder>
-                    <TextWithBorder>{`Birth Date: ${userData.birthDate}`}</TextWithBorder>
-                    <TextWithBorder>{`Birth Place: ${userData.birthPlace}`}</TextWithBorder>
-                    <TextWithBorder>{`City: ${userData.city}`}</TextWithBorder>
-                    <TextWithBorder>{`Town: ${userData.town}`}</TextWithBorder>
-                    <TextWithBorder>{`Neighborhood: ${userData.neighborhood}`}</TextWithBorder>
-                    <TextWithBorder>{`Sex: ${userData.sex}`}</TextWithBorder>
-                    <TextWithBorder>{`Job: ${userData.job}`}</TextWithBorder>
-                    <TextWithBorder>{`Account Type: ${userData.type}`}</TextWithBorder>
+                    {USER_FIELDS.map((field, index) => (
+                        <TextWithBorder key={index}>{`${field.label}: ${
+                            userData[field.key as keyof User]
+                        }`}</TextWithBorder>
+                    ))}
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

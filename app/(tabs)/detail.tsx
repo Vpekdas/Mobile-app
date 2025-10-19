@@ -62,14 +62,11 @@ export default function Detail() {
                     </View>
                 )}
 
-                {itemData.openingHours && itemData.openingHours.length > 0 && (
+                {Array.isArray(itemData.openingHours) && itemData.openingHours.length > 0 ? (
                     <View style={DEFAULT_CONTAINER_STYLE}>
                         <Text style={styles.sectionTitle}>Opening Hours:</Text>
                         {itemData.openingHours.map((entry, index) => (
-                            <View
-                                key={index}
-                                style={styles.openingHoursRow}
-                            >
+                            <View key={index} style={styles.openingHoursRow}>
                                 <Text style={styles.openingDay}>{entry.day}</Text>
                                 <Text style={styles.openingTime}>
                                     {entry.start} - {entry.end}
@@ -77,6 +74,8 @@ export default function Detail() {
                             </View>
                         ))}
                     </View>
+                ) : (
+                    <Text style={styles.sectionTitle}>No opening hours available</Text>
                 )}
             </View>
         </ScrollView>

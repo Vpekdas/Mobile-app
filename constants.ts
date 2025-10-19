@@ -9,8 +9,8 @@ export const BASIC_LOGO: LogoProps = {
     },
 };
 
-export const PROFILE_PICTURE = {
-    source: require("./assets/logo/profile.png"),
+export const DEFAULT_PROFILE_PICTURE = {
+    source: require("./assets/logo/default_profile.png"),
 };
 
 export const BASIC_PICKER = StyleSheet.create({
@@ -102,4 +102,31 @@ export const PRO_FIELDS = [
     { key: "specialty", label: "Specialty" },
     { key: "team", label: "Team Members" },
     { key: "openingHours", label: "Opening Hours" },
+];
+
+export const REGISTER_FIELDS = [
+    { key: "firstName", label: "First Name", placeholder: "First Name" },
+    { key: "lastName", label: "Last Name", placeholder: "Last Name" },
+    { key: "birthPlace", label: "Birth Place", placeholder: "Birth Place" },
+    { key: "city", label: "City", placeholder: "City" },
+    { key: "town", label: "Town", placeholder: "Town" },
+    { key: "neighborhood", label: "Neighborhood", placeholder: "Neighborhood" },
+    { key: "phone", label: "Phone", placeholder: "Phone" },
+    { key: "job", label: "Job", placeholder: "Job" },
+    { key: "email", label: "Email", placeholder: "Email" },
+];
+
+export const USER_FIELDS = [
+    { key: "firstName", label: "First Name" },
+    { key: "lastName", label: "Last Name" },
+    { key: "email", label: "Email" },
+    { key: "phone", label: "Phone" },
+    { key: "birthDate", label: "Birth Date" },
+    { key: "birthPlace", label: "Birth Place" },
+    { key: "city", label: "City" },
+    { key: "town", label: "Town" },
+    { key: "neighborhood", label: "Neighborhood" },
+    { key: "sex", label: "Sex" },
+    { key: "job", label: "Job" },
+    { key: "type", label: "Account Type" },
 ];

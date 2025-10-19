@@ -1,15 +1,19 @@
+import { UserProvider } from "@/contexts/UserContext";
 import { Stack, usePathname } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import NavBar from "../components/NavBar";
 import UserHeader from "../components/UserHeader";
-import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout() {
     const pathname = usePathname();
 
-    const showHeaderRoutes = ["/home", "/search", "/pro", "/account"];
-    const showUserHeader = showHeaderRoutes.includes(pathname);
+    const showUserHeaderRoutes = ["/home", "/search", "/pro", "/account", "/offer"];
+    const showReactHeaderRoutes = ["/account/info", "/legal", "/contact", "/detail", "/resetPassword", "/register"];
+
+    const showUserHeader = showUserHeaderRoutes.includes(pathname);
+    const showReactHeader = showReactHeaderRoutes.includes(pathname);
+
     const showNavBar =
         pathname !== "/login" &&
         pathname !== "/register" &&
@@ -22,9 +26,17 @@ export default function RootLayout() {
         <UserProvider>
             <View style={styles.container}>
                 {showUserHeader && <UserHeader />}
+
                 <View style={styles.content}>
-                    <Stack />
+                    <Stack
+                        screenOptions={({ route }) => {
+                            return {
+                                headerShown: showReactHeader,
+                            };
+                        }}
+                    />
                 </View>
+
                 {showNavBar && <NavBar />}
             </View>
         </UserProvider>

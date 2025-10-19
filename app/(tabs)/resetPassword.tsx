@@ -14,7 +14,19 @@ import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
 
-const isWeb = Platform.OS === "web";
+const handleError = (error: any) => {
+    switch (error.code) {
+        case "auth/invalid-email":
+            Alert.alert("Invalid Email", "Please enter a valid email address.");
+            break;
+        case "auth/user-not-found":
+            Alert.alert("User Not Found", "No account found with this email.");
+            break;
+        default:
+            Alert.alert("Error", "Something went wrong. Please try again later.");
+            break;
+    }
+};
 
 export default function ResetPassword() {
     const [email, setEmail] = useState("");
@@ -35,18 +47,7 @@ export default function ResetPassword() {
             setEmail("");
         } catch (error: any) {
             console.error("Password reset error:", error.message);
-
-            switch (error.code) {
-                case "auth/invalid-email":
-                    Alert.alert("Invalid Email", "Please enter a valid email address.");
-                    break;
-                case "auth/user-not-found":
-                    Alert.alert("User Not Found", "No account found with this email.");
-                    break;
-                default:
-                    Alert.alert("Error", "Something went wrong. Please try again later.");
-                    break;
-            }
+            handleError(error);
         } finally {
             setLoading(false);
         }
@@ -54,7 +55,7 @@ export default function ResetPassword() {
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-            {isWeb ? (
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
@@ -65,20 +66,7 @@ export default function ResetPassword() {
                         title={loading ? "Sending..." : "Reset password"}
                     />
                 </ScrollView>
-            ) : (
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                    <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                        <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
-
-                        <InputField placeholder="Email" value={email} onChangeText={setEmail} secureTextEntry={false} />
-
-                        <CustomButton
-                            pressFunction={handleForgotPassword}
-                            title={loading ? "Sending..." : "Reset password"}
-                        />
-                    </ScrollView>
-                </TouchableWithoutFeedback>
-            )}
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
 }

@@ -22,10 +22,9 @@ import { db } from "@/firebase";
 import { googleMapsApi } from "@/firebaseConfig";
 
 import { DEFAULT_OPENING_HOURS, PICKER_OPTIONS, PRO_FIELDS, SPECIALTIES } from "@/constants";
+import { saveFacilityData } from "@/helpers/saveFacilityHelper";
+import { onTimeChangeHelper, openTimePickerHelper } from "@/helpers/timePickerHelper";
 import { FacilityType, Sector } from "@/types/enums";
-import { saveFacilityData } from "@/types/helpers/saveFacilityHelper";
-import { onTimeChangeHelper, openTimePickerHelper } from "@/types/helpers/timePickerHelper";
-import { getStorage } from "firebase/storage";
 import CustomButton from "../components/CustomButton";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import InputField from "../components/InputField";
@@ -33,8 +32,6 @@ import NewTeamMemberForm from "../components/NewTeamMemberForm";
 import OpeningHoursPicker from "../components/OpeningHoursPicker";
 import SpecialtySelector from "../components/SpecialtySelector";
 import TeamMemberList from "../components/TeamMemberList";
-
-const storage = getStorage();
 
 export interface TeamMember {
     name: string;
@@ -48,7 +45,7 @@ export interface OpeningHours {
     end: string;
 }
 
-type FormData = {
+export type FormData = {
     facility: string;
     address: string;
     country: string;
@@ -63,20 +60,21 @@ type FormData = {
     team?: TeamMember[];
     openingHours?: OpeningHours[];
     logo?: string;
+    distance?: string;
 };
 
 export default function Pro() {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "",
-        address: "",
+        facility: "Facility Name",
+        address: "address",
+        country: "Country",
+        city: "City",
+        postalCode: "Postal Code",
         type: FacilityType.HOSPITAL,
         sector: Sector.PUBLIC,
-        telephone: "",
-        specialty: [],
-        country: "",
-        city: "",
-        postalCode: "",
+        telephone: "telephone",
+        specialty: ["Specialty"],
         team: [],
         openingHours: DEFAULT_OPENING_HOURS,
     });
@@ -283,7 +281,9 @@ export default function Pro() {
                                     onImageError={(error) => console.error("ImagePicker error:", error)}
                                 />
                             </View>
-                            <CustomButton pressFunction={handleSave} title="Save" />
+                            <View>
+                                <CustomButton pressFunction={handleSave} title="Save" />
+                            </View>
                         </>
                     }
                     nestedScrollEnabled={true}

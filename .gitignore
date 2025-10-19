@@ -44,3 +44,5 @@ app-example
 
 .env
 .vscode/
+admin.json
+db.json
