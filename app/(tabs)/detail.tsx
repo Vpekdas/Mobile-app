@@ -1,9 +1,10 @@
+import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/constants";
 import { useRoute } from "@react-navigation/native";
-import { Image, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
-
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import TextWithBorder from "../components/TextWithBorder";
+import { OpeningHours, TeamMember } from "./pro";
 type RouteParams = {
     itemData: {
-        id: string;
         logo?: string;
         facility: string;
         address: string;
@@ -14,9 +15,8 @@ type RouteParams = {
         sector: "public" | "private";
         telephone: string;
         specialty: string[];
-        latitude?: number;
-        longitude?: number;
-        distance?: string;
+        team?: TeamMember[];
+        openingHours?: OpeningHours[];
     };
 };
 
@@ -25,50 +25,68 @@ export default function Detail() {
     const { itemData } = route.params as RouteParams;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.logoContainer}>
-                {itemData.logo ? (
-                    <Image source={{ uri: itemData.logo }} style={styles.logoImage} resizeMode="contain" />
-                ) : (
-                    <Text>No logo available</Text>
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    {itemData.logo ? (
+                        <Image source={{ uri: itemData.logo }} style={styles.logoImage} resizeMode="contain" />
+                    ) : (
+                        <Text>No logo available</Text>
+                    )}
+                </View>
+
+                <TextWithBorder selectable>{itemData.facility}</TextWithBorder>
+                <TextWithBorder selectable>{itemData.address}</TextWithBorder>
+                <TextWithBorder selectable>{itemData.type}</TextWithBorder>
+                <TextWithBorder selectable>{itemData.sector}</TextWithBorder>
+                <TextWithBorder selectable>{itemData.telephone}</TextWithBorder>
+
+                {itemData.specialty.length > 0 && (
+                    <View style={DEFAULT_CONTAINER_STYLE}>
+                        <Text style={DEFAULT_TEXT_STYLE}>{itemData.specialty.join(", ")}</Text>
+                    </View>
+                )}
+
+                {itemData.team && itemData.team.length > 0 && (
+                    <View style={DEFAULT_CONTAINER_STYLE}>
+                        <Text style={styles.sectionTitle}>Team Members:</Text>
+                        {itemData.team.map((member, index) => (
+                            <View key={index} style={styles.teamMemberContainer}>
+                                <Text style={styles.teamMemberName}>{member.name}</Text>
+                                <Text style={styles.teamMemberSpecialty}>
+                                    Specialties: {member.specialty.join(", ")}
+                                </Text>
+                                <Text style={styles.teamMemberPhone}>Phone: {member.phone}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )}
+
+                {itemData.openingHours && itemData.openingHours.length > 0 && (
+                    <View style={DEFAULT_CONTAINER_STYLE}>
+                        <Text style={styles.sectionTitle}>Opening Hours:</Text>
+                        {itemData.openingHours.map((entry, index) => (
+                            <View
+                                key={index}
+                                style={styles.openingHoursRow}
+                            >
+                                <Text style={styles.openingDay}>{entry.day}</Text>
+                                <Text style={styles.openingTime}>
+                                    {entry.start} - {entry.end}
+                                </Text>
+                            </View>
+                        ))}
+                    </View>
                 )}
             </View>
-
-            <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>{itemData.facility}</Text>
-            </View>
-
-            <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>{itemData.address}</Text>
-            </View>
-
-            <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>{itemData.type}</Text>
-            </View>
-
-            <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>{itemData.sector}</Text>
-            </View>
-
-            <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>{itemData.telephone}</Text>
-            </View>
-
-            {itemData.specialty.length > 0 && (
-                <View style={DEFAULT_CONTAINER_STYLE}>
-                    <Text style={DEFAULT_TEXT_STYLE}>{itemData.specialty.join(", ")}</Text>
-                </View>
-            )}
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "white",
         padding: 16,
-        justifyContent: "center",
+        backgroundColor: "white",
         alignItems: "center",
         gap: 10,
     },
@@ -82,24 +100,44 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 10,
     },
+    openingHoursRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 4,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 8,
+        color: "#2C3E50",
+    },
+    teamMemberContainer: {
+        paddingVertical: 6,
+        borderBottomWidth: 1,
+        borderColor: "#CCC",
+    },
+    teamMemberName: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#34495E",
+    },
+    teamMemberSpecialty: {
+        fontSize: 14,
+        color: "#7F8C8D",
+        marginTop: 2,
+    },
+    teamMemberPhone: {
+        fontSize: 14,
+        color: "#2980B9",
+        marginTop: 2,
+    },
+    openingDay: {
+        fontWeight: "600",
+        fontSize: 16,
+        color: "#34495E",
+    },
+    openingTime: {
+        fontSize: 16,
+        color: "#7F8C8D",
+    },
 });
-
-const DEFAULT_TEXT_STYLE: TextStyle = {
-    color: "#5D737E",
-    fontSize: 16,
-    fontWeight: "bold",
-    flex: 1,
-};
-
-const DEFAULT_CONTAINER_STYLE: ViewStyle = {
-    width: "80%",
-    borderWidth: 1,
-    borderColor: "#64B6AC",
-    flexDirection: "row",
-    borderRadius: 12,
-    padding: 15,
-    backgroundColor: "#DAFFEF",
-    alignSelf: "center",
-    justifyContent: "space-between",
-    alignItems: "center",
-};

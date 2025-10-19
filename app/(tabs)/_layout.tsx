@@ -1,9 +1,9 @@
-import { PROFILE_PICTURE } from "@/constants";
 import { Stack, usePathname } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import NavBar from "../components/NavBar";
 import UserHeader from "../components/UserHeader";
+import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout() {
     const pathname = usePathname();
@@ -19,13 +19,15 @@ export default function RootLayout() {
         pathname !== "/legal";
 
     return (
-        <View style={styles.container}>
-            {showUserHeader && <UserHeader profilePicUri={PROFILE_PICTURE.source} />}
-            <View style={styles.content}>
-                <Stack />
+        <UserProvider>
+            <View style={styles.container}>
+                {showUserHeader && <UserHeader />}
+                <View style={styles.content}>
+                    <Stack />
+                </View>
+                {showNavBar && <NavBar />}
             </View>
-            {showNavBar && <NavBar />}
-        </View>
+        </UserProvider>
     );
 }
 

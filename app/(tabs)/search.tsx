@@ -1,13 +1,16 @@
 import { db } from "@/firebase";
+import { getLocation, haversine, normalizeString } from "@/utils/Location";
 import { useNavigation } from "@react-navigation/native";
-import { getCurrentPositionAsync, requestForegroundPermissionsAsync } from "expo-location";
+import { LocationObjectCoords } from "expo-location";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+    FlatList,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
-    ScrollView,
+    StyleSheet,
+    Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
@@ -16,139 +19,148 @@ import Result from "../components/Result";
 import SearchBar from "../components/SearchBar";
 import { FormData } from "./pro";
 
-const haversine = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const toRad = (value: number) => (value * Math.PI) / 180;
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-};
+async function fetchSearchResults(queryText: string, userLocation: LocationObjectCoords | null) {
+    if (queryText.trim().length === 0) {
+        return [];
+    }
 
-function normalizeString(str: string) {
-    return str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
+    const normalizedQuery = normalizeString(queryText);
+    const colRef = collection(db, "establishments");
+
+    const qFacility = query(
+        colRef,
+        where("facility_search", ">=", normalizedQuery),
+        where("facility_search", "<=", normalizedQuery + "\uf8ff")
+    );
+
+    const qSpecialty = query(colRef, where("specialty_search", "array-contains", normalizedQuery));
+
+    const [snapshotFacility, snapshotSpecialty] = await Promise.all([getDocs(qFacility), getDocs(qSpecialty)]);
+
+    const merged: FormData[] = [
+        ...snapshotFacility.docs.map((doc) => doc.data() as FormData),
+        ...snapshotSpecialty.docs.map((doc) => doc.data() as FormData),
+    ];
+
+    const resultsWithDistance: FormData[] = merged.map((data) => {
+        const { latitude, longitude } = data;
+        if (userLocation && latitude && longitude) {
+            const distance = haversine(userLocation.latitude, userLocation.longitude, latitude, longitude).toFixed(2);
+            return { ...data, distance };
+        } else {
+            return { ...data, distance: "Location not available" };
+        }
+    });
+
+    return resultsWithDistance
+        .filter((item) => item.distance !== "Location not available" && item.distance !== null)
+        .sort((a, b) => parseFloat(a.distance as string) - parseFloat(b.distance as string));
 }
 
 export default function Search() {
     const [queryText, setQueryText] = useState("");
     const [results, setResults] = useState<FormData[]>([]);
-    const [userLocation, setUserLocation] = useState<any>(null);
+    const [userLocation, setUserLocation] = useState<LocationObjectCoords | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [debouncedQuery, setDebouncedQuery] = useState(queryText);
 
     const navigation = useNavigation();
 
-    const getLocation = async () => {
-        const { status } = await requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-            return;
-        }
-
-        const { coords } = await getCurrentPositionAsync({});
-        setUserLocation(coords);
-    };
+    // Memoize navigation handler to avoid unnecessary re-renders.
+    const handleResultPress = useCallback(
+        (item: FormData, navigation: any) => {
+            navigation.navigate("detail", { itemData: item });
+        },
+        [navigation]
+    );
 
     useEffect(() => {
-        getLocation();
+        const fetchLocation = async () => {
+            const coords = await getLocation();
+            if (coords) {
+                setUserLocation(coords);
+            }
+        };
+        fetchLocation();
     }, []);
 
+    // Does a query only after few times user finish typing.
     useEffect(() => {
-        if (queryText.trim().length === 0) {
-            setResults([]);
-            return;
-        }
+        const handler = setTimeout(() => {
+            setDebouncedQuery(queryText);
+        }, 300);
 
+        return () => clearTimeout(handler);
+    }, [queryText]);
+
+    useEffect(() => {
         const fetchResults = async () => {
+            setLoading(true);
+            setError(null);
+
             try {
-                const normalizedQuery = normalizeString(queryText);
-
-                const colRef = collection(db, "establishments");
-
-                const qFacility = query(
-                    colRef,
-                    where("facility_search", ">=", normalizedQuery),
-                    where("facility_search", "<=", normalizedQuery + "\uf8ff")
-                );
-
-                const qSpecialty = query(colRef, where("specialty_search", "array-contains", normalizedQuery));
-
-                const snapshotFacility = await getDocs(qFacility);
-                const snapshotSpecialty = await getDocs(qSpecialty);
-
-                const merged: FormData[] = [
-                    ...snapshotFacility.docs.map((doc) => doc.data() as FormData),
-                    ...snapshotSpecialty.docs.map((doc) => doc.data() as FormData),
-                ];
-
-                const resultsWithDistance: FormData[] = merged.map((data) => {
-                    const { latitude, longitude } = data;
-
-                    if (userLocation && latitude && longitude) {
-                        const distance = haversine(
-                            userLocation.latitude,
-                            userLocation.longitude,
-                            latitude,
-                            longitude
-                        ).toFixed(2);
-                        return { ...data, distance };
-                    } else {
-                        return { ...data, distance: "Location not available" };
-                    }
-                });
-
-                const sortedResults = resultsWithDistance
-                    .filter((item) => item.distance !== "Location not available" && item.distance !== null)
-                    .sort((a: FormData, b: FormData) => {
-                        const distanceA = parseFloat(a.distance as string);
-                        const distanceB = parseFloat(b.distance as string);
-                        return distanceA - distanceB;
-                    });
-
-                setResults(sortedResults);
-            } catch (error) {
-                console.error("Error fetching data", error);
+                const results = await fetchSearchResults(debouncedQuery, userLocation);
+                setResults(results);
+            } catch (e) {
+                console.error("Error fetching data", e);
+                setError("Failed to fetch results. Please try again.");
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchResults();
-    }, [queryText, userLocation]);
-
-    const handleResultPress = (item: FormData, navigation: any) => {
-        navigation.navigate("detail", { itemData: item });
-    };
+    }, [debouncedQuery, userLocation]);
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={{ flex: 1, backgroundColor: "white" }}>
+                <View style={styles.container}>
                     <SearchBar value={queryText} onChangeText={setQueryText} placeholder="Search facility" />
-                    <ScrollView
-                        style={{ flex: 1 }}
-                        keyboardShouldPersistTaps="handled"
-                        contentContainerStyle={{ padding: 16, gap: 10 }}
-                    >
-                        {results.map((item, index) => (
-                            <TouchableOpacity
-                                key={item.id || index}
-                                onPress={() => handleResultPress(item, navigation)}
-                            >
+                    {loading && <Text style={styles.loadingText}>Loading...</Text>}
+                    {error && <Text style={styles.errorText}>{error}</Text>}
+
+                    <FlatList
+                        data={results}
+                        keyExtractor={(item) => item.id || item.facility}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleResultPress(item, navigation)}>
                                 <Result
                                     logo={{ uri: item.logo }}
                                     facility={item.facility}
-                                    specialist={item.specialty ? item.specialty.join(", ") : ""}
+                                    specialist={item.specialty?.join(", ") || ""}
                                     address={item.address}
-                                    distance={item.distance + " km" || "N/A"}
+                                    distance={isNaN(Number(item.distance)) ? "N/A" : `${item.distance} km`}
                                 />
                             </TouchableOpacity>
-                        ))}
-                    </ScrollView>
+                        )}
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={styles.contentContainer}
+                    />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "white",
+    },
+    scrollView: {
+        flex: 1,
+    },
+    contentContainer: {
+        padding: 16,
+        gap: 10,
+    },
+    loadingText: {
+        padding: 16,
+    },
+    errorText: {
+        padding: 16,
+        color: "red",
+    },
+});

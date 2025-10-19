@@ -1,4 +1,6 @@
+import TextWithBorder from "@/app/components/TextWithBorder";
 import { BASIC_LOGO } from "@/constants";
+import { User } from "@/types/user";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
@@ -10,50 +12,25 @@ import {
     Platform,
     ScrollView,
     StyleSheet,
-    Text,
     TouchableWithoutFeedback,
     View,
 } from "react-native";
 import Logo from "../../components/Logo";
-
-export interface User {
-    firstName: string;
-    lastName: string;
-    birthDate: string;
-    phone: string;
-    email: string;
-    type: "user" | "professional" | "";
-    birthPlace: string;
-    city: string;
-    town: string;
-    neighborhood: string;
-    sex: "man" | "woman" | "other" | "";
-    job: string;
-}
 
 const auth = getAuth();
 const firestore = getFirestore();
 const storage = getStorage();
 
 export default function Info() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [birthDate, setBirthDate] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [type, setType] = useState("");
-    const [birthPlace, setBirthPlace] = useState("");
-    const [city, setCity] = useState("");
-    const [town, setTown] = useState("");
-    const [neighborhood, setNeighborhood] = useState("");
-    const [sex, setSex] = useState("");
-    const [job, setJob] = useState("");
+    const [userData, setUserData] = useState<User | null>(null);
     const [profileImage, setProfileImage] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             const user = auth.currentUser;
-            if (!user) return;
+            if (!user) {
+                return;
+            }
 
             try {
                 const docRef = doc(firestore, "users", user.uid);
@@ -61,32 +38,27 @@ export default function Info() {
 
                 if (docSnap.exists()) {
                     const data = docSnap.data() as User;
-                    setFirstName(data.firstName);
-                    setLastName(data.lastName);
-                    setBirthDate(data.birthDate);
-                    setPhone(data.phone);
-                    setEmail(data.email);
-                    setType(data.type || "");
-                    setBirthPlace(data.birthPlace);
-                    setCity(data.city);
-                    setTown(data.town);
-                    setNeighborhood(data.neighborhood);
-                    setSex(data.sex || "");
-                    setJob(data.job);
-                } else {
-                    console.log("No such user document!");
+                    setUserData(data);
                 }
 
                 const imageRef = ref(storage, `profileImages/${user.uid}.jpg`);
                 const url = await getDownloadURL(imageRef);
                 setProfileImage(url);
             } catch (error) {
-                console.error("Error fetching user data or image:", error);
+                console.error("Failed to fetch user data:", error);
             }
         };
 
         fetchUserData();
     }, []);
+
+    if (!userData) {
+        return (
+            <View style={styles.centered}>
+                <TextWithBorder>User not found.</TextWithBorder>
+            </View>
+        );
+    }
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -94,60 +66,20 @@ export default function Info() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    {profileImage && (
-                        <Image
-                            source={{ uri: profileImage }}
-                            style={{ width: 100, height: 100, borderRadius: 50, marginBottom: 20 }}
-                        />
-                    )}
+                    {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>First Name: {firstName}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Last Name: {lastName}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Email: {email}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Phone: {phone}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Birth Date: {birthDate}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Birth Place: {birthPlace}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>City: {city}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Town: {town}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Neighborhood: {neighborhood}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Sex: {sex}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Job: {job}</Text>
-                    </View>
-
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Account Type: {type}</Text>
-                    </View>
+                    <TextWithBorder>{`First Name: ${userData.firstName}`}</TextWithBorder>
+                    <TextWithBorder>{`Last Name: ${userData.lastName}`}</TextWithBorder>
+                    <TextWithBorder>{`Email: ${userData.email}`}</TextWithBorder>
+                    <TextWithBorder>{`Phone: ${userData.phone}`}</TextWithBorder>
+                    <TextWithBorder>{`Birth Date: ${userData.birthDate}`}</TextWithBorder>
+                    <TextWithBorder>{`Birth Place: ${userData.birthPlace}`}</TextWithBorder>
+                    <TextWithBorder>{`City: ${userData.city}`}</TextWithBorder>
+                    <TextWithBorder>{`Town: ${userData.town}`}</TextWithBorder>
+                    <TextWithBorder>{`Neighborhood: ${userData.neighborhood}`}</TextWithBorder>
+                    <TextWithBorder>{`Sex: ${userData.sex}`}</TextWithBorder>
+                    <TextWithBorder>{`Job: ${userData.job}`}</TextWithBorder>
+                    <TextWithBorder>{`Account Type: ${userData.type}`}</TextWithBorder>
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -164,15 +96,16 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
         backgroundColor: "white",
     },
-    labeledField: {
-        width: "100%",
+    centered: {
+        flex: 1,
+        justifyContent: "center",
         alignItems: "center",
-        gap: 4,
+        backgroundColor: "white",
     },
-    label: {
-        width: "80%",
-        fontWeight: "bold",
-        fontSize: 16,
-        color: "#333",
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 20,
     },
 });

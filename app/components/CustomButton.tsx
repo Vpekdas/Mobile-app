@@ -6,6 +6,7 @@ export interface CustomButtonProps {
     style?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     title: string;
+    disabled?: boolean; 
 }
 
 const DEFAULT_BUTTON_STYLE: ViewStyle = {
@@ -15,7 +16,11 @@ const DEFAULT_BUTTON_STYLE: ViewStyle = {
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center"
+    alignSelf: "center",
+};
+
+const DISABLED_BUTTON_STYLE: ViewStyle = {
+    backgroundColor: "#A0BFB9",
 };
 
 const DEFAULT_TEXT_STYLE: TextStyle = {
@@ -23,10 +28,23 @@ const DEFAULT_TEXT_STYLE: TextStyle = {
     fontSize: 16,
 };
 
-export default function CustomButton({ pressFunction, style, textStyle, title }: CustomButtonProps) {
+const DISABLED_TEXT_STYLE: TextStyle = {
+    color: "#E0E4E3",
+};
+
+export default function CustomButton({ pressFunction, style, textStyle, title, disabled = false }: CustomButtonProps) {
     return (
-        <Pressable onPress={pressFunction} style={[DEFAULT_BUTTON_STYLE, style]}>
-            <Text style={[DEFAULT_TEXT_STYLE, textStyle]}>{title}</Text>
+        <Pressable
+            onPress={pressFunction}
+            style={({ pressed }) => [
+                DEFAULT_BUTTON_STYLE,
+                style,
+                disabled && DISABLED_BUTTON_STYLE,
+                pressed && !disabled && { opacity: 0.75 },
+            ]}
+            disabled={disabled}
+        >
+            <Text style={[DEFAULT_TEXT_STYLE, textStyle, disabled && DISABLED_TEXT_STYLE]}>{title}</Text>
         </Pressable>
     );
 }

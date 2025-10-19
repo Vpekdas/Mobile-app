@@ -9,6 +9,23 @@ export interface ResultProps {
     distance: string;
 }
 
+export default function Result(props: ResultProps) {
+    return (
+        <View style={DEFAULT_CONTAINER_STYLE}>
+            <Image source={props.logo} style={DEFAULT_LOGO_STYLE} resizeMode="cover" />
+            <View style={DEFAULT_RESULT_CONTAINER_STYLE}>
+                <Text style={DEFAULT_NAME_STYLE}>{props.facility}</Text>
+                <Text style={DEFAULT_DETAIL_STYLE}>{props.specialist}</Text>
+                <Text style={DEFAULT_DETAIL_STYLE}>{props.address}</Text>
+                <View style={DEFAULT_DISTANCE_CONTAINER_STYLE}>
+                    <FontAwesome5 name="map-marker-alt" size={20} color="#64B6AC" style={{ marginRight: 8 }} />
+                    <Text style={DEFAULT_DETAIL_STYLE}>{props.distance}</Text>
+                </View>
+            </View>
+        </View>
+    );
+}
+
 const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     width: "80%",
     borderWidth: 1,
@@ -49,20 +66,3 @@ const DEFAULT_DISTANCE_CONTAINER_STYLE: ViewStyle = {
     flex: 1,
     flexDirection: "row",
 };
-
-export default function Result(props: ResultProps) {
-    return (
-        <View style={DEFAULT_CONTAINER_STYLE}>
-            <Image source={props.logo} style={DEFAULT_LOGO_STYLE} resizeMode="cover" />
-            <View style={DEFAULT_RESULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_NAME_STYLE}>{props.facility}</Text>
-                <Text style={DEFAULT_DETAIL_STYLE}>{props.specialist}</Text>
-                <Text style={DEFAULT_DETAIL_STYLE}>{props.address}</Text>
-                <View style={DEFAULT_DISTANCE_CONTAINER_STYLE}>
-                    <FontAwesome5 name="map-marker-alt" size={20} color="#64B6AC" style={{ marginRight: 8 }} />
-                    <Text style={DEFAULT_DETAIL_STYLE}>{props.distance}</Text>
-                </View>
-            </View>
-        </View>
-    );
-}

@@ -1,47 +1,39 @@
 import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+const handleLogoutPress = async () => {
+    const auth = getAuth();
+
+    try {
+        await signOut(auth);
+        router.replace("/login");
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 export default function Account() {
-    const handleLogoutPress = async () => {
-        const auth = getAuth();
-
-        try {
-            await signOut(auth);
-            router.replace("/login");
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => router.push("/(tabs)/account/info")}>
-                <Text style={textStyle}>Account Information</Text>
+                <Text style={styles.text}>Account Information</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Preference clicked")}>
-                <Text style={textStyle}>Preference</Text>
+            <TouchableOpacity onPress={() => router.push("/contact")}>
+                <Text style={styles.text}>Contact</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Device / Security clicked")}>
-                <Text style={textStyle}>Device / Security</Text>
+            <TouchableOpacity onPress={() => router.push("/legal")}>
+                <Text style={styles.text}>Legal</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("Billing clicked")}>
-                <Text style={textStyle}>Billing</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log("Support clicked")}>
-                <Text style={textStyle}>Support</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log("Legal clicked")}>
-                <Text style={textStyle}>Legal</Text>
+            <TouchableOpacity onPress={() => console.log("hello")}>
+                <Text style={styles.text}>Notification</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleLogoutPress}>
-                <Text style={logoutTextStyle}>Logout</Text>
+                <Text style={styles.logout}>Logout</Text>
             </TouchableOpacity>
         </View>
     );
@@ -55,17 +47,18 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         flexDirection: "column",
     },
+    text: {
+        fontSize: 20,
+        color: "#5D737E",
+        fontWeight: "600",
+        marginBottom: 12,
+        padding: 16,
+    },
+    logout: {
+        fontSize: 20,
+        fontWeight: "600",
+        marginBottom: 12,
+        padding: 16,
+        color: "#070670",
+    },
 });
-
-const textStyle: TextStyle = {
-    fontSize: 20,
-    color: "#5D737E",
-    fontWeight: "600",
-    marginBottom: 12,
-    padding: 16,
-};
-
-const logoutTextStyle: TextStyle = {
-    ...textStyle,
-    color: "#070670",
-};

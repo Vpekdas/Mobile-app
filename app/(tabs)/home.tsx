@@ -20,10 +20,10 @@ export default function Home() {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Image source={require("../../assets/logo/home.jpeg")} style={styles.image} resizeMode="cover" />
-                    <View style={news.container}>
-                        <View style={textContainer.container}>
-                            <Text style={textContainer.text}>HELLO THIS IS A TEXT</Text>
-                            <Text style={textContainer.text}>More text here</Text>
+                    <View style={styles.news}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}>Nous vous aidons à trouver vos professionnels</Text>
+                            <Text style={styles.text}>La suite c'est vous qui décider</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -46,22 +46,16 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 10,
     },
-});
-
-const textContainer = StyleSheet.create({
-    container: {
+    textContainer: {
         width: "100%",
-        justifyContent: "space-evenly",
-        alignItems: "center",
+        gap: 3,
     },
     text: {
         fontSize: 18,
         color: "#333",
+        textAlign: "center"
     },
-});
-
-const news = StyleSheet.create({
-    container: {
+    news: {
         width: "100%",
         alignItems: "center",
         backgroundColor: "white",

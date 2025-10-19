@@ -1,30 +1,17 @@
-import { BASIC_LOGO } from "@/constants";
-import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View,
-} from "react-native";
+import { BASIC_LOGO, DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/constants";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import Logo from "../components/Logo";
 
 export default function Legal() {
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
+        <ScrollView contentContainerStyle={styles.container}>
+            <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <View style={styles.labeledField}>
-                        <Text style={styles.label}>Legal</Text>
-                    </View>
-                </ScrollView>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+            <View style={DEFAULT_CONTAINER_STYLE}>
+                <Text style={DEFAULT_TEXT_STYLE}>Legal</Text>
+            </View>
+        </ScrollView>
     );
 }
 
@@ -37,17 +24,5 @@ const styles = StyleSheet.create({
         gap: 25,
         paddingBottom: 100,
         backgroundColor: "white",
-    },
-    labeledField: {
-        width: "100%",
-        gap: 8,
-        backgroundColor: "#F9F9F9",
-        padding: 16,
-        borderRadius: 8,
-    },
-    label: {
-        fontWeight: "600",
-        fontSize: 16,
-        color: "#333",
     },
 });

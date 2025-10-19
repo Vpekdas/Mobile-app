@@ -1,48 +1,23 @@
-import { auth, db } from "@/firebase";
-import { User as FirebaseUser, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useUser } from "@/contexts/UserContext";
+import React from "react";
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 
 export default function UserHeader() {
-    const [firstName, setFirstName] = useState<string>("");
-    const [profilePicUri, setProfilePicUri] = useState<string | null>(null);
+    const { userData, profileImage, loading } = useUser();
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user: FirebaseUser | null) => {
-            if (user) {
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDocSnap = await getDoc(userDocRef);
-
-                    if (userDocSnap.exists()) {
-                        const userData = userDocSnap.data();
-                        setFirstName(userData.firstName || "");
-                        setProfilePicUri(userData.profileImageUrl || null);
-                    } else {
-                        const displayName = user.displayName || "";
-                        const first = displayName.split(" ")[0];
-                        setFirstName(first);
-                    }
-                } catch (error) {
-                    console.error("Failed to fetch user document:", error);
-                    setFirstName("");
-                    setProfilePicUri(null);
-                }
-            } else {
-                setFirstName("");
-                setProfilePicUri(null);
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
+    if (loading) {
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="small" color="#5D737E" />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Bonjour {firstName || ""}!</Text>
-            {profilePicUri ? (
-                <Image source={{ uri: profilePicUri }} style={styles.image} />
+            <Text style={styles.text}>Bonjour {userData?.firstName || ""}</Text>
+            {profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.image} />
             ) : (
                 <View style={[styles.image, { backgroundColor: "#ccc" }]} />
             )}

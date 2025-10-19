@@ -1,7 +1,7 @@
 import { BASIC_LOGO } from "@/constants";
-import { auth } from "@/firebase";
+import { useUser } from "@/contexts/UserContext";
 import { router } from "expo-router";
-import { sendEmailVerification } from "firebase/auth";
+import { getAuth, sendEmailVerification } from "firebase/auth";
 import { useState } from "react";
 import {
     Alert,
@@ -20,38 +20,61 @@ import Logo from "../components/Logo";
 const isWeb = Platform.OS === "web";
 
 export default function ConfirmMail() {
-    const [loading, setLoading] = useState(false);
+    const { userData, loading: userLoading } = useUser();
+    const [checkingVerification, setCheckingVerification] = useState(false);
+    const [resendingEmail, setResendingEmail] = useState(false);
+
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     const handleCheckVerification = async () => {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                setLoading(true);
-                await user.reload();
+        if (!user) {
+            return;
+        }
 
-                if (user.emailVerified) {
-                    Alert.alert("Success", "Your email is verified!");
-                    router.replace("/home");
-                } else {
-                    Alert.alert("Still not verified", "Please check your email and click the link.");
-                }
+        try {
+            setCheckingVerification(true);
+            await user.reload();
+
+            if (user.emailVerified) {
+                Alert.alert("Success", "Your email is verified!");
+                router.replace("/home");
+            } else {
+                Alert.alert("Still not verified", "Please check your email and click the link.");
             }
         } catch (error: any) {
             Alert.alert("Error", error?.message || "Failed to verify.");
         } finally {
-            setLoading(false);
+            setCheckingVerification(false);
         }
     };
 
     const handleResendVerification = async () => {
-        const user = auth.currentUser;
-        if (user && !user.emailVerified) {
+        if (!user || user.emailVerified) {
+            return;
+        }
+
+        try {
+            setResendingEmail(true);
             await sendEmailVerification(user);
+            Alert.alert("Verification email sent", "Please check your inbox.");
+        } catch (error: any) {
+            Alert.alert("Error", error?.message || "Failed to send verification email.");
+        } finally {
+            setResendingEmail(false);
         }
     };
 
-    const Content = () => (
-        <View style={styles.container}>
+    if (!userData) {
+        return (
+            <View style={styles.container}>
+                <Text>{userLoading ? "Loading user data..." : "User not logged in."}</Text>
+            </View>
+        );
+    }
+
+    const content = (
+        <>
             <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
             <Text style={styles.text}>
@@ -59,23 +82,28 @@ export default function ConfirmMail() {
             </Text>
 
             <CustomButton
-                title={loading ? "Checking..." : "I clicked the link"}
+                title={checkingVerification ? "Checking..." : "I clicked the link"}
                 pressFunction={handleCheckVerification}
+                disabled={checkingVerification || resendingEmail}
             />
-            <CustomButton title="Resend Email" pressFunction={handleResendVerification} />
-        </View>
+            <CustomButton
+                title={resendingEmail ? "Resending..." : "Resend Email"}
+                pressFunction={handleResendVerification}
+                disabled={checkingVerification || resendingEmail}
+            />
+        </>
     );
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             {isWeb ? (
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <Content />
+                    {content}
                 </ScrollView>
             ) : (
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                        <Content />
+                        {content}
                     </ScrollView>
                 </TouchableWithoutFeedback>
             )}
