@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import InputField from "./InputField";
 
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
+    const { t } = useTranslation();
     const [newMember, setNewMember] = React.useState<TeamMember>({
         name: "",
         phone: "",
@@ -26,7 +28,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
             onAddMember(newMember);
             setNewMember({ name: "", phone: "", specialty: [] });
         } else {
-            alert("Please fill all fields to add a team member");
+            Alert.alert(t("error"), t("fillAllFieldsTeamMember"));
         }
     };
 
@@ -41,7 +43,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
             }}
         >
             <InputField
-                placeholder="Name"
+                placeholder={t("name")}
                 value={newMember.name}
                 onChangeText={(text) => setNewMember((prev) => ({ ...prev, name: text }))}
                 containerStyle={{ marginBottom: 5 }}
@@ -55,8 +57,8 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
                         setNewMember((prev) => ({ ...prev, specialty: selectedItems }))
                     }
                     selectedItems={newMember.specialty}
-                    selectText="Choose specialties"
-                    searchInputPlaceholderText="Search specialties"
+                    selectText={t("chooseSpecialties")}
+                    searchInputPlaceholderText={t("searchSpecialties")}
                     tagRemoveIconColor="#CCC"
                     tagBorderColor="#CCC"
                     tagTextColor="#5D737E"
@@ -66,7 +68,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
                     displayKey="name"
                     searchInputStyle={{ color: "#CCC" }}
                     submitButtonColor="#070670"
-                    submitButtonText="Validate"
+                    submitButtonText={t("validate")}
                     styleDropdownMenu={{
                         backgroundColor: "#e0f7fa",
                         borderRadius: 8,
@@ -82,7 +84,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
                 />
             </View>
             <InputField
-                placeholder="Phone"
+                placeholder={t("phone")}
                 value={newMember.phone}
                 onChangeText={(text) => setNewMember((prev) => ({ ...prev, phone: text }))}
             />
@@ -96,7 +98,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
                     alignItems: "center",
                 }}
             >
-                <Text style={{ color: "white" }}>Add Team Member</Text>
+                <Text style={{ color: "white" }}>{t("addTeamMember")}</Text>
             </TouchableOpacity>
         </View>
     );

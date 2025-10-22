@@ -9,11 +9,14 @@
       "@firebase/auth": [
         "./node_modules/firebase/node_modules/@firebase/auth/dist/index.rn.d.ts"
       ]
-    }
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.json",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ]

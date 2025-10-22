@@ -2,14 +2,17 @@ import { BASIC_LOGO, DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/const
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import Logo from "../components/Logo";
+import { useTranslation } from "react-i18next";
 
 export default function Legal() {
+    const { t } = useTranslation();
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
             <View style={DEFAULT_CONTAINER_STYLE}>
-                <Text style={DEFAULT_TEXT_STYLE}>Legal</Text>
+                <Text style={DEFAULT_TEXT_STYLE}>{t("legal")}</Text>
             </View>
         </ScrollView>
     );

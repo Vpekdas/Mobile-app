@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LocationObjectCoords } from "expo-location";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     FlatList,
     Keyboard,
@@ -62,6 +63,8 @@ async function fetchSearchResults(queryText: string, userLocation: LocationObjec
 }
 
 export default function Search() {
+    const { t } = useTranslation();
+
     const [queryText, setQueryText] = useState("");
     const [results, setResults] = useState<FormData[]>([]);
     const [userLocation, setUserLocation] = useState<LocationObjectCoords | null>(null);
@@ -107,8 +110,7 @@ export default function Search() {
                 const results = await fetchSearchResults(debouncedQuery, userLocation);
                 setResults(results);
             } catch (e) {
-                console.error("Error fetching data", e);
-                setError("Failed to fetch results. Please try again.");
+                setError(t("failedToFetchResults"));
             } finally {
                 setLoading(false);
             }
@@ -121,8 +123,8 @@ export default function Search() {
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.container}>
-                    <SearchBar value={queryText} onChangeText={setQueryText} placeholder="Search facility" />
-                    {loading && <Text style={styles.loadingText}>Loading...</Text>}
+                    <SearchBar value={queryText} onChangeText={setQueryText} placeholder={t("searchFacility")} />
+                    {loading && <Text style={styles.loadingText}>{t("loading")}</Text>}
                     {error && <Text style={styles.errorText}>{error}</Text>}
 
                     <FlatList

@@ -3,11 +3,14 @@ import { useUser } from "@/contexts/UserContext";
 import { router } from "expo-router";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text } from "react-native";
 import CustomButton from "../components/CustomButton";
 import Logo from "../components/Logo";
 
 export default function ConfirmMail() {
+    const { t } = useTranslation();
+
     const [checkingVerification, setCheckingVerification] = useState(false);
     const [resendingEmail, setResendingEmail] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -23,7 +26,9 @@ export default function ConfirmMail() {
     }, [user, loading, emailVerified]);
 
     const handleCheckVerification = async () => {
-        if (!user) return;
+        if (!user) {
+            return;
+        }
 
         try {
             setCheckingVerification(true);
@@ -31,17 +36,16 @@ export default function ConfirmMail() {
             await user.getIdToken(true);
 
             if (user.emailVerified) {
-                Alert.alert("Success", "Your email is verified!");
+                Alert.alert(t("success"), t("emailVerified"));
                 if (refreshUser) {
                     await refreshUser();
                 }
                 router.replace("/home");
             } else {
-                Alert.alert("Still not verified", "Please check your email and click the link.");
+                Alert.alert(t("stillNotVerified"), t("checkEmailLink"));
             }
         } catch (error) {
-            Alert.alert("Error", "Something went wrong while checking verification.");
-            console.error(error);
+            Alert.alert(t("error"), t("verificationCheckFailed"));
         } finally {
             setCheckingVerification(false);
         }
@@ -49,12 +53,12 @@ export default function ConfirmMail() {
 
     const handleResendVerification = async () => {
         if (!user) {
-            Alert.alert("No user found", "Please log in to resend the verification email.");
+            Alert.alert(t("noUserFound"), t("pleaseLoginToResend"));
             return;
         }
 
         if (user.emailVerified) {
-            Alert.alert("Email already verified", "Your email has already been verified.");
+            Alert.alert(t("emailVerified"), t("emailAlreadyVerified"));
             return;
         }
 
@@ -64,13 +68,12 @@ export default function ConfirmMail() {
             if (!user.emailVerified) {
                 setResendingEmail(true);
                 await sendEmailVerification(user);
-                Alert.alert("Verification email sent", "Please check your inbox.");
+                Alert.alert(t("verificationEmailSent"), t("checkInbox"));
             } else {
-                Alert.alert("Email already verified", "Your email is already verified.");
+                Alert.alert(t("emailVerified"), t("emailAlreadyVerified"));
             }
         } catch (error) {
-            console.error(error);
-            Alert.alert("Failed to send verification email", "Something went wrong. Please try again later.");
+            Alert.alert(t("failedToSendVerificationEmail)", t("somethingWentWrong")));
         } finally {
             setResendingEmail(false);
         }
@@ -90,16 +93,14 @@ export default function ConfirmMail() {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                 <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
-                <Text style={styles.text}>
-                    A verification email has been sent to your inbox. Please click the link to verify your account.
-                </Text>
+                <Text style={styles.text}>{t("verificationEmailInstructions")}</Text>
                 <CustomButton
-                    title={checkingVerification ? "Checking..." : "I clicked the link"}
+                    title={checkingVerification ? t("checking") : t("iClickedTheLink")}
                     pressFunction={handleCheckVerification}
                     disabled={checkingVerification || resendingEmail || refreshing}
                 />
                 <CustomButton
-                    title={resendingEmail ? "Resending..." : "Resend Email"}
+                    title={resendingEmail ? t("resending") : t("resendEmail")}
                     pressFunction={handleResendVerification}
                     disabled={checkingVerification || resendingEmail || refreshing}
                 />

@@ -1,8 +1,11 @@
 import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/constants";
+import { FacilityType, Sector } from "@/types/enums";
 import { useRoute } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import TextWithBorder from "../components/TextWithBorder";
 import { OpeningHours, TeamMember } from "./pro";
+
 type RouteParams = {
     itemData: {
         logo?: string;
@@ -11,8 +14,8 @@ type RouteParams = {
         country: string;
         city: string;
         postalCode: string;
-        type: "hospital" | "clinic" | "office";
-        sector: "public" | "private";
+        type: FacilityType;
+        sector: Sector;
         telephone: string;
         specialty: string[];
         team?: TeamMember[];
@@ -21,6 +24,7 @@ type RouteParams = {
 };
 
 export default function Detail() {
+    const { t } = useTranslation();
     const route = useRoute();
     const { itemData } = route.params as RouteParams;
 
@@ -31,7 +35,7 @@ export default function Detail() {
                     {itemData.logo ? (
                         <Image source={{ uri: itemData.logo }} style={styles.logoImage} resizeMode="contain" />
                     ) : (
-                        <Text>No logo available</Text>
+                        <Text>{t("noLogoAvailable")}</Text>
                     )}
                 </View>
 
@@ -49,14 +53,16 @@ export default function Detail() {
 
                 {itemData.team && itemData.team.length > 0 && (
                     <View style={DEFAULT_CONTAINER_STYLE}>
-                        <Text style={styles.sectionTitle}>Team Members:</Text>
+                        <Text style={styles.sectionTitle}>{t("teamMembers")}</Text>
                         {itemData.team.map((member, index) => (
                             <View key={index} style={styles.teamMemberContainer}>
                                 <Text style={styles.teamMemberName}>{member.name}</Text>
                                 <Text style={styles.teamMemberSpecialty}>
                                     Specialties: {member.specialty.join(", ")}
                                 </Text>
-                                <Text style={styles.teamMemberPhone}>Phone: {member.phone}</Text>
+                                <Text style={styles.teamMemberPhone}>
+                                    {t("phone")}: {member.phone}
+                                </Text>
                             </View>
                         ))}
                     </View>
@@ -64,7 +70,7 @@ export default function Detail() {
 
                 {Array.isArray(itemData.openingHours) && itemData.openingHours.length > 0 ? (
                     <View style={DEFAULT_CONTAINER_STYLE}>
-                        <Text style={styles.sectionTitle}>Opening Hours:</Text>
+                        <Text style={styles.sectionTitle}>{t("openingHours")}:</Text>
                         {itemData.openingHours.map((entry, index) => (
                             <View key={index} style={styles.openingHoursRow}>
                                 <Text style={styles.openingDay}>{entry.day}</Text>
@@ -75,7 +81,7 @@ export default function Detail() {
                         ))}
                     </View>
                 ) : (
-                    <Text style={styles.sectionTitle}>No opening hours available</Text>
+                    <Text style={styles.sectionTitle}>{t("noOpeningHoursAvailable")}</Text>
                 )}
             </View>
         </ScrollView>

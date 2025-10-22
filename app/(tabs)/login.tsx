@@ -2,6 +2,7 @@ import { BASIC_LOGO } from "@/constants";
 import { router } from "expo-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     ActivityIndicator,
     Alert,
@@ -20,6 +21,8 @@ import InputField from "../components/InputField";
 import Logo from "../components/Logo";
 
 export default function Login() {
+    const { t } = useTranslation();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -32,10 +35,8 @@ export default function Login() {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             router.replace("/home");
-            console.log("Logged in:", user.email);
         } catch (error: any) {
-            console.error("Login error:", error.message);
-            Alert.alert("Login failed", error.message);
+            Alert.alert(t("loginFailed"), error.message);
         } finally {
             setLoading(false);
         }
@@ -58,17 +59,17 @@ export default function Login() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField placeholder="Mail" value={email} onChangeText={setEmail} secureTextEntry={false} />
+                    <InputField placeholder={t("Mail")} value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                     <InputField
-                        placeholder="Password"
+                        placeholder={t("Password")}
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={true}
                     />
 
                     <Pressable onPress={handleForgotPassword}>
-                        <Text style={styles.forgotPassword}>Forgot Password ?</Text>
+                        <Text style={styles.forgotPassword}>{t("forgotPassword")}</Text>
                     </Pressable>
 
                     {loading ? (
@@ -76,27 +77,27 @@ export default function Login() {
                     ) : (
                         <CustomButton
                             pressFunction={handleLoginPress}
-                            title="Login"
+                            title={t("login")}
                             disabled={loading || !email || !password}
                         />
                     )}
 
                     <View style={styles.registerContainer}>
-                        <Text>No account ? </Text>
+                        <Text>{t("noAccount")}</Text>
                         <Pressable onPress={handleRegisterPress}>
-                            <Text style={styles.forgotPassword}>Click here</Text>
+                            <Text style={styles.forgotPassword}>{t("clickHere")}</Text>
                         </Pressable>
                     </View>
 
                     <View style={styles.contactWrapper}>
                         <Pressable onPress={() => router.push("/contact")}>
-                            <Text style={styles.clickable}>Contact</Text>
+                            <Text style={styles.clickable}>{t("contact")}</Text>
                         </Pressable>
                     </View>
 
                     <View style={styles.legalWrapper}>
                         <Pressable onPress={() => router.push("/legal")}>
-                            <Text style={styles.clickable}>Legal</Text>
+                            <Text style={styles.clickable}>{t("legal")}</Text>
                         </Pressable>
                     </View>
                 </ScrollView>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export default function SpecialtySelector({ specialties, selectedItems, onSelectedItemsChange }: Props) {
+    const { t } = useTranslation();
+
     return (
         <View style={{ flex: 1 }}>
             <MultiSelect
@@ -17,8 +20,8 @@ export default function SpecialtySelector({ specialties, selectedItems, onSelect
                 uniqueKey="id"
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={selectedItems}
-                selectText="Choose specialty"
-                searchInputPlaceholderText="Search specialty"
+                selectText={t("chooseSpecialty")}
+                searchInputPlaceholderText={t("searchSpecialty")}
                 tagRemoveIconColor="#CCC"
                 tagBorderColor="#CCC"
                 tagTextColor="#5D737E"

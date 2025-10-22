@@ -1,5 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ImageResizer from "react-native-image-resizer";
 
@@ -9,7 +10,12 @@ interface ImagePickerComponentProps {
     onImageError: (error: any) => void;
 }
 
-export default function ImagePickerComponent({ selectedImage, onImageSelected, onImageError }: ImagePickerComponentProps) {
+export default function ImagePickerComponent({
+    selectedImage,
+    onImageSelected,
+    onImageError,
+}: ImagePickerComponentProps) {
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 
     const pickImage = async () => {
@@ -41,11 +47,11 @@ export default function ImagePickerComponent({ selectedImage, onImageSelected, o
         <View style={styles.container}>
             <TouchableOpacity onPress={pickImage} style={styles.imagePickerButton}>
                 {isLoading ? (
-                    <Text>Loading...</Text>
+                    <Text>{t("loading")}</Text>
                 ) : selectedImage ? (
                     <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
                 ) : (
-                    <Text style={styles.buttonText}>Select Profile Image</Text>
+                    <Text style={styles.buttonText}>{t("selectProfileImage")}</Text>
                 )}
             </TouchableOpacity>
         </View>
@@ -75,4 +81,3 @@ const styles = StyleSheet.create({
         color: "#555",
     },
 });
-

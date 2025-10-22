@@ -4,6 +4,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import NavBar from "../components/NavBar";
 import UserHeader from "../components/UserHeader";
+import "../../i18n";
 
 export default function RootLayout() {
     const pathname = usePathname();

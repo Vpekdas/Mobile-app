@@ -1,4 +1,5 @@
 import { BASIC_LOGO } from "@/constants";
+import { useTranslation } from "react-i18next";
 import {
     Dimensions,
     Keyboard,
@@ -15,14 +16,16 @@ import TextWithBorder from "../components/TextWithBorder";
 const { height: screenHeight } = Dimensions.get("window");
 
 export default function Offer() {
+    const { t } = useTranslation();
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
                     <View style={styles.offerContainer}>
-                        <TextWithBorder children={"Offers and Promotions"}></TextWithBorder>
-                        <TextWithBorder children={"Advertising"}></TextWithBorder>
+                        <TextWithBorder children={t("offersAndPromotions")}></TextWithBorder>
+                        <TextWithBorder children={t("advertising")}></TextWithBorder>
                     </View>
                 </ScrollView>
             </TouchableWithoutFeedback>

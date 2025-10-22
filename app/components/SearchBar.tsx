@@ -1,4 +1,5 @@
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
 
 export interface SearchBarProps {
@@ -20,7 +21,7 @@ const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     paddingHorizontal: 12,
     height: 40,
     backgroundColor: "#fff",
-    marginTop: 30
+    marginTop: 30,
 };
 
 const DEFAULT_TEXT_STYLE: TextStyle = {
@@ -31,12 +32,14 @@ const DEFAULT_TEXT_STYLE: TextStyle = {
 };
 
 export default function SearchBar(props: SearchBarProps) {
+    const { t } = useTranslation();
+
     return (
         <View style={[DEFAULT_CONTAINER_STYLE, props.containerStyle]}>
             <FontAwesome5 name="search" size={20} color="#666" style={{ marginRight: 8 }} />
             <TextInput
                 style={[DEFAULT_TEXT_STYLE, props.textStyle]}
-                placeholder="Search facilities"
+                placeholder={t("searchFacilities")}
                 value={props.value}
                 onChangeText={props.onChangeText}
                 keyboardType="default"

@@ -25,6 +25,7 @@ import { DEFAULT_OPENING_HOURS, PICKER_OPTIONS, PRO_FIELDS, SPECIALTIES } from "
 import { saveFacilityData } from "@/helpers/saveFacilityHelper";
 import { onTimeChangeHelper, openTimePickerHelper } from "@/helpers/timePickerHelper";
 import { FacilityType, Sector } from "@/types/enums";
+import { useTranslation } from "react-i18next";
 import CustomButton from "../components/CustomButton";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import InputField from "../components/InputField";
@@ -64,9 +65,11 @@ export type FormData = {
 };
 
 export default function Pro() {
+    const { t } = useTranslation();
+
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "Facility Name",
+        facility: "facilityName",
         address: "address",
         country: "Country",
         city: "City",
@@ -89,9 +92,6 @@ export default function Pro() {
     useEffect(() => {
         if (googleMapsApi) {
             Geocoder.init(googleMapsApi);
-            console.log("Geocoder initialized successfully");
-        } else {
-            console.error("Google Maps API key is missing.");
         }
     }, []);
 
@@ -114,11 +114,7 @@ export default function Pro() {
                     if (data.logo) {
                         setFacilityImage(data.logo);
                     }
-
-                    console.log("User facility data fetched:", data);
                 }
-            } else {
-                console.log("No authenticated user found.");
             }
         };
 
@@ -132,9 +128,9 @@ export default function Pro() {
     const handleSave = async () => {
         const success = await saveFacilityData(formData, facilityImage);
         if (success) {
-            Alert.alert("Success", "Facility data saved successfully");
+            Alert.alert(t("success"), t("facilitySavedSuccess"));
         } else {
-            Alert.alert("Error", "Something went wrong. Please try again.");
+            Alert.alert(t("error"), t("somethingWentWrong"));
         }
     };
 
@@ -154,7 +150,7 @@ export default function Pro() {
         onTimeChangeHelper(event, selectedDate, timePickerDayIndex, timePickerType, setFormData, setShowTimePicker);
     };
 
-    const renderField = (key: keyof FormData, label: string) => {
+    const renderField = (key: keyof FormData) => {
         // Helper function to render the correct component based on the field type.
         const renderFieldEditor = () => {
             if (key === "team") {
@@ -228,7 +224,7 @@ export default function Pro() {
             if (key === "team") {
                 return formData.team && formData.team.length > 0
                     ? formData.team.map((member) => member.name).join(", ")
-                    : "No team members";
+                    : t("noTeamMembers");
             }
 
             if (key === "openingHours") {
@@ -244,7 +240,7 @@ export default function Pro() {
                                 </View>
                             ))
                         ) : (
-                            <Text style={styles.openingHoursText}>No opening hours</Text>
+                            <Text style={styles.openingHoursText}>{t("noOpeningHoursAvailable")}</Text>
                         )}
                     </View>
                 );
@@ -269,7 +265,7 @@ export default function Pro() {
                 <FlatList
                     data={PRO_FIELDS}
                     keyExtractor={(item) => item.key}
-                    renderItem={({ item }) => renderField(item.key as keyof FormData, item.label)}
+                    renderItem={({ item }) => renderField(item.key as keyof FormData)}
                     contentContainerStyle={styles.content}
                     keyboardShouldPersistTaps="handled"
                     ListFooterComponent={
@@ -282,7 +278,7 @@ export default function Pro() {
                                 />
                             </View>
                             <View>
-                                <CustomButton pressFunction={handleSave} title="Save" />
+                                <CustomButton pressFunction={handleSave} title={t("save")} />
                             </View>
                         </>
                     }

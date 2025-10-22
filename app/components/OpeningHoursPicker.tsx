@@ -1,5 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type Day = {
@@ -25,6 +26,8 @@ export default function OpeningHoursPicker({
     timePickerValue,
     onTimeChange,
 }: Props) {
+    const { t } = useTranslation();
+
     const hours = openingHours.length ? openingHours : defaultOpeningHours;
 
     return (
@@ -34,11 +37,11 @@ export default function OpeningHoursPicker({
                     <Text style={styles.dayText}>{day.day}</Text>
 
                     <TouchableOpacity style={styles.timeButton} onPress={() => openTimePicker(index, "start")}>
-                        <Text>{day.start || "Start"}</Text>
+                        <Text>{day.start || t("start")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.timeButton} onPress={() => openTimePicker(index, "end")}>
-                        <Text>{day.end || "End"}</Text>
+                        <Text>{day.end || t("end")}</Text>
                     </TouchableOpacity>
                 </View>
             ))}
@@ -60,7 +63,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        
     },
     dayContainer: {
         flexDirection: "row",
@@ -70,7 +72,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#64B6AC",
         borderRadius: 8,
-        
     },
     dayText: {
         flex: 1,

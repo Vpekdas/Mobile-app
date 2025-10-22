@@ -3,8 +3,12 @@ import { useUser } from "@/contexts/UserContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { usePathname, useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 export default function NavBar() {
+    const { t } = useTranslation();
+
     const { userData, loading, error } = useUser();
     const router = useRouter();
     const pathname = usePathname();
@@ -12,7 +16,7 @@ export default function NavBar() {
     if (loading) {
         return (
             <View style={styles.container}>
-                <Text style={DEFAULT_TEXT_STYLE}>Loading...</Text>
+                <Text style={DEFAULT_TEXT_STYLE}>{t("loading")}</Text>
             </View>
         );
     }
@@ -20,7 +24,7 @@ export default function NavBar() {
     if (error) {
         return (
             <View style={styles.container}>
-                <Text style={DEFAULT_TEXT_STYLE}>Error loading user data</Text>
+                <Text style={DEFAULT_TEXT_STYLE}>{t("errorLoadingUserData")}</Text>
             </View>
         );
     }
@@ -35,30 +39,30 @@ export default function NavBar() {
         <View style={styles.container}>
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/home")}>
                 <FontAwesome5 name="home" size={24} color="white" />
-                <Text style={iconStyle.text}>Home</Text>
+                <Text style={iconStyle.text}>{t("home")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/search")}>
                 <FontAwesome5 name="search" size={24} color="white" />
-                <Text style={iconStyle.text}>Search</Text>
+                <Text style={iconStyle.text}>{t("search")}</Text>
             </TouchableOpacity>
 
             {userData?.type === "professional" && (
                 <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
                     <FontAwesome5 name="plus-circle" size={24} color="white" />
-                    <Text style={iconStyle.text}>Pro</Text>
+                    <Text style={iconStyle.text}>{t("pro")}</Text>
                 </TouchableOpacity>
             )}
 
             {userData?.type === "user" && (
                 <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/offer")}>
                     <FontAwesome5 name="tags" size={24} color="white" />
-                    <Text style={iconStyle.text}>Offer</Text>
+                    <Text style={iconStyle.text}>{t("offer")}</Text>
                 </TouchableOpacity>
             )}
 
             <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/account")}>
                 <FontAwesome5 name="user" size={24} color="white" />
-                <Text style={iconStyle.text}>Account</Text>
+                <Text style={iconStyle.text}>{t("account")}</Text>
             </TouchableOpacity>
         </View>
     );

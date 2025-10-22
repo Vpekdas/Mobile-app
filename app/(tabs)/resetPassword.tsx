@@ -1,6 +1,8 @@
 import { BASIC_LOGO } from "@/constants";
+import { FirebaseError } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Alert,
     Keyboard,
@@ -14,27 +16,29 @@ import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
 
-const handleError = (error: any) => {
+const handleError = (error: FirebaseError, t: any) => {
     switch (error.code) {
         case "auth/invalid-email":
-            Alert.alert("Invalid Email", "Please enter a valid email address.");
+            Alert.alert(t("error"), t("invalidEmail"));
             break;
         case "auth/user-not-found":
-            Alert.alert("User Not Found", "No account found with this email.");
+            Alert.alert(t("error"), t("userNotFoundMsg"));
             break;
         default:
-            Alert.alert("Error", "Something went wrong. Please try again later.");
+            Alert.alert(t("error"), t("somethingWentWrong"));
             break;
     }
 };
 
 export default function ResetPassword() {
+    const { t } = useTranslation();
+
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleForgotPassword = async () => {
         if (!email.trim()) {
-            Alert.alert("Please enter your email address.");
+            Alert.alert(t("error"), "pleaseEnterEmail");
             return;
         }
 
@@ -43,11 +47,10 @@ export default function ResetPassword() {
 
         try {
             await sendPasswordResetEmail(auth, email);
-            Alert.alert("Success", "Password reset email sent. Please check your inbox.");
+            Alert.alert(t("success"), t("passwordResetSent"));
             setEmail("");
         } catch (error: any) {
-            console.error("Password reset error:", error.message);
-            handleError(error);
+            handleError(error, t);
         } finally {
             setLoading(false);
         }
@@ -59,11 +62,17 @@ export default function ResetPassword() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField placeholder="Email" value={email} onChangeText={setEmail} secureTextEntry={false} />
+                    <InputField
+                        placeholder={t("email")}
+                        value={email}
+                        onChangeText={setEmail}
+                        secureTextEntry={false}
+                    />
 
                     <CustomButton
                         pressFunction={handleForgotPassword}
-                        title={loading ? "Sending..." : "Reset password"}
+                        title={loading ? t("sending") : t("resetPassword")}
+                        disabled={loading}
                     />
                 </ScrollView>
             </TouchableWithoutFeedback>

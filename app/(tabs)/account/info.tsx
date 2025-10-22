@@ -4,6 +4,7 @@ import { useUser } from "@/contexts/UserContext";
 
 import { User } from "@/types/user";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
     Image,
     Keyboard,
@@ -17,12 +18,13 @@ import {
 import Logo from "../../components/Logo";
 
 export default function Info() {
+    const { t } = useTranslation();
     const { userData, profileImage, loading, error } = useUser();
 
     if (loading) {
         return (
             <View style={styles.centered}>
-                <TextWithBorder>Loading...</TextWithBorder>
+                <TextWithBorder>{t("loading")}</TextWithBorder>
             </View>
         );
     }
@@ -30,7 +32,7 @@ export default function Info() {
     if (error) {
         return (
             <View style={styles.centered}>
-                <TextWithBorder>Error loading user data</TextWithBorder>
+                <TextWithBorder>{t("errorLoadingUserData")}</TextWithBorder>
             </View>
         );
     }
@@ -38,7 +40,7 @@ export default function Info() {
     if (!userData) {
         return (
             <View style={styles.centered}>
-                <TextWithBorder>User not found.</TextWithBorder>
+                <TextWithBorder>{t("userNotFound")}</TextWithBorder>
             </View>
         );
     }
@@ -51,9 +53,9 @@ export default function Info() {
                     {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
                     {USER_FIELDS.map((field, index) => (
-                        <TextWithBorder key={index}>{`${field.label}: ${
-                            userData[field.key as keyof User]
-                        }`}</TextWithBorder>
+                        <TextWithBorder key={index}>
+                            {`${t(field.label)}: ${userData[field.key as keyof User]}`}
+                        </TextWithBorder>
                     ))}
                 </ScrollView>
             </TouchableWithoutFeedback>

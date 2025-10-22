@@ -9,7 +9,9 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
+    Alert,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
@@ -41,6 +43,8 @@ export interface User {
 }
 
 export default function Register() {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState<User>({
         firstName: "",
         lastName: "",
@@ -84,13 +88,13 @@ export default function Register() {
 
         for (const field of requiredFields) {
             if (!validateRequiredField(formData[field as keyof User])) {
-                alert(`Please fill all mandatory fields marked with *`);
+                Alert.alert(t("error"), t("fillAllMandatoryFields"));
                 return false;
             }
         }
 
         if (!validatePhoneNumber(formData.phone)) {
-            alert("Please enter a valid phone number.");
+            Alert.alert(t("error"), t("invalidPhoneNumber"));
             return false;
         }
 
@@ -98,7 +102,9 @@ export default function Register() {
     };
 
     const uploadProfileImage = async (userId: string) => {
-        if (!profileImage) return null;
+        if (!profileImage) {
+            return null;
+        }
 
         try {
             const response = await fetch(profileImage);
@@ -107,13 +113,14 @@ export default function Register() {
             await uploadBytes(storageRef, blob);
             return await getDownloadURL(storageRef);
         } catch (error) {
-            console.error("Error uploading profile image:", error);
             return null;
         }
     };
 
     const handleCreateAccountPress = async () => {
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, formData.email, password);
@@ -127,10 +134,10 @@ export default function Register() {
                 ...(profileImageUrl && { profileImageUrl }),
             };
 
-            await setDoc(doc(db, "users", user.uid), newUser);
+            await setDoc(doc(db, "users", user.uid), newUser, { merge: true });
             router.replace("/confirmMail");
         } catch (error) {
-            console.error("Error creating account", error);
+            Alert.alert(t("error"), t("errorCreatingAccount"));
         }
     };
 
@@ -154,8 +161,8 @@ export default function Register() {
                     {REGISTER_FIELDS.map((field, index) => (
                         <InputFieldWithLabel
                             key={index}
-                            label={field.label}
-                            placeholder={field.placeholder}
+                            label={t(field.label)}
+                            placeholder={t(field.placeholder)}
                             value={formData[field.key as keyof User]}
                             onChange={(value) => handleInputChange(field.key as keyof User, value)}
                         />
@@ -163,7 +170,7 @@ export default function Register() {
 
                     <View>
                         <InputFieldWithLabel
-                            label="Birth Date"
+                            label={t("birthDate")}
                             value={formData.birthDate}
                             onFocus={() => setShowDatePicker(true)}
                             editable={true}
@@ -186,9 +193,9 @@ export default function Register() {
                         style={BASIC_PICKER.pickerContainer}
                         itemStyle={BASIC_PICKER.picker}
                     >
-                        <Picker.Item label="man" value="man" />
-                        <Picker.Item label="woman" value="woman" />
-                        <Picker.Item label="other" value="other" />
+                        <Picker.Item label={t("man")} value="man" />
+                        <Picker.Item label={t("woman")} value="woman" />
+                        <Picker.Item label={t("other")} value="other" />
                     </Picker>
 
                     <Picker
@@ -197,13 +204,13 @@ export default function Register() {
                         style={BASIC_PICKER.pickerContainer}
                         itemStyle={BASIC_PICKER.picker}
                     >
-                        <Picker.Item label="user" value="user" />
-                        <Picker.Item label="professional" value="professional" />
+                        <Picker.Item label={t("user")} value="user" />
+                        <Picker.Item label={t("professional")} value="professional" />
                     </Picker>
 
                     <InputFieldWithLabel
-                        label={"Password"}
-                        placeholder={"Password"}
+                        label={t("password")}
+                        placeholder={t("password")}
                         value={password}
                         onChange={setPassword}
                         isSecure={true}
@@ -219,7 +226,7 @@ export default function Register() {
                         </View>
                     </View>
 
-                    <CustomButton pressFunction={handleCreateAccountPress} title={"Create account"} />
+                    <CustomButton pressFunction={handleCreateAccountPress} title={t("createAccount")} />
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

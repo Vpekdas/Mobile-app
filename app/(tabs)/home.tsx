@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dimensions,
     Image,
@@ -15,6 +16,8 @@ import {
 const { height: screenHeight } = Dimensions.get("window");
 
 export default function Home() {
+    const { t } = useTranslation();
+
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -22,8 +25,8 @@ export default function Home() {
                     <Image source={require("../../assets/logo/home.jpeg")} style={styles.image} resizeMode="cover" />
                     <View style={styles.news}>
                         <View style={styles.textContainer}>
-                            <Text style={styles.text}>Nous vous aidons à trouver vos professionnels</Text>
-                            <Text style={styles.text}>La suite c'est vous qui décider</Text>
+                            <Text style={styles.text}>{t("helpFindingProfessionals")}</Text>
+                            <Text style={styles.text}>{t("youDecideWhatFollows")}</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         color: "#333",
-        textAlign: "center"
+        textAlign: "center",
     },
     news: {
         width: "100%",

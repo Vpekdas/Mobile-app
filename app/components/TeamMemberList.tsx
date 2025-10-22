@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import InputField from "./InputField";
 
@@ -14,6 +15,8 @@ type Props = {
 };
 
 export default function TeamMemberList({ team, onChangeTeam }: Props) {
+    const { t } = useTranslation();
+
     return (
         <View style={{ flex: 1, width: "100%" }}>
             {team && team.length > 0 ? (
@@ -29,7 +32,7 @@ export default function TeamMemberList({ team, onChangeTeam }: Props) {
                         }}
                     >
                         <InputField
-                            placeholder="Name"
+                            placeholder={t("name")}
                             value={member.name}
                             onChangeText={(text) => {
                                 const updatedTeam = [...team];
@@ -39,7 +42,7 @@ export default function TeamMemberList({ team, onChangeTeam }: Props) {
                             containerStyle={{ marginBottom: 5 }}
                         />
                         <InputField
-                            placeholder="Phone"
+                            placeholder={t("phone")}
                             value={member.phone}
                             onChangeText={(text) => {
                                 const updatedTeam = [...team];
@@ -59,7 +62,7 @@ export default function TeamMemberList({ team, onChangeTeam }: Props) {
                     </View>
                 ))
             ) : (
-                <Text>No team members added yet.</Text>
+                <Text>{t("noTeamMembers")}</Text>
             )}
         </View>
     );
