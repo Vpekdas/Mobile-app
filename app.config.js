@@ -5,7 +5,7 @@ export default ({ config }) => ({
     slug: "nie",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/logo/app_logo.jpg",
     scheme: "NiE",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -25,7 +25,7 @@ export default ({ config }) => ({
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/logo/app_logo.jpeg",
+            foregroundImage: "./assets/logo/app_logo.jpg",
             backgroundColor: "#E6F4FE",
             monochromeImage: "./assets/images/android-icon-monochrome.png",
         },
