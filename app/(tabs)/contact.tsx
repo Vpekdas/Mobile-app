@@ -2,34 +2,35 @@ import { BASIC_LOGO } from "@/constants";
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useTranslation } from "react-i18next";
 import Logo from "../components/Logo";
 import TextWithBorder from "../components/TextWithBorder";
 
-const contactItems = [
-    {
-        label: "📞 Phone: +123 456 789",
-        link: "tel:+123456789",
-    },
-    {
-        label: "💬 WhatsApp: https://wa.me/123456789",
-        link: "https://wa.me/123456789",
-    },
-    {
-        label: "✉️ Email: contact@example.com",
-        link: "mailto:contact@example.com",
-    },
-    {
-        label: "🏢 Name: Company Name",
-    },
-    {
-        label: "📍 Address: 123 Main Street, City, Country",
-    },
-];
-
 export default function Contact() {
+    const { t } = useTranslation();
+
+    const contactItems = [
+        {
+            label: "💬 WhatsApp: https://wa.me/123456789",
+            link: "https://wa.me/123456789",
+        },
+        {
+            label: "✉️ Email: contact@example.com",
+            link: "mailto:contact@example.com",
+        },
+        {
+            label: t("companyName"),
+        },
+        {
+            label: t("companyAddress"),
+        },
+    ];
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
+
+            <TextWithBorder children={t("companyPhone")}></TextWithBorder>
 
             {contactItems.map((item, idx) => {
                 const content = (
@@ -47,7 +48,7 @@ export default function Contact() {
                 );
             })}
 
-            <Text style={styles.socialTitle}>Follow us</Text>
+            <Text style={styles.socialTitle}>{t("followUs")}</Text>
 
             <View style={styles.socialIcons}>
                 <TouchableOpacity

@@ -104,6 +104,10 @@
   "addTeamMember": "Ajouter un membre de l'équipe",
   "noTeamMembers": "Aucun membre de l'équipe ajouté pour le moment.",
   "accountType" : "Type de compte",
-  "sex": "Sexe"
+  "sex": "Sexe",
+  "companyPhone" : "📞 Phone: +123 456 789",
+  "companyName": "🏢 Nom de l'entreprise : ",
+  "companyAddress": "📍 Adresse : 123 Rue Principale, Ville, Pays",
+  "followUs": "Suivez-nous"
 
 }

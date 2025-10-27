@@ -89,17 +89,17 @@ export default function Login() {
                         </Pressable>
                     </View>
 
-                    <View style={styles.contactWrapper}>
+                    <View
+                        style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 30 }}
+                    >
+                        <Pressable onPress={() => router.push("/legal")}>
+                            <Text style={styles.clickable}>{t("legal")}</Text>
+                        </Pressable>
                         <Pressable onPress={() => router.push("/contact")}>
                             <Text style={styles.clickable}>{t("contact")}</Text>
                         </Pressable>
                     </View>
-
-                    <View style={styles.legalWrapper}>
-                        <Pressable onPress={() => router.push("/legal")}>
-                            <Text style={styles.clickable}>{t("legal")}</Text>
-                        </Pressable>
-                    </View>
+                    
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
