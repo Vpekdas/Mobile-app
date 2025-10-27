@@ -18,6 +18,7 @@ const {
     firebaseStorageBucketWeb,
     firebaseMessagingSenderIdWeb,
     firebaseAppIdWeb,
+    measurementId,
     googleMapsApiKey,
 } = Constants.expoConfig.extra;
 
@@ -43,6 +44,7 @@ const firebaseConfig = Platform.select({
         storageBucket: firebaseStorageBucketWeb,
         messagingSenderId: firebaseMessagingSenderIdWeb,
         appId: firebaseAppIdWeb,
+        measurementId: measurementId,
     },
 });
 

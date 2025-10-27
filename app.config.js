@@ -61,11 +61,11 @@ export default ({ config }) => ({
             {
                 ios: {
                     useFrameworks: "static",
-                    "buildReactNativeFromSource": true
+                    buildReactNativeFromSource: true,
                 },
             },
         ],
-        "expo-web-browser"
+        "expo-web-browser",
     ],
 
     experiments: {
@@ -87,7 +87,7 @@ export default ({ config }) => ({
         firebaseStorageBucketIOS: process.env.FIREBASE_STORAGE_BUCKET_IOS,
         firebaseMessagingSenderIdIOS: process.env.FIREBASE_MESSAGING_SENDER_ID_IOS,
         firebaseAppIdIOS: process.env.FIREBASE_APP_ID_IOS,
-        
+
         // WEB
         firebaseApiKeyWeb: process.env.FIREBASE_API_KEY_WEB,
         firebaseAuthDomainWeb: process.env.FIREBASE_AUTH_DOMAIN_WEB,
@@ -95,6 +95,7 @@ export default ({ config }) => ({
         firebaseStorageBucketWeb: process.env.FIREBASE_STORAGE_BUCKET_WEB,
         firebaseMessagingSenderIdWeb: process.env.FIREBASE_MESSAGING_SENDER_ID_WEB,
         firebaseAppIdWeb: process.env.FIREBASE_APP_ID_WEB,
+        measurementId: process.env.MEASUREMENT_ID,
 
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
         eas: {
