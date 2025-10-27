@@ -20,7 +20,7 @@ export default ({ config }) => ({
             NSLocationAlwaysUsageDescription:
                 "We need your location to provide relevant results even when the app is in the background.",
         },
-        googleServicesFile: "./app/GoogleService-Info.plist",
+        googleServicesFile: "./GoogleService-Info.plist",
     },
 
     android: {
@@ -32,7 +32,7 @@ export default ({ config }) => ({
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
         package: "com.captainplouf.NiE",
-        googleServicesFile: "./app/google-services.json",
+        googleServicesFile: "./google-services.json",
     },
 
     web: {
@@ -98,6 +98,7 @@ export default ({ config }) => ({
         measurementId: process.env.MEASUREMENT_ID,
 
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+        
         eas: {
             projectId: "f9c1cb81-a7e9-4e63-a842-5f613b99a203",
         },
