@@ -98,7 +98,7 @@ export default ({ config }) => ({
         measurementId: process.env.MEASUREMENT_ID,
 
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-        
+
         eas: {
             projectId: "f9c1cb81-a7e9-4e63-a842-5f613b99a203",
         },

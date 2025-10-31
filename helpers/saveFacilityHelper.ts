@@ -1,7 +1,7 @@
 import { db } from "@/firebase";
 import { normalizeString } from "@/utils/Location";
-import { doc, setDoc } from "@firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { Alert } from "react-native";
 import Geocoder from "react-native-geocoding";

@@ -11,13 +11,12 @@
             "buildType": "apk"
             }
         },
-        "production": {
-            "autoIncrement": true,
-            "developmentClient": false,
+        "preview": {
             "distribution": "internal",
             "android": {
             "buildType": "apk"
             }
-        }
+        },
+        "production": {}
     }
 }
