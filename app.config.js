@@ -56,6 +56,7 @@ export default ({ config }) => ({
         ],
         "@react-native-firebase/app",
         "@react-native-firebase/auth",
+        "@react-native-firebase/crashlytics",
         [
             "expo-build-properties",
             {
@@ -74,21 +75,18 @@ export default ({ config }) => ({
     },
 
     extra: {
-        // ANDROID
         firebaseApiKeyAndroid: process.env.FIREBASE_API_KEY_ANDROID,
         firebaseProjectIdAndroid: process.env.FIREBASE_PROJECT_ID_ANDROID,
         firebaseStorageBucketAndroid: process.env.FIREBASE_STORAGE_BUCKET_ANDROID,
         firebaseMessagingSenderIdAndroid: process.env.FIREBASE_MESSAGING_SENDER_ID_ANDROID,
         firebaseAppIdAndroid: process.env.FIREBASE_APP_ID_ANDROID,
 
-        // IOS
         firebaseApiKeyIOS: process.env.FIREBASE_API_KEY_IOS,
         firebaseProjectIdIOS: process.env.FIREBASE_PROJECT_ID_IOS,
         firebaseStorageBucketIOS: process.env.FIREBASE_STORAGE_BUCKET_IOS,
         firebaseMessagingSenderIdIOS: process.env.FIREBASE_MESSAGING_SENDER_ID_IOS,
         firebaseAppIdIOS: process.env.FIREBASE_APP_ID_IOS,
 
-        // WEB
         firebaseApiKeyWeb: process.env.FIREBASE_API_KEY_WEB,
         firebaseAuthDomainWeb: process.env.FIREBASE_AUTH_DOMAIN_WEB,
         firebaseProjectIdWeb: process.env.FIREBASE_PROJECT_ID_WEB,
