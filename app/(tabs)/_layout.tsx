@@ -2,9 +2,12 @@ import { UserProvider } from "@/contexts/UserContext";
 import { Stack, usePathname } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { enableScreens } from "react-native-screens";
+import "../../i18n";
 import NavBar from "../components/NavBar";
 import UserHeader from "../components/UserHeader";
-import "../../i18n";
+
+enableScreens();
 
 export default function RootLayout() {
     const pathname = usePathname();
