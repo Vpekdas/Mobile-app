@@ -15,9 +15,7 @@
             "distribution": "internal",
             "android": {
             "buildType": "apk"
-            },
-            "hermesFlags": ["-O", "-output-source-map"]
-
+            }
         },
         "production": {}
     }
