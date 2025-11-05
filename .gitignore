@@ -46,5 +46,3 @@ app-example
 .vscode/
 admin.json
 db.json
-metro.config.js
-stacktrace.txt
