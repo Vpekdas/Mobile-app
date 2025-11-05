@@ -1,13 +1,14 @@
-import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 enableScreens();
 
-import { UserProvider } from "@/contexts/UserContext";
+import { UserProvider } from "../../contexts/UserContext";
 import { Stack, usePathname } from "expo-router";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import "../../i18n";
+import NavBar from "../components/NavBar";
+import UserHeader from "../components/UserHeader";
 
 export default function RootLayout() {
     const pathname = usePathname();
@@ -28,7 +29,21 @@ export default function RootLayout() {
 
     return (
         <UserProvider>
-            <Stack />
+            <View style={styles.container}>
+                {showUserHeader && <UserHeader />}
+
+                <View style={styles.content}>
+                    <Stack
+                        screenOptions={({ route }) => {
+                            return {
+                                headerShown: showReactHeader,
+                            };
+                        }}
+                    />
+                </View>
+
+                {showNavBar && <NavBar />}
+            </View>
         </UserProvider>
     );
 }

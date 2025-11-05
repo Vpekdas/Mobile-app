@@ -1,4 +1,4 @@
-import { BASIC_LOGO } from "@/constants";
+import { BASIC_LOGO } from "../../constants";
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";

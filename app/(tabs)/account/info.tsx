@@ -1,8 +1,3 @@
-import TextWithBorder from "@/app/components/TextWithBorder";
-import { BASIC_LOGO, USER_FIELDS } from "@/constants";
-import { useUser } from "@/contexts/UserContext";
-
-import { User } from "@/types/user";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,7 +10,11 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { BASIC_LOGO, USER_FIELDS } from "../../../constants";
+import { useUser } from "../../../contexts/UserContext";
+import { User } from "../../../types/user";
 import Logo from "../../components/Logo";
+import TextWithBorder from "../../components/TextWithBorder";
 
 export default function Info() {
     const { t } = useTranslation();

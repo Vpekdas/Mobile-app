@@ -1,5 +1,5 @@
-import { db } from "@/firebase";
-import { normalizeString } from "@/utils/Location";
+import { db } from "../firebase";
+import { normalizeString } from "../utils/Location";
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";

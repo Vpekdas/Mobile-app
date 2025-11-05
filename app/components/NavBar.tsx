@@ -1,5 +1,5 @@
-import { DEFAULT_TEXT_STYLE } from "@/constants";
-import { useUser } from "@/contexts/UserContext";
+import { DEFAULT_TEXT_STYLE } from "../../constants";
+import { useUser } from "../../contexts/UserContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { usePathname, useRouter } from "expo-router";
 import React from "react";

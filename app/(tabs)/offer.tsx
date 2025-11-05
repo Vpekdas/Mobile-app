@@ -1,4 +1,3 @@
-import { BASIC_LOGO } from "@/constants";
 import { useTranslation } from "react-i18next";
 import {
     Dimensions,
@@ -10,6 +9,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { BASIC_LOGO } from "../../constants";
 import Logo from "../components/Logo";
 import TextWithBorder from "../components/TextWithBorder";
 

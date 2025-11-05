@@ -1,5 +1,5 @@
-import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/constants";
-import { FacilityType, Sector } from "@/types/enums";
+import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "../../constants";
+import { FacilityType, Sector } from "../../types/enums";
 import { useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";

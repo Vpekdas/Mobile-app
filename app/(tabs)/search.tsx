@@ -1,5 +1,5 @@
-import { db } from "@/firebase";
-import { getLocation, haversine, normalizeString } from "@/utils/Location";
+import { db } from "../../firebase";
+import { getLocation, haversine, normalizeString } from "../../utils/Location";
 import { useNavigation } from "@react-navigation/native";
 import { LocationObjectCoords } from "expo-location";
 import { collection, getDocs, query, where } from "firebase/firestore";

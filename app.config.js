@@ -64,6 +64,10 @@ export default ({ config }) => ({
                     useFrameworks: "static",
                     buildReactNativeFromSource: true,
                 },
+                android: {
+                    enableHermes: true,
+                    hermesFlags: ["-O", "-output-source-map"],
+                },
             },
         ],
         "expo-web-browser",

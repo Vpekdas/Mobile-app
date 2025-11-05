@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import crashlytics from "@react-native-firebase/crashlytics";
 import { initializeApp } from "firebase/app";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -13,8 +12,5 @@ const auth =
         : initializeAuth(app, {});
 
 const db = getFirestore(app);
-
-crashlytics().log("Firebase app initialized");
-crashlytics().setAttribute("platform", Platform.OS);
 
 export { app, auth, db };

@@ -1,5 +1,5 @@
-import { BASIC_LOGO } from "@/constants";
-import { useUser } from "@/contexts/UserContext";
+import { BASIC_LOGO } from "../../constants";
+import { useUser } from "../../contexts/UserContext";
 import { router } from "expo-router";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import React, { useEffect, useState } from "react";

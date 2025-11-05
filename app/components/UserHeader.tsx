@@ -1,5 +1,5 @@
-import { DEFAULT_PROFILE_PICTURE } from "@/constants";
-import { useUser } from "@/contexts/UserContext";
+import { DEFAULT_PROFILE_PICTURE } from "../../constants";
+import { useUser } from "../../contexts/UserContext";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, Platform, StyleSheet, Text, View } from "react-native";

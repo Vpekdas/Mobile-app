@@ -1,7 +1,6 @@
-import { BASIC_LOGO, BASIC_PICKER, REGISTER_FIELDS } from "@/constants";
-import { auth, db } from "@/firebase";
-import { Sex, UserType } from "@/types/enums";
-import { validatePhoneNumber, validateRequiredField } from "@/utils/Registration";
+import { auth, db } from "../../firebase";
+import { Sex, UserType } from "../../types/enums";
+import { validatePhoneNumber, validateRequiredField } from "../../utils/Registration";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
@@ -20,6 +19,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { BASIC_LOGO, BASIC_PICKER, REGISTER_FIELDS } from "../../constants";
 import CustomButton from "../components/CustomButton";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import InputFieldWithLabel from "../components/InputFIeldWithLabel";

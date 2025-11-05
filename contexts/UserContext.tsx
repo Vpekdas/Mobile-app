@@ -1,4 +1,4 @@
-import { User } from "@/types/user";
+import { User } from "../types/user";
 import { getAuth, onIdTokenChanged } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";

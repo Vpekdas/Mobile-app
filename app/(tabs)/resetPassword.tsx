@@ -1,4 +1,3 @@
-import { BASIC_LOGO } from "@/constants";
 import { FirebaseError } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
@@ -12,6 +11,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
 } from "react-native";
+import { BASIC_LOGO } from "../../constants";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";

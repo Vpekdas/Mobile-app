@@ -1,8 +1,9 @@
-import { BASIC_LOGO, DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "@/constants";
+import { BASIC_LOGO, DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "../../constants";
+
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import Logo from "../components/Logo";
 import { useTranslation } from "react-i18next";
+import Logo from "../components/Logo";
 
 export default function Legal() {
     const { t } = useTranslation();

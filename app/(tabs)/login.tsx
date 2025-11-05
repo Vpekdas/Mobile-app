@@ -1,4 +1,3 @@
-import { BASIC_LOGO } from "@/constants";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { router } from "expo-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -17,6 +16,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { BASIC_LOGO } from "../../constants";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
 import Logo from "../components/Logo";
