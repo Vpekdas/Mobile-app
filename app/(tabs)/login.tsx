@@ -1,4 +1,3 @@
-import crashlytics from "@react-native-firebase/crashlytics";
 import { router } from "expo-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
@@ -100,8 +99,6 @@ export default function Login() {
                             <Text style={styles.clickable}>{t("contact")}</Text>
                         </Pressable>
                     </View>
-
-                    <CustomButton title="💥 Test Crash" pressFunction={() => crashlytics().crash()} />
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
