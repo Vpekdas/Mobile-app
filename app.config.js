@@ -6,9 +6,15 @@ export default ({ config }) => ({
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/logo/app_logo.jpg",
-    scheme: "NiE",
+    scheme: "nie",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
+    updates: {
+        url: "https://u.expo.dev/f9c1cb81-a7e9-4e63-a842-5f613b99a203",
+    },
+    runtimeVersion: {
+        policy: "appVersion",
+    },
 
     ios: {
         supportsTablet: true,
