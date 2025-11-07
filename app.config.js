@@ -1,9 +1,9 @@
 export default ({ config }) => ({
     ...config,
-    owner: "captain-plouf-2",
+    owner: "captain_plouf",
     name: "NiE",
     slug: "nie",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/logo/app_logo.jpg",
     scheme: "nie",
