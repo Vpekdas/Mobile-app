@@ -1,8 +1,8 @@
-import { User } from "../types/user";
 import { getAuth, onIdTokenChanged } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { User } from "../types/user";
 
 interface UserContextData {
     userData: User | null;
@@ -65,7 +65,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
                     }
                 } catch (err) {
                     setError("Failed to fetch user data.");
-                    console.error(err);
                     setUserData(null);
                     setProfileImage(null);
                 }
@@ -88,9 +87,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
             if (!user) return;
             await user.reload();
             await user.getIdToken(true);
-        } catch (err) {
-            console.warn("refreshUser failed", err);
-        }
+        } catch (err) {}
     };
 
     return (

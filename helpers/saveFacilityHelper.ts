@@ -1,10 +1,10 @@
-import { db } from "../firebase";
-import { normalizeString } from "../utils/Location";
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { Alert } from "react-native";
 import Geocoder from "react-native-geocoding";
+import { db } from "../firebase";
+import { normalizeString } from "../utils/Location";
 
 export const saveFacilityData = async (formData: any, facilityImage: string | null) => {
     try {
@@ -26,7 +26,8 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
             profileImageUrl = await getDownloadURL(storageRef);
         }
 
-        const response = await Geocoder.from(formData.address);
+        const fullAddress = `${formData.address}, ${formData.postalCode}, ${formData.city}, ${formData.country}`;
+        const response = await Geocoder.from(fullAddress);
 
         if (response.results.length > 0) {
             const { lat, lng } = response.results[0].geometry.location;
@@ -60,8 +61,13 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
             return false;
         }
     } catch (error) {
-        console.error("Save error:", error);
-        Alert.alert("Error", "Something went wrong. Check console.");
+        let errorMessage = "An unexpected error occurred while saving the facility.";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === "string") {
+            errorMessage = error;
+        }
+        Alert.alert("Error", errorMessage);
         return false;
     }
 };

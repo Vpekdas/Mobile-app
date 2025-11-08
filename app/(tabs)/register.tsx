@@ -1,6 +1,3 @@
-import { auth, db } from "../../firebase";
-import { Sex, UserType } from "../../types/enums";
-import { validatePhoneNumber, validateRequiredField } from "../../utils/Registration";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
@@ -20,6 +17,9 @@ import {
     View,
 } from "react-native";
 import { BASIC_LOGO, BASIC_PICKER, REGISTER_FIELDS } from "../../constants";
+import { auth, db } from "../../firebase";
+import { Sex, UserType } from "../../types/enums";
+import { validatePhoneNumber, validateRequiredField } from "../../utils/Registration";
 import CustomButton from "../components/CustomButton";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import InputFieldWithLabel from "../components/InputFIeldWithLabel";
@@ -220,7 +220,15 @@ export default function Register() {
                             <ImagePickerComponent
                                 selectedImage={profileImage}
                                 onImageSelected={(imageUri) => setProfileImage(imageUri)}
-                                onImageError={(error) => console.error("ImagePicker error:", error)}
+                                onImageError={(error) => {
+                                    let errorMessage = "An unexpected error occurred while selecting the image.";
+                                    if (error instanceof Error) {
+                                        errorMessage = error.message;
+                                    } else if (typeof error === "string") {
+                                        errorMessage = error;
+                                    }
+                                    Alert.alert("Error", errorMessage);
+                                }}
                             />
                         </View>
                     </View>

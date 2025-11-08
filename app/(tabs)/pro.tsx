@@ -82,15 +82,15 @@ export default function Pro() {
 
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "Établissement",
-        address: "Adresse",
-        country: "Pays",
-        city: "Ville",
-        postalCode: "Code Postal",
-        type: FacilityType.HOSPITAL,
-        sector: Sector.PUBLIC,
-        telephone: "Téléphone",
-        specialty: ["Specialité"],
+        facility: "",
+        address: "",
+        country: "",
+        city: "",
+        postalCode: "",
+        type: FacilityType.NONE,
+        sector: Sector.NONE,
+        telephone: "",
+        specialty: [],
         team: [],
         openingHours: DEFAULT_OPENING_HOURS,
     });
@@ -99,6 +99,24 @@ export default function Pro() {
     const [timePickerDayIndex, setTimePickerDayIndex] = useState<number | null>(null);
     const [timePickerType, setTimePickerType] = useState<"start" | "end" | null>(null);
     const [timePickerValue, setTimePickerValue] = useState(new Date());
+
+    const PLACEHOLDERS: Record<keyof FormData, string> = {
+        facility: t("enterFacilityName"),
+        address: t("enterAddress"),
+        country: t("enterCountry"),
+        city: t("enterCity"),
+        postalCode: t("enterPostalCode"),
+        type: t("selectType"),
+        sector: t("selectSector"),
+        telephone: t("enterTelephone"),
+        specialty: t("selectSpecialty"),
+        team: "",
+        openingHours: "",
+        logo: "",
+        latitude: "",
+        longitude: "",
+        distance: "",
+    };
 
     const isPickerField = (key: string) => ["type", "sector"].includes(key);
 
@@ -231,7 +249,8 @@ export default function Pro() {
         // Helper function to render the display view when not in edit mode.
         const renderFieldDisplay = () => {
             if (key === "specialty") {
-                return formData.specialty.join(", ");
+                const specialties = formData.specialty.filter((s) => s && s.trim() !== "");
+                return specialties.length > 0 ? specialties.join(", ") : PLACEHOLDERS[key];
             }
 
             if (key === "team") {
@@ -259,7 +278,7 @@ export default function Pro() {
                 );
             }
 
-            return formData[key] as string;
+            return formData[key] ? (formData[key] as string) : PLACEHOLDERS[key];
         };
 
         return (
@@ -287,7 +306,15 @@ export default function Pro() {
                                 <ImagePickerComponent
                                     selectedImage={facilityImage}
                                     onImageSelected={(imageUri) => setFacilityImage(imageUri)}
-                                    onImageError={(error) => console.error("ImagePicker error:", error)}
+                                    onImageError={(error) => {
+                                        let errorMessage = "An unexpected error occurred while selecting the image.";
+                                        if (error instanceof Error) {
+                                            errorMessage = error.message;
+                                        } else if (typeof error === "string") {
+                                            errorMessage = error;
+                                        }
+                                        Alert.alert("Error", errorMessage);
+                                    }}
                                 />
                             </View>
                             <View>

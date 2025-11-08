@@ -2,7 +2,7 @@ import TextWithBorder from "@/app/components/TextWithBorder";
 import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const handleLogoutPress = async () => {
     const auth = getAuth();
@@ -10,8 +10,14 @@ const handleLogoutPress = async () => {
     try {
         await signOut(auth);
         router.replace("/login");
-    } catch (error) {
-        console.error(error);
+    } catch (error: unknown) {
+        let errorMessage = "An unexpected error occurred during logout.";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === "string") {
+            errorMessage = error;
+        }
+        Alert.alert("Error", errorMessage);
     }
 };
 
@@ -35,7 +41,7 @@ export default function Account() {
                 <TextWithBorder children={t("legal")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => console.log("hello")}>
+            <TouchableOpacity onPress={() => Alert.alert("Notification","notification")}>
                 <TextWithBorder children={t("notification")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 

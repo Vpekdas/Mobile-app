@@ -2,11 +2,13 @@ export enum FacilityType {
     HOSPITAL = "hospital",
     CLINIC = "clinic",
     OFFICE = "office",
+    NONE = ""
 }
 
 export enum Sector {
     PUBLIC = "public",
     PRIVATE = "private",
+    NONE = ""
 }
 
 export enum UserType {

@@ -20,15 +20,11 @@ try {
                 : initializeAuth(app, {});
 
         db = getFirestore(app);
-
-        crashlytics().log("Firebase initialized successfully");
     } else {
         const warningMsg = "Firebase config missing — skipping Firebase initialization";
-        console.warn(warningMsg);
         crashlytics().log(warningMsg);
     }
 } catch (err: any) {
-    console.error("Firebase initialization failed:", err);
     crashlytics().recordError(err);
 }
 
