@@ -1,11 +1,12 @@
 import { enableScreens } from "react-native-screens";
 enableScreens();
 
-import { UserProvider } from "../../contexts/UserContext";
 import { Stack, usePathname } from "expo-router";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { UserProvider } from "../../contexts/UserContext";
 
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../../i18n";
 import NavBar from "../components/NavBar";
 import UserHeader from "../components/UserHeader";
@@ -29,21 +30,28 @@ export default function RootLayout() {
 
     return (
         <UserProvider>
-            <View style={styles.container}>
-                {showUserHeader && <UserHeader />}
+            <SafeAreaProvider>
+                <StatusBar
+                    barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
+                    backgroundColor={Platform.OS === "android" ? "#070670" : undefined}
+                />
 
-                <View style={styles.content}>
-                    <Stack
-                        screenOptions={({ route }) => {
-                            return {
-                                headerShown: showReactHeader,
-                            };
-                        }}
-                    />
+                <View style={styles.container}>
+                    {showUserHeader && <UserHeader />}
+
+                    <View style={styles.content}>
+                        <Stack
+                            screenOptions={({ route }) => {
+                                return {
+                                    headerShown: showReactHeader,
+                                };
+                            }}
+                        />
+                    </View>
+
+                    {showNavBar && <NavBar />}
                 </View>
-
-                {showNavBar && <NavBar />}
-            </View>
+            </SafeAreaProvider>
         </UserProvider>
     );
 }

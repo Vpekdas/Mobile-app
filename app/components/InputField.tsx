@@ -19,7 +19,7 @@ const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     width: "80%",
     borderWidth: 1,
     flexDirection: "row",
-    borderColor: "#C0FDFB",
+    borderColor: "#070670",
     borderRadius: 10,
     padding: 10,
     backgroundColor: "white",

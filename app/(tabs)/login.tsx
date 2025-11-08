@@ -15,6 +15,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+
 import { BASIC_LOGO } from "../../constants";
 import CustomButton from "../components/CustomButton";
 import InputField from "../components/InputField";
@@ -59,10 +60,10 @@ export default function Login() {
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
                     <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-                    <InputField placeholder={t("Mail")} value={email} onChangeText={setEmail} secureTextEntry={false} />
+                    <InputField placeholder={t("mail")} value={email} onChangeText={setEmail} secureTextEntry={false} />
 
                     <InputField
-                        placeholder={t("Password")}
+                        placeholder={t("password")}
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={true}
@@ -88,19 +89,19 @@ export default function Login() {
                             <Text style={styles.forgotPassword}>{t("clickHere")}</Text>
                         </Pressable>
                     </View>
-
-                    <View
-                        style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", marginTop: 30 }}
-                    >
-                        <Pressable onPress={() => router.push("/legal")}>
-                            <Text style={styles.clickable}>{t("legal")}</Text>
-                        </Pressable>
-                        <Pressable onPress={() => router.push("/contact")}>
-                            <Text style={styles.clickable}>{t("contact")}</Text>
-                        </Pressable>
-                    </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
+
+            <View style={styles.bottomLinksContainer}>
+                <View style={styles.bottomLinks}>
+                    <Pressable onPress={() => router.push("/legal")}>
+                        <Text style={styles.clickable}>{t("legal")}</Text>
+                    </Pressable>
+                    <Pressable onPress={() => router.push("/contact")}>
+                        <Text style={styles.clickable}>{t("contact")}</Text>
+                    </Pressable>
+                </View>
+            </View>
         </KeyboardAvoidingView>
     );
 }
@@ -139,5 +140,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         marginTop: 20,
+        gap: 5,
+    },
+    bottomLinksContainer: {
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        paddingBottom: 10,
+    },
+
+    bottomLinks: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "90%",
     },
 });
