@@ -19,7 +19,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 import { useTranslation } from "react-i18next";
-import { DEFAULT_OPENING_HOURS, PICKER_OPTIONS, PRO_FIELDS, SPECIALTIES } from "../../constants";
+import { DEFAULT_OPENING_HOURS, PRO_FIELDS, SPECIALTIES } from "../../constants";
 import { db } from "../../firebase";
 import { googleMapsApi } from "../../firebaseConfig";
 import { saveFacilityData } from "../../helpers/saveFacilityHelper";
@@ -65,6 +65,20 @@ export type FormData = {
 
 export default function Pro() {
     const { t } = useTranslation();
+
+    const PICKER_OPTIONS: Record<string, { label: string; value: string }[]> = {
+        type: [
+            { label: t("hospital"), value: "hospital" },
+            { label: t("clinic"), value: "clinic" },
+            { label: t("office"), value: "office" },
+            { label: t("laboratory"), value: "laboratory" },
+            { label: t("pharmacy"), value: "pharmacie" },
+        ],
+        sector: [
+            { label: t("public"), value: "public" },
+            { label: t("private"), value: "private" },
+        ],
+    };
 
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({

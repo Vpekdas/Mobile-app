@@ -105,9 +105,18 @@
   "noTeamMembers": "Aucun membre de l'équipe ajouté pour le moment.",
   "accountType" : "Type de compte",
   "sex": "Sexe",
-  "companyPhone" : "📞 Phone: +123 456 789",
+  "companyPhone" : "📞 Phone : +123 456 789",
   "companyName": "🏢 Nom de l'entreprise : ",
   "companyAddress": "📍 Adresse : 123 Rue Principale, Ville, Pays",
-  "followUs": "Suivez-nous"
-
+  "followUs": "Suivez-nous",
+  "hospital": "Hôpital" ,
+  "clinic": "Clinique" ,
+  "office": "Cabinet" ,
+  "laboratory":"Laboratoire",
+  "pharmacy":"Pharmacie",
+  "public": "Public",
+  "private": "Privée"
 }
+
+
+

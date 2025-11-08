@@ -1,5 +1,5 @@
-import { BASIC_LOGO } from "../../constants";
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BASIC_LOGO } from "../../constants";
 
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
@@ -11,11 +11,11 @@ export default function Contact() {
 
     const contactItems = [
         {
-            label: "💬 WhatsApp: https://wa.me/123456789",
+            label: "💬 WhatsApp : https://wa.me/123456789",
             link: "https://wa.me/123456789",
         },
         {
-            label: "✉️ Email: contact@example.com",
+            label: "✉️ Email : contact@example.com",
             link: "mailto:contact@example.com",
         },
         {
@@ -60,7 +60,7 @@ export default function Contact() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => Linking.openURL("https://facebook.com/page")}
+                    onPress={() => Linking.openURL("https://www.facebook.com/share/1BBiEK1nqU/")}
                     style={styles.iconTouch}
                     activeOpacity={0.7}
                 >

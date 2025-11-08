@@ -61,17 +61,7 @@ export const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     backgroundColor: "#DAFFEF",
 };
 
-export const PICKER_OPTIONS: Record<string, { label: string; value: string }[]> = {
-    type: [
-        { label: "Hospital", value: "hospital" },
-        { label: "Clinic", value: "clinic" },
-        { label: "Office", value: "office" },
-    ],
-    sector: [
-        { label: "Public", value: "public" },
-        { label: "Private", value: "private" },
-    ],
-};
+
 
 export const SPECIALTIES = [
     { id: "cardiology", name: "Cardiologie" },
