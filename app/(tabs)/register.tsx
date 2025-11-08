@@ -195,7 +195,6 @@ export default function Register() {
                     >
                         <Picker.Item label={t("man")} value="man" />
                         <Picker.Item label={t("woman")} value="woman" />
-                        <Picker.Item label={t("other")} value="other" />
                     </Picker>
 
                     <Picker

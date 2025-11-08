@@ -13,18 +13,18 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
-import * as Geocoder from "react-native-geocoding";
+import Geocoder from "react-native-geocoding";
 
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
+import { useTranslation } from "react-i18next";
+import { DEFAULT_OPENING_HOURS, PICKER_OPTIONS, PRO_FIELDS, SPECIALTIES } from "../../constants";
 import { db } from "../../firebase";
 import { googleMapsApi } from "../../firebaseConfig";
 import { saveFacilityData } from "../../helpers/saveFacilityHelper";
 import { onTimeChangeHelper, openTimePickerHelper } from "../../helpers/timePickerHelper";
 import { FacilityType, Sector } from "../../types/enums";
-import { useTranslation } from "react-i18next";
-import { DEFAULT_OPENING_HOURS, PICKER_OPTIONS, PRO_FIELDS, SPECIALTIES } from "../../constants";
 import CustomButton from "../components/CustomButton";
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import InputField from "../components/InputField";

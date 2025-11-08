@@ -15,7 +15,7 @@ export default function RootLayout() {
     const pathname = usePathname();
 
     const showUserHeaderRoutes = ["/home", "/search", "/pro", "/account", "/offer"];
-    const showReactHeaderRoutes = ["/account/info", "/legal", "/contact", "/detail", "/resetPassword", "/register"];
+    const showReactHeaderRoutes = ["/account/info", "/account/offer", "/legal", "/contact", "/detail", "/resetPassword", "/register"];
 
     const showUserHeader = showUserHeaderRoutes.includes(pathname);
     const showReactHeader = showReactHeaderRoutes.includes(pathname);
@@ -41,11 +41,12 @@ export default function RootLayout() {
 
                     <View style={styles.content}>
                         <Stack
-                            screenOptions={({ route }) => {
-                                return {
-                                    headerShown: showReactHeader,
-                                };
-                            }}
+                            screenOptions={({ route }) => ({
+                                headerShown: showReactHeader,
+                                headerBackTitleVisible: false,
+                                headerBackTitleDisplayMode: "minimal",
+                                title: "",
+                            })}
                         />
                     </View>
 

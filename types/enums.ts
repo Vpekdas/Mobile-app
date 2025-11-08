@@ -17,5 +17,4 @@ export enum UserType {
 export enum Sex {
     MAN = "man",
     WOMAN = "woman",
-    OTHER = "other"
 }

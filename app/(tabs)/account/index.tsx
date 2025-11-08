@@ -24,19 +24,23 @@ export default function Account() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/contact")}>
-                <Text style={styles.text}>{t("Contact")}</Text>
+                <Text style={styles.text}>{t("contact")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/legal")}>
-                <Text style={styles.text}>{t("Legal")}</Text>
+                <Text style={styles.text}>{t("legal")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log("hello")}>
-                <Text style={styles.text}>{t("Notification")}</Text>
+                <Text style={styles.text}>{t("notification")}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => router.push("/(tabs)/account/offer")}>
+                <Text style={styles.text}>{t("offer")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleLogoutPress}>
-                <Text style={styles.logout}>{t("Logout")}</Text>
+                <Text style={styles.logout}>{t("logout")}</Text>
             </TouchableOpacity>
         </View>
     );

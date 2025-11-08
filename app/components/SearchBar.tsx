@@ -16,7 +16,7 @@ const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#C0FDFB",
+    borderColor: "#070670",
     borderRadius: 8,
     paddingHorizontal: 12,
     height: 40,

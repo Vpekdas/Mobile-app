@@ -1,33 +1,31 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import {
     Dimensions,
-    Image,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     StyleSheet,
-    Text,
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import { BASIC_LOGO } from "../../../constants";
+import Logo from "../../components/Logo";
+import TextWithBorder from "../../components/TextWithBorder";
 
 const { height: screenHeight } = Dimensions.get("window");
 
-export default function Home() {
+export default function Offer() {
     const { t } = useTranslation();
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <Image source={require("../../assets/logo/home.jpeg")} style={styles.image} resizeMode="cover" />
-                    <View style={styles.news}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.text}>{t("helpFindingProfessionals")}</Text>
-                            <Text style={styles.text}>{t("youDecideWhatFollows")}</Text>
-                        </View>
+                    <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
+                    <View style={styles.offerContainer}>
+                        <TextWithBorder children={t("offersAndPromotions")}></TextWithBorder>
+                        <TextWithBorder children={t("advertising")}></TextWithBorder>
                     </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
@@ -43,11 +41,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "white",
     },
+    offerContainer: {
+        flexGrow: 1,
+        padding: 16,
+        backgroundColor: "white",
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
+    },
     image: {
         width: "100%",
-        height: screenHeight * 0.40,
-        marginBottom: "10%",
-        marginTop: "20%",
+        height: screenHeight * 0.45,
+        marginBottom: 20,
         borderRadius: 10,
     },
     textContainer: {
