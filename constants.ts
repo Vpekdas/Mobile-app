@@ -91,8 +91,8 @@ export const DEFAULT_OPENING_HOURS = [
 ];
 
 export const PRO_FIELDS = [
-    { key: "facilityName" },
-    { key: "facilityAddress" },
+    { key: "facility" },
+    { key: "address" },
     { key: "country" },
     { key: "city" },
     { key: "postalCode" },
@@ -100,7 +100,7 @@ export const PRO_FIELDS = [
     { key: "sector" },
     { key: "telephone" },
     { key: "specialty" },
-    { key: "teamMembers" },
+    { key: "team" },
     { key: "openingHours" },
 ];
 
