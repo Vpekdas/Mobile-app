@@ -68,15 +68,15 @@ export default function Pro() {
 
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
-        facility: "facilityName",
-        address: "address",
-        country: "Country",
-        city: "City",
-        postalCode: "Postal Code",
+        facility: "Établissement",
+        address: "Adresse",
+        country: "Pays",
+        city: "Ville",
+        postalCode: "Code Postal",
         type: FacilityType.HOSPITAL,
         sector: Sector.PUBLIC,
-        telephone: "telephone",
-        specialty: ["Specialty"],
+        telephone: "Téléphone",
+        specialty: ["Specialité"],
         team: [],
         openingHours: DEFAULT_OPENING_HOURS,
     });
@@ -198,7 +198,7 @@ export default function Pro() {
                         style={{ flex: 1 }}
                     >
                         {PICKER_OPTIONS[key].map((option) => (
-                            <Picker.Item label={option.label} value={option.value} key={option.value} />
+                            <Picker.Item label={t(option.label)} value={option.value} key={option.value} />
                         ))}
                     </Picker>
                 );

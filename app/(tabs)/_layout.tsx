@@ -2,8 +2,7 @@ import { enableScreens } from "react-native-screens";
 enableScreens();
 
 import { Stack, usePathname } from "expo-router";
-import React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { UserProvider } from "../../contexts/UserContext";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -15,7 +14,15 @@ export default function RootLayout() {
     const pathname = usePathname();
 
     const showUserHeaderRoutes = ["/home", "/search", "/pro", "/account", "/offer"];
-    const showReactHeaderRoutes = ["/account/info", "/account/offer", "/legal", "/contact", "/detail", "/resetPassword", "/register"];
+    const showReactHeaderRoutes = [
+        "/account/info",
+        "/account/offer",
+        "/legal",
+        "/contact",
+        "/detail",
+        "/resetPassword",
+        "/register",
+    ];
 
     const showUserHeader = showUserHeaderRoutes.includes(pathname);
     const showReactHeader = showReactHeaderRoutes.includes(pathname);
@@ -31,10 +38,7 @@ export default function RootLayout() {
     return (
         <UserProvider>
             <SafeAreaProvider>
-                <StatusBar
-                    barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
-                    backgroundColor={Platform.OS === "android" ? "#070670" : undefined}
-                />
+                <StatusBar barStyle={"dark-content"} />
 
                 <View style={styles.container}>
                     {showUserHeader && <UserHeader />}

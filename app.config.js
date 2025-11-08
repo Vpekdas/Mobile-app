@@ -5,7 +5,7 @@ export default ({ config }) => ({
     slug: "nie",
     version: "1.0.1",
     orientation: "portrait",
-    icon: "./assets/logo/app_logo.jpg",
+    icon: "./assets/logo/app_logo.png",
     scheme: "nie",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -31,7 +31,7 @@ export default ({ config }) => ({
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/logo/app_logo.jpg",
+            foregroundImage: "./assets/logo/app_logo.png",
             backgroundColor: "#E6F4FE",
             monochromeImage: "./assets/images/android-icon-monochrome.png",
         },
@@ -51,7 +51,7 @@ export default ({ config }) => ({
         [
             "expo-splash-screen",
             {
-                image: "./assets/images/splash-icon.png",
+                image: "./assets/logo/logo.jpeg",
                 imageWidth: 200,
                 resizeMode: "contain",
                 backgroundColor: "#ffffff",

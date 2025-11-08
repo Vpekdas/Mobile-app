@@ -53,7 +53,7 @@ export default function Info() {
 
                     {USER_FIELDS.map((field, index) => (
                         <TextWithBorder key={index}>
-                            {`${t(field.label)}: ${userData[field.key as keyof User]}`}
+                            {`${t(field.label)} : ${userData[field.key as keyof User]}`}
                         </TextWithBorder>
                     ))}
                 </ScrollView>

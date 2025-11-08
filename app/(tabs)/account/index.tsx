@@ -1,7 +1,8 @@
+import TextWithBorder from "@/app/components/TextWithBorder";
 import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 const handleLogoutPress = async () => {
     const auth = getAuth();
@@ -20,27 +21,30 @@ export default function Account() {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => router.push("/(tabs)/account/info")}>
-                <Text style={styles.text}>{t("accountInformation")}</Text>
+                <TextWithBorder
+                    children={t("accountInformation")}
+                    containerStyle={styles.textContainer}
+                ></TextWithBorder>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/contact")}>
-                <Text style={styles.text}>{t("contact")}</Text>
+                <TextWithBorder children={t("contact")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/legal")}>
-                <Text style={styles.text}>{t("legal")}</Text>
+                <TextWithBorder children={t("legal")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => console.log("hello")}>
-                <Text style={styles.text}>{t("notification")}</Text>
+                <TextWithBorder children={t("notification")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push("/(tabs)/account/offer")}>
-                <Text style={styles.text}>{t("offer")}</Text>
+                <TextWithBorder children={t("offer")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleLogoutPress}>
-                <Text style={styles.logout}>{t("logout")}</Text>
+                <TextWithBorder children={t("logout")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
         </View>
     );
@@ -67,5 +71,8 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         padding: 16,
         color: "#070670",
+    },
+    textContainer: {
+        width: "100%",
     },
 });

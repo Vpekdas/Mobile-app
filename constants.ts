@@ -74,10 +74,10 @@ export const PICKER_OPTIONS: Record<string, { label: string; value: string }[]> 
 };
 
 export const SPECIALTIES = [
-    { id: "cardiology", name: "Cardiology" },
-    { id: "neurology", name: "Neurology" },
-    { id: "pediatrics", name: "Pediatrics" },
-    { id: "orthopedics", name: "Orthopedics" },
+    { id: "cardiology", name: "Cardiologie" },
+    { id: "neurology", name: "Neurologie" },
+    { id: "pediatrics", name: "Pediatrie" },
+    { id: "orthopedics", name: "Orthopedie" },
 ];
 
 export const DEFAULT_OPENING_HOURS = [

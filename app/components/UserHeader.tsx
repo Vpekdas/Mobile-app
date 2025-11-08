@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        backgroundColor: "#070670"
     },
     image: {
         width: 48,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 20,
-        color: "#5D737E",
+        color: "#ffffffff",
         fontWeight: "600",
     },
 });

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: "100%",
-        height: screenHeight * 0.40,
+        height: screenHeight * 0.4,
         marginBottom: "10%",
         marginTop: "20%",
         borderRadius: 10,
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#333",
         textAlign: "center",
+        fontStyle: "italic",
     },
     news: {
         width: "100%",
