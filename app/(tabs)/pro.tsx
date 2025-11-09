@@ -19,7 +19,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 import { useTranslation } from "react-i18next";
-import { DEFAULT_OPENING_HOURS, PRO_FIELDS } from "../../constants";
+import { PRO_FIELDS } from "../../constants";
 import { db } from "../../firebase";
 import { googleMapsApi } from "../../firebaseConfig";
 import { saveFacilityData } from "../../helpers/saveFacilityHelper";
@@ -95,6 +95,16 @@ export default function Pro() {
         { id: "dentist", name: t("dentist") },
         { id: "forensicPathologist", name: t("forensicPathologist") },
         { id: "accountant", name: t("accountant") },
+    ];
+
+    const DEFAULT_OPENING_HOURS = [
+        { day: "monday", start: "", end: "" },
+        { day: "tuesday", start: "", end: "" },
+        { day: "wednesday", start: "", end: "" },
+        { day: "thursday", start: "", end: "" },
+        { day: "friday", start: "", end: "" },
+        { day: "saturday", start: "", end: "" },
+        { day: "sunday", start: "", end: "" },
     ];
 
     const [editingField, setEditingField] = useState<string | null>(null);
@@ -267,7 +277,7 @@ export default function Pro() {
         const renderFieldDisplay = () => {
             if (key === "specialty") {
                 const specialties = formData.specialty.filter((s) => s && s.trim() !== "");
-                return specialties.length > 0 ? specialties.join(", ") : PLACEHOLDERS[key];
+                return specialties.length > 0 ? specialties.map((s) => t(s)).join(", ") : t(PLACEHOLDERS[key]);
             }
 
             if (key === "team") {
@@ -282,7 +292,7 @@ export default function Pro() {
                         {formData.openingHours && formData.openingHours.length > 0 ? (
                             formData.openingHours.map(({ day, start, end }, index) => (
                                 <View key={index} style={styles.openingHoursRow}>
-                                    <Text style={styles.openingHoursDay}>{day}:</Text>
+                                    <Text style={styles.openingHoursDay}>{t(day.toLowerCase())} :</Text>
                                     <Text style={styles.openingHoursTime}>
                                         {start || "N/A"} - {end || "N/A"}
                                     </Text>
@@ -295,7 +305,7 @@ export default function Pro() {
                 );
             }
 
-            return formData[key] ? (formData[key] as string) : PLACEHOLDERS[key];
+            return formData[key] ? t(formData[key] as string) : PLACEHOLDERS[key];
         };
 
         return (

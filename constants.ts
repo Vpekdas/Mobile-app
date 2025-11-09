@@ -61,15 +61,7 @@ export const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     backgroundColor: "#DAFFEF",
 };
 
-export const DEFAULT_OPENING_HOURS = [
-    { day: "Monday", start: "", end: "" },
-    { day: "Tuesday", start: "", end: "" },
-    { day: "Wednesday", start: "", end: "" },
-    { day: "Thursday", start: "", end: "" },
-    { day: "Friday", start: "", end: "" },
-    { day: "Saturday", start: "", end: "" },
-    { day: "Sunday", start: "", end: "" },
-];
+
 
 export const PRO_FIELDS = [
     { key: "facility" },

@@ -41,8 +41,8 @@ export default function Detail() {
 
                 <TextWithBorder selectable>{itemData.facility}</TextWithBorder>
                 <TextWithBorder selectable>{itemData.address}</TextWithBorder>
-                <TextWithBorder selectable>{itemData.type}</TextWithBorder>
-                <TextWithBorder selectable>{itemData.sector}</TextWithBorder>
+                <TextWithBorder selectable>{t(itemData.type)}</TextWithBorder>
+                <TextWithBorder selectable>{t(itemData.sector)}</TextWithBorder>
                 
                 {itemData.telephone && <TextWithBorder selectable>{itemData.telephone}</TextWithBorder>}
 
@@ -71,7 +71,7 @@ export default function Detail() {
 
                 {Array.isArray(itemData.openingHours) && itemData.openingHours.length > 0 ? (
                     <View style={DEFAULT_CONTAINER_STYLE}>
-                        <Text style={styles.sectionTitle}>{t("openingHours")}:</Text>
+                        <Text style={styles.sectionTitle}>{t("openingHours")} :</Text>
                         {itemData.openingHours.map((entry, index) => (
                             <View key={index} style={styles.openingHoursRow}>
                                 <Text style={styles.openingDay}>{entry.day}</Text>

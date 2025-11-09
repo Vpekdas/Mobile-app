@@ -31,7 +31,7 @@
   "noLogoAvailable": "Pas de logo disponible",
   "teamMembers": "Membres de l’équipe :",
   "specialties": "Spécialités :",
-  "openingHours": "Horaires d’ouverture :",
+  "openingHours": "Horaires d’ouverture",
   "noOpeningHoursAvailable": "Pas d’horaires d’ouverture disponibles",
   "helpFindingProfessionals": "Nous vous aidons à trouver des professionnels",
   "youDecideWhatFollows": "Vous décidez de la suite",
@@ -105,7 +105,7 @@
   "noTeamMembers": "Aucun membre de l'équipe ajouté pour le moment.",
   "accountType" : "Type de compte",
   "sex": "Sexe",
-  "companyPhone" : "📞 Phone : +123 456 789",
+  "companyPhone" : "📞 Téléphone : +123 456 789",
   "companyName": "🏢 Nom de l'entreprise : ",
   "companyAddress": "📍 Adresse : 123 Rue Principale, Ville, Pays",
   "followUs": "Suivez-nous",
@@ -142,7 +142,14 @@
   "sex.woman" : "Femme",
   "sex.man" : "Homme",
   "accountType.professional" : "Professionnel",
-  "accountType.user" : "Patient"
+  "accountType.user" : "Patient",
+  "monday": "Lundi",
+  "tuesday": "Mardi",
+  "wednesday": "Mercredi",
+  "thursday": "Jeudi",
+  "friday": "Vendredi",
+  "saturday": "Samedi",
+  "sunday": "Dimanche"
 }
 
 

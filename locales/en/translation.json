@@ -31,7 +31,7 @@
   "noLogoAvailable": "No logo available",
   "teamMembers": "Team Members:",
   "specialties": "Specialties:",
-  "openingHours": "Opening Hours:",
+  "openingHours": "Opening Hours",
   "noOpeningHoursAvailable": "No opening hours available",
   "helpFindingProfessionals": "We help you find professionals",
   "youDecideWhatFollows": "You decide what follows",
@@ -142,7 +142,14 @@
   "sex.woman" : "Woman",
   "sex.man" : "Man",
   "accountType.professional" : "Professional",
-  "accountType.user" : "User"
+  "accountType.user" : "User",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday"
 
 
 }

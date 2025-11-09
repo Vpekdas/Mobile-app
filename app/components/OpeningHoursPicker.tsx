@@ -34,7 +34,7 @@ export default function OpeningHoursPicker({
         <View style={styles.container}>
             {hours.map((day, index) => (
                 <View key={day.day} style={styles.dayContainer}>
-                    <Text style={styles.dayText}>{day.day}</Text>
+                    <Text>{t(day.day.toLowerCase())}</Text>
 
                     <TouchableOpacity style={styles.timeButton} onPress={() => openTimePicker(index, "start")}>
                         <Text>{day.start || t("start")}</Text>
@@ -65,21 +65,20 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     dayContainer: {
+        width: "100%",
         flexDirection: "row",
-        alignItems: "center",
         marginBottom: 10,
-        padding: 10,
+        padding: 15,
         borderWidth: 1,
         borderColor: "#64B6AC",
         borderRadius: 8,
-    },
-    dayText: {
-        flex: 1,
+        justifyContent: "space-evenly",
+        alignItems: "center",
     },
     timeButton: {
-        flex: 1,
-        marginRight: 8,
-        padding: 8,
+        width: "30%",
+        paddingHorizontal: 10,
+        paddingVertical: 8,
         backgroundColor: "#DAFFEF",
         borderRadius: 6,
         alignItems: "center",

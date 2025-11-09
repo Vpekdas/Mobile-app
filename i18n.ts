@@ -7,6 +7,7 @@ import fr from "./locales/fr/translation.json";
 
 const locale = Localization.getLocales()[0]?.languageCode ?? "en";
 
+
 i18n.use(initReactI18next).init({
     compatibilityJSON: "v4",
     lng: locale,

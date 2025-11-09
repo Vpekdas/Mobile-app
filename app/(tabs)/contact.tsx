@@ -11,12 +11,7 @@ export default function Contact() {
 
     const contactItems = [
         {
-            label: "💬 WhatsApp : https://wa.me/123456789",
-            link: "https://wa.me/123456789",
-        },
-        {
-            label: "✉️ Email : contact@example.com",
-            link: "mailto:contact@example.com",
+            label: "✉️ E-mail : nie.sante@outlook.fr",
         },
         {
             label: t("companyName"),
@@ -33,18 +28,10 @@ export default function Contact() {
             <TextWithBorder children={t("companyPhone")}></TextWithBorder>
 
             {contactItems.map((item, idx) => {
-                const content = (
+                return (
                     <TextWithBorder key={idx} selectable>
                         {item.label}
                     </TextWithBorder>
-                );
-
-                return item.link ? (
-                    <TouchableOpacity key={idx} onPress={() => Linking.openURL(item.link!)} activeOpacity={0.7}>
-                        {content}
-                    </TouchableOpacity>
-                ) : (
-                    content
                 );
             })}
 
@@ -83,7 +70,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         width: "100%",
-        padding: 20,
+        padding: 10,
         alignItems: "center",
         gap: 25,
         paddingBottom: 100,
