@@ -19,7 +19,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 import { useTranslation } from "react-i18next";
-import { DEFAULT_OPENING_HOURS, PRO_FIELDS, SPECIALTIES } from "../../constants";
+import { DEFAULT_OPENING_HOURS, PRO_FIELDS } from "../../constants";
 import { db } from "../../firebase";
 import { googleMapsApi } from "../../firebaseConfig";
 import { saveFacilityData } from "../../helpers/saveFacilityHelper";
@@ -72,13 +72,30 @@ export default function Pro() {
             { label: t("clinic"), value: "clinic" },
             { label: t("office"), value: "office" },
             { label: t("laboratory"), value: "laboratory" },
-            { label: t("pharmacy"), value: "pharmacie" },
+            { label: t("pharmacy"), value: "pharmacy" },
         ],
         sector: [
             { label: t("public"), value: "public" },
             { label: t("private"), value: "private" },
         ],
     };
+
+    const SPECIALTIES = [
+        { id: "generalist", name: t("generalist") },
+        { id: "ophthalmologist", name: t("ophthalmologist") },
+        { id: "technician", name: t("technician") },
+        { id: "administrator", name: t("administrator") },
+        { id: "gynecologue", name: t("gynecologue") },
+        { id: "surgeon", name: t("surgeon") },
+        { id: "traumatologist", name: t("traumatologist") },
+        { id: "pharmacist", name: t("pharmacist") },
+        { id: "dermatologist", name: t("dermatologist") },
+        { id: "pediatrician", name: t("pediatrician") },
+        { id: "cardiologist", name: t("cardiologist") },
+        { id: "dentist", name: t("dentist") },
+        { id: "forensicPathologist", name: t("forensicPathologist") },
+        { id: "accountant", name: t("accountant") },
+    ];
 
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({

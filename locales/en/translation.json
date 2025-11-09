@@ -124,5 +124,25 @@
   "selectType": "Select facility type",
   "selectSector": "Select sector",
   "enterTelephone": "Enter telephone number",
-  "selectSpecialty": "Select specialties"
+  "selectSpecialty": "Select specialties",
+  "generalist": "Generalist",
+  "ophthalmologist": "Ophthalmologist",
+  "technician": "Technician",
+  "administrator" : "Administrator",
+  "gynecologue" : "Gynecologue",
+  "surgeon" : "Surgeon",
+  "traumatologist" : "Traumatologist",
+  "pharmacist" : "Pharmacist",
+  "dermatologist" : "Dermatologist",
+  "pediatrician" : "Pediatrician",
+  "cardiologist" :  "Cardiologist",
+  "dentist" : "Dentist",
+  "forensicPathologist" : "Forensic Pathologist",
+  "accountant" : "Accountant",
+  "sex.woman" : "Woman",
+  "sex.man" : "Man",
+  "accountType.professional" : "Professional",
+  "accountType.user" : "User"
+
+
 }

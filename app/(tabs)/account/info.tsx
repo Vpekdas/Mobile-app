@@ -51,11 +51,18 @@ export default function Info() {
 
                     {profileImage && <Image source={{ uri: profileImage }} style={styles.profileImage} />}
 
-                    {USER_FIELDS.map((field, index) => (
-                        <TextWithBorder key={index}>
-                            {`${t(field.label)} : ${userData[field.key as keyof User]}`}
-                        </TextWithBorder>
-                    ))}
+                    {USER_FIELDS.map((field, index) => {
+                        let value = userData[field.key as keyof User];
+
+                        if (field.key === "sex") {
+                            value = t(`sex.${value}`);
+                        }
+                        if (field.key === "type") {
+                            value = t(`accountType.${value}`);
+                        }
+
+                        return <TextWithBorder key={index}>{`${t(field.label)} : ${value}`}</TextWithBorder>;
+                    })}
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

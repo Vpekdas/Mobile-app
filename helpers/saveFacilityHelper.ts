@@ -26,21 +26,30 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
             profileImageUrl = await getDownloadURL(storageRef);
         }
 
-        const fullAddress = `${formData.address}, ${formData.postalCode}, ${formData.city}, ${formData.country}`;
+        const addressParts = [formData.address, formData.postalCode, formData.city, formData.country].filter(
+            (part) => part && part.trim() !== ""
+        );
+        const fullAddress = addressParts.join(", ");
         const response = await Geocoder.from(fullAddress);
 
         if (response.results.length > 0) {
             const { lat, lng } = response.results[0].geometry.location;
 
-            const facility_search = normalizeString(formData.facility);
-            const specialty_search = formData.specialty.map(normalizeString);
+            const facilityWords = formData.facility
+                .split(" ")
+                .map(normalizeString)
+                .filter((w: string) => w.length > 0);
+
+            const specialtySearch = formData.specialty.map(normalizeString);
+            const citySearch = normalizeString(formData.city);
 
             const updatedFormData = {
                 ...formData,
                 latitude: lat,
                 longitude: lng,
-                facility_search,
-                specialty_search,
+                specialtySearch,
+                citySearch,
+                searchKeywords: [normalizeString(formData.facility), ...facilityWords, ...specialtySearch, citySearch],
                 ...(profileImageUrl && { logo: profileImageUrl }),
             };
 

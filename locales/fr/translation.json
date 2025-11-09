@@ -43,7 +43,7 @@
   "noAccount": "Pas de compte ?",
   "clickHere": "Cliquez ici",
   "offersAndPromotions": "Offres et promotions",
-  "advertising": "Publicité",
+  "advertising": "Campagne de sensibilisation",
   "facilityName": "Nom de l’établissement",
   "facilityAddress": "Adresse",
   "country": "Pays",
@@ -124,7 +124,25 @@
   "selectType": "Sélectionnez le type d'établissement",
   "selectSector": "Sélectionnez le secteur",
   "enterTelephone": "Entrez le numéro de téléphone",
-  "selectSpecialty": "Sélectionnez les spécialités"
+  "selectSpecialty": "Sélectionnez les spécialités",
+  "generalist": "Généraliste",
+  "ophthalmologist": "Ophtalmologue",
+  "technician": "Laborantin",
+  "administrator" : "Administrateur",
+  "gynecologue" : "Gynécologue",
+  "surgeon" : "Chirurgien",
+  "traumatologist" : "Traumatologue",
+  "pharmacist" : "Pharmacien",
+  "dermatologist" : "Dermatologue",
+  "pediatrician" : "Pédiatre",
+  "cardiologist" :  "Cardiologue",
+  "dentist" : "Dentiste",
+  "forensicPathologist" : "Médecin légiste",
+  "accountant" : "Chef Comptable",
+  "sex.woman" : "Femme",
+  "sex.man" : "Homme",
+  "accountType.professional" : "Professionnel",
+  "accountType.user" : "Patient"
 }
 
 

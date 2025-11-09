@@ -1,8 +1,8 @@
-import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "../../constants";
-import { FacilityType, Sector } from "../../types/enums";
 import { useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { DEFAULT_CONTAINER_STYLE, DEFAULT_TEXT_STYLE } from "../../constants";
+import { FacilityType, Sector } from "../../types/enums";
 import TextWithBorder from "../components/TextWithBorder";
 import { OpeningHours, TeamMember } from "./pro";
 
@@ -43,7 +43,8 @@ export default function Detail() {
                 <TextWithBorder selectable>{itemData.address}</TextWithBorder>
                 <TextWithBorder selectable>{itemData.type}</TextWithBorder>
                 <TextWithBorder selectable>{itemData.sector}</TextWithBorder>
-                <TextWithBorder selectable>{itemData.telephone}</TextWithBorder>
+                
+                {itemData.telephone && <TextWithBorder selectable>{itemData.telephone}</TextWithBorder>}
 
                 {itemData.specialty.length > 0 && (
                     <View style={DEFAULT_CONTAINER_STYLE}>
@@ -58,7 +59,7 @@ export default function Detail() {
                             <View key={index} style={styles.teamMemberContainer}>
                                 <Text style={styles.teamMemberName}>{member.name}</Text>
                                 <Text style={styles.teamMemberSpecialty}>
-                                    Specialties: {member.specialty.join(", ")}
+                                    {t("specialties")}: {member.specialty?.join(", ") || "N/A"}
                                 </Text>
                                 <Text style={styles.teamMemberPhone}>
                                     {t("phone")}: {member.phone}

@@ -4,12 +4,12 @@ export interface User {
     birthDate: string;
     phone: string;
     email: string;
-    type: "user" | "professional" | "";
+    type: string;
     birthPlace: string;
     city: string;
     town: string;
     neighborhood: string;
-    sex: "man" | "woman" | "other" | "";
+    sex: string;
     job: string;
     profileImageUrl?: string;
 }

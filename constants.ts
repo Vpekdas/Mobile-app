@@ -61,15 +61,6 @@ export const DEFAULT_CONTAINER_STYLE: ViewStyle = {
     backgroundColor: "#DAFFEF",
 };
 
-
-
-export const SPECIALTIES = [
-    { id: "cardiology", name: "Cardiologie" },
-    { id: "neurology", name: "Neurologie" },
-    { id: "pediatrics", name: "Pediatrie" },
-    { id: "orthopedics", name: "Orthopedie" },
-];
-
 export const DEFAULT_OPENING_HOURS = [
     { day: "Monday", start: "", end: "" },
     { day: "Tuesday", start: "", end: "" },
