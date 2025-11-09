@@ -35,6 +35,7 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
         if (response.results.length > 0) {
             const { lat, lng } = response.results[0].geometry.location;
 
+            const facility_search = normalizeString(formData.facility);
             const facilityWords = formData.facility
                 .split(" ")
                 .map(normalizeString)
@@ -47,8 +48,7 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
                 ...formData,
                 latitude: lat,
                 longitude: lng,
-                specialtySearch,
-                citySearch,
+                facility_search,
                 searchKeywords: [normalizeString(formData.facility), ...facilityWords, ...specialtySearch, citySearch],
                 ...(profileImageUrl && { logo: profileImageUrl }),
             };

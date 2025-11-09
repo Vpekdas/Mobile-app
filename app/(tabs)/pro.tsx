@@ -335,7 +335,7 @@ export default function Pro() {
                                 />
                             </View>
                             <View>
-                                <CustomButton pressFunction={handleSave} title={t("save")} />
+                                <CustomButton pressFunction={handleSave} title={t("save")} style={styles.button} />
                             </View>
                         </>
                     }
@@ -399,5 +399,8 @@ const styles = StyleSheet.create({
     openingHoursText: {
         color: "#5D737E",
         fontSize: 16,
+    },
+    button: {
+        marginBottom: "5%",
     },
 });
