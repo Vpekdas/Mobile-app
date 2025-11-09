@@ -3,7 +3,7 @@ export default ({ config }) => ({
     owner: "captain_plouf",
     name: "NiE",
     slug: "nie",
-    version: "1.0.1",
+    version: "1.0.2",
     orientation: "portrait",
     icon: "./assets/logo/app_logo.png",
     scheme: "nie",
