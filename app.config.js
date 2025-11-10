@@ -11,6 +11,11 @@ export default ({ config }) => ({
     newArchEnabled: true,
     updates: {
         url: "https://u.expo.dev/f9c1cb81-a7e9-4e63-a842-5f613b99a203",
+        "enabled": true,
+        "fallbackToCacheTimeout": 0,
+        "checkAutomatically": "ON_LOAD",
+
+
     },
     runtimeVersion: {
         policy: "appVersion",
