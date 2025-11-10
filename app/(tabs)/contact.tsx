@@ -14,7 +14,7 @@ export default function Contact() {
             label: "✉️ E-mail : nie.sante@outlook.fr",
         },
         {
-            label: t("companyName"),
+            label: t("companyName") + "NiE",
         },
         {
             label: t("companyAddress"),
