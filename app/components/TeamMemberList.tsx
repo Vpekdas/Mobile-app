@@ -57,7 +57,7 @@ export default function TeamMemberList({ team, onChangeTeam }: Props) {
                             }}
                             style={{ marginTop: 5 }}
                         >
-                            <Text style={{ color: "red" }}>Remove</Text>
+                            <Text style={{ color: "red" }}>{t("remove")}</Text>
                         </TouchableOpacity>
                     </View>
                 ))

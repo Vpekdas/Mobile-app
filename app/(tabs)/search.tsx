@@ -124,7 +124,6 @@ export default function Search() {
                     <SearchBar value={queryText} onChangeText={setQueryText} placeholder={t("searchFacility")} />
                     {loading && <Text style={styles.loadingText}>{t("loading")}</Text>}
                     {error && <Text style={styles.errorText}>{error}</Text>}
-
                     <FlatList
                         data={results}
                         keyExtractor={(item, index) => `${normalizeString(item.facility)}-${index}`}
@@ -133,7 +132,7 @@ export default function Search() {
                                 <Result
                                     logo={{ uri: item.logo }}
                                     facility={item.facility}
-                                    specialist={item.specialty?.join(", ") || ""}
+                                    specialist={item.specialty ? item.specialty.map((spec) => t(spec)).join(", ") : ""}
                                     address={item.address}
                                     distance={isNaN(Number(item.distance)) ? "N/A" : `${item.distance} km`}
                                 />

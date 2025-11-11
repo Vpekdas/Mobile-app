@@ -43,38 +43,41 @@ export default function Detail() {
                 <TextWithBorder selectable>{itemData.address}</TextWithBorder>
                 <TextWithBorder selectable>{t(itemData.type)}</TextWithBorder>
                 <TextWithBorder selectable>{t(itemData.sector)}</TextWithBorder>
-                
+
                 {itemData.telephone && <TextWithBorder selectable>{itemData.telephone}</TextWithBorder>}
 
-                {itemData.specialty.length > 0 && (
+                {itemData.specialty?.length > 0 && (
                     <View style={DEFAULT_CONTAINER_STYLE}>
-                        <Text style={DEFAULT_TEXT_STYLE}>{itemData.specialty.join(", ")}</Text>
+                        <Text style={DEFAULT_TEXT_STYLE}>{itemData.specialty.map((spec) => t(spec)).join(", ")}</Text>
                     </View>
                 )}
 
-                {itemData.team && itemData.team.length > 0 && (
-                    <View style={DEFAULT_CONTAINER_STYLE}>
-                        <Text style={styles.sectionTitle}>{t("teamMembers")}</Text>
-                        {itemData.team.map((member, index) => (
+                <View style={DEFAULT_CONTAINER_STYLE}>
+                    <Text style={styles.sectionTitle}>{t("teamMembers")}</Text>
+                    {itemData.team &&
+                        itemData.team.length > 0 &&
+                        itemData.team.map((member, index) => (
                             <View key={index} style={styles.teamMemberContainer}>
                                 <Text style={styles.teamMemberName}>{member.name}</Text>
                                 <Text style={styles.teamMemberSpecialty}>
-                                    {t("specialties")}: {member.specialty?.join(", ") || "N/A"}
+                                    {t("specialties")}{" "}
+                                    {member.specialty?.length
+                                        ? member.specialty.map((spec) => t(spec)).join(", ")
+                                        : t("N/A")}
                                 </Text>
                                 <Text style={styles.teamMemberPhone}>
                                     {t("phone")}: {member.phone}
                                 </Text>
                             </View>
                         ))}
-                    </View>
-                )}
+                </View>
 
                 {Array.isArray(itemData.openingHours) && itemData.openingHours.length > 0 ? (
                     <View style={DEFAULT_CONTAINER_STYLE}>
                         <Text style={styles.sectionTitle}>{t("openingHours")} :</Text>
                         {itemData.openingHours.map((entry, index) => (
                             <View key={index} style={styles.openingHoursRow}>
-                                <Text style={styles.openingDay}>{entry.day}</Text>
+                                <Text style={styles.openingDay}>{t(entry.day)}</Text>
                                 <Text style={styles.openingTime}>
                                     {entry.start} - {entry.end}
                                 </Text>
