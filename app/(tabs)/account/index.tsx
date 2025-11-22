@@ -41,14 +41,6 @@ export default function Account() {
                 <TextWithBorder children={t("legal")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => Alert.alert("Notification","notification")}>
-                <TextWithBorder children={t("notification")} containerStyle={styles.textContainer}></TextWithBorder>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => router.push("/(tabs)/account/offer")}>
-                <TextWithBorder children={t("offer")} containerStyle={styles.textContainer}></TextWithBorder>
-            </TouchableOpacity>
-
             <TouchableOpacity onPress={handleLogoutPress}>
                 <TextWithBorder children={t("logout")} containerStyle={styles.textContainer}></TextWithBorder>
             </TouchableOpacity>

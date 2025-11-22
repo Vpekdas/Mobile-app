@@ -65,9 +65,6 @@ export default function Detail() {
                                         ? member.specialty.map((spec) => t(spec)).join(", ")
                                         : t("N/A")}
                                 </Text>
-                                <Text style={styles.teamMemberPhone}>
-                                    {t("phone")}: {member.phone}
-                                </Text>
                             </View>
                         ))}
                 </View>

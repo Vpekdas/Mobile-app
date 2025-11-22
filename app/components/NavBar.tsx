@@ -1,10 +1,10 @@
-import { DEFAULT_TEXT_STYLE } from "../../constants";
-import { useUser } from "../../contexts/UserContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { usePathname, useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { DEFAULT_TEXT_STYLE } from "../../constants";
+import { useUser } from "../../contexts/UserContext";
 
 export default function NavBar() {
     const { t } = useTranslation();
@@ -50,13 +50,6 @@ export default function NavBar() {
                 <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/pro")}>
                     <FontAwesome5 name="plus-circle" size={24} color="white" />
                     <Text style={iconStyle.text}>{t("pro")}</Text>
-                </TouchableOpacity>
-            )}
-
-            {userData?.type === "user" && (
-                <TouchableOpacity style={iconStyle.container} onPress={() => goTo("/offer")}>
-                    <FontAwesome5 name="tags" size={24} color="white" />
-                    <Text style={iconStyle.text}>{t("offer")}</Text>
                 </TouchableOpacity>
             )}
 

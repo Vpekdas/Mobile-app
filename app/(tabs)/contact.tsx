@@ -39,27 +39,11 @@ export default function Contact() {
 
             <View style={styles.socialIcons}>
                 <TouchableOpacity
-                    onPress={() => Linking.openURL("https://wa.me/123456789")}
-                    style={styles.iconTouch}
-                    activeOpacity={0.7}
-                >
-                    <FontAwesome5 name="whatsapp" size={28} color="#25D366" />
-                </TouchableOpacity>
-
-                <TouchableOpacity
                     onPress={() => Linking.openURL("https://www.facebook.com/share/1BBiEK1nqU/")}
                     style={styles.iconTouch}
                     activeOpacity={0.7}
                 >
                     <FontAwesome5 name="facebook-square" size={28} color="#1877F2" />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => Linking.openURL("https://instagram.com/profile")}
-                    style={styles.iconTouch}
-                    activeOpacity={0.7}
-                >
-                    <FontAwesome5 name="instagram" size={28} color="#C13584" />
                 </TouchableOpacity>
             </View>
         </ScrollView>
