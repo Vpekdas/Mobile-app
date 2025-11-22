@@ -12,7 +12,7 @@ const firebaseConfig = Platform.select({
         appId: "1:355643408378:ios:6af115e58273da6630ae43",
     },
     android: {
-        apiKey: "",
+        apiKey: "AIzaSyD96PE3xkAYIv-VPCp0X0mnEfN1ukttC2M",
         projectId: "nie-1-cafaf",
         storageBucket: "nie-1-cafaf.firebasestorage.app",
         messagingSenderId: "355643408378",
