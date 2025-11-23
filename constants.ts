@@ -65,10 +65,10 @@ export const DEFAULT_CONTAINER_STYLE: ViewStyle = {
 
 export const PRO_FIELDS = [
     { key: "facility" },
-    { key: "address" },
     { key: "country" },
+    { key: "town" },
     { key: "city" },
-    { key: "postalCode" },
+    { key: "neighborhood" },
     { key: "type" },
     { key: "sector" },
     { key: "telephone" },

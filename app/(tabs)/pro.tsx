@@ -47,10 +47,12 @@ export interface OpeningHours {
 
 export type FormData = {
     facility: string;
-    address: string;
-    country: string;
-    city: string;
-    postalCode: string;
+    address?: string;
+    country?: string;
+    city?: string;
+    postalCode?: string;
+    town?: string;
+    neighborhood?: string;
     type: FacilityType;
     sector: Sector;
     telephone: string;
@@ -130,8 +132,10 @@ export default function Pro() {
     const PLACEHOLDERS: Record<keyof FormData, string> = {
         facility: t("enterFacilityName"),
         address: t("enterAddress"),
-        country: t("enterCountry"),
+        country: t("country"),
         city: t("enterCity"),
+        town: t("town"),
+        neighborhood: t("neighborhood"),
         postalCode: t("enterPostalCode"),
         type: t("selectType"),
         sector: t("selectSector"),

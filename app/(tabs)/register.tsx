@@ -149,7 +149,7 @@ export default function Register() {
             const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
             const year = selectedDate.getFullYear();
 
-            const formattedDate = `${day} ${month} ${year}`;
+            const formattedDate = `${day}-${month}-${year}`;
 
             setFormData((prevData) => ({
                 ...prevData,

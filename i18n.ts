@@ -1,11 +1,12 @@
+import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import en from "./locales/en/translation.json";
 import fr from "./locales/fr/translation.json";
 
-// const locale = Localization.getLocales()[0]?.languageCode ?? "en";
-const locale = "fr";
+const locale = Localization.getLocales()[0]?.languageCode ?? "en";
+
 
 i18n.use(initReactI18next).init({
     compatibilityJSON: "v4",
