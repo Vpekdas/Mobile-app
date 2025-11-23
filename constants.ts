@@ -81,7 +81,7 @@ export const REGISTER_FIELDS = [
     { key: "firstName", label: "firstName", placeholder: "firstName" },
     { key: "lastName", label: "lastName", placeholder: "lastName" },
     { key: "birthPlace", label: "birthPlace", placeholder: "birthPlace" },
-    { key: "city", label: "city", placeholder: "city" },
+    { key: "city", label: "livingCity", placeholder: "livingCity" },
     { key: "town", label: "town", placeholder: "town" },
     { key: "neighborhood", label: "neighborhood", placeholder: "neighborhood" },
     { key: "phone", label: "phone", placeholder: "phone" },

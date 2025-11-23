@@ -143,8 +143,14 @@ export default function Register() {
 
     const handleDateChange = (event: any, selectedDate?: Date) => {
         setShowDatePicker(false);
+
         if (selectedDate) {
-            const formattedDate = selectedDate.toISOString().split("T")[0];
+            const day = selectedDate.getDate().toString().padStart(2, "0");
+            const month = (selectedDate.getMonth() + 1).toString().padStart(2, "0");
+            const year = selectedDate.getFullYear();
+
+            const formattedDate = `${day} ${month} ${year}`;
+
             setFormData((prevData) => ({
                 ...prevData,
                 birthDate: formattedDate,

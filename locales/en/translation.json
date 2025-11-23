@@ -60,6 +60,7 @@
   "lastName": "Last Name",
   "birthPlace": "Birth Place",
   "birthDate": "Birth Date",
+  "livingCity": "Living City",
   "town": "Town",
   "neighborhood": "Neighborhood",
   "job": "Job",

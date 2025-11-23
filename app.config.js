@@ -1,24 +1,26 @@
 export default ({ config }) => ({
     ...config,
-    owner: "captain_plouf",
+    owner: "7y77xkpsgg",
     name: "NiE",
     slug: "nie",
-    version: "1.0.3",
+    version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/logo/app_logo.png",
+    icon: "./assets/logo/app_logo.jpeg",
     scheme: "nie",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
-    updates: {
-        url: "https://u.expo.dev/f9c1cb81-a7e9-4e63-a842-5f613b99a203",
-        enabled: true,
-        fallbackToCacheTimeout: 0,
-        checkAutomatically: "ON_LOAD",
-    },
     runtimeVersion: {
         policy: "appVersion",
     },
-
+    updates: {
+        url: "https://u.expo.dev/539fd5d7-2981-4a3b-bd4f-d76b89dc55fc",
+        enabled: true,
+        fallbackToCacheTimeout: 0,
+        checkAutomatically: "ON_LOAD",
+        requestHeaders: {
+            "expo-channel-name": "production",
+        },
+    },
     ios: {
         supportsTablet: true,
         bundleIdentifier: "com.captainplouf.NiE",
@@ -34,7 +36,7 @@ export default ({ config }) => ({
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/logo/app_logo.png",
+            foregroundImage: "./assets/logo/app_logo.jpeg",
             backgroundColor: "#E6F4FE",
             monochromeImage: "./assets/images/android-icon-monochrome.png",
         },
@@ -73,10 +75,6 @@ export default ({ config }) => ({
                     useFrameworks: "static",
                     buildReactNativeFromSource: true,
                 },
-                android: {
-                    enableHermes: true,
-                    hermesFlags: ["-O", "-output-source-map"],
-                },
             },
         ],
         "expo-web-browser",
@@ -91,7 +89,7 @@ export default ({ config }) => ({
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
 
         eas: {
-            projectId: "f9c1cb81-a7e9-4e63-a842-5f613b99a203",
+            projectId: "539fd5d7-2981-4a3b-bd4f-d76b89dc55fc",
         },
     },
 });
