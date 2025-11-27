@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+  		allow create: if true;
+  		allow read: if IsSignedIn() && IsOwner(userId);
+      allow update: if IsSignedIn() && IsOwner(userId) && EmailVerified() && IsValidUser(request.resource.data);
+  		allow delete: if false;
+    }
+    
+    match /establishments/{userId} {
+    	allow read: if IsSignedIn() && EmailVerified();
+    	allow write: if IsSignedIn() && IsOwner(userId) && EmailVerified() && IsProfessionalUser(userId) && IsValidEstablishment(request.resource.data);
+      allow delete: if false;
+  }
+    
+    // User helper,
+    function IsSignedIn() {
+    		return request.auth != null;
+    }
+    
+    function IsOwner(userId) {
+    	return request.auth.uid == userId;
+    }
+    
+    function EmailVerified() {
+    	return request.auth.token.email_verified;
+    }
+    
+    function ExistingData() {
+    	return resource.data;
+    }
+    
+    function IncomingData() {
+    	return request.resource.data;
+    }
+    
+    function IsRequiredFieldValid(field) {
+  		return field is string && field.size() > 0 && field.trim() != "";
+		}
+    
+    function IsValidPhoneNumber(phone) {
+  		return phone is string && phone.matches('^[0-9]{9,15}$');
+		}
+    
+    function IsValidDate(date) {
+  		return date is string && date.matches('^\\d{2}-\\d{2}-\\d{4}$');
+    }
+    
+    function IsValidUserType(type) {
+      return type in ['user', 'professional'];
+    }
+    
+    function IsValidSex(sex) {
+      return sex in ['man', 'woman'];
+    }
+    
+    function IsValidEmail(email) {
+  		return email is string && 
+    	email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$');
+		}
+
+		function IsValidUser(data) {
+      return data.keys().hasAll(['firstName', 'lastName', 'birthDate', 'phone', 'email', 'type', 'birthPlace', 'city', 'town', 'neighborhood', 'sex', 'job']) &&
+        IsRequiredFieldValid(data.firstName) &&
+        IsRequiredFieldValid(data.lastName) &&
+        IsValidDate(data.birthDate) &&
+        IsValidPhoneNumber(data.phone) &&
+        IsValidEmail(data.email) &&
+        IsValidUserType(data.type) &&
+        IsRequiredFieldValid(data.birthPlace) &&
+        IsRequiredFieldValid(data.city) &&
+        IsRequiredFieldValid(data.town) &&
+        IsRequiredFieldValid(data.neighborhood) &&
+        IsValidSex(data.sex) &&
+        IsRequiredFieldValid(data.job);
+    }
+    
+    
+    // Establishment helper.
+    // Maybe improve this since it does a request each time.
+    function IsProfessionalUser(userId) {
+  		return get(/databases/$(database)/documents/users/$(userId)).data.type == "professional";
+		}
+
+		function IsValidFacilityType(type) {
+  		return type in ['hospital', 'clinic', 'office', 'laboratory', 'pharmacy'];
+		}
+
+		function IsValidSector(sector) {
+  		return sector in ['public', 'private'];
+		}
+
+		function IsValidLatitude(lat) {
+  		return lat is number && lat >= -90 && lat <= 90;
+		}
+
+		function IsValidLongitude(lon) {
+  		return lon is number && lon >= -180 && lon <= 180;
+		}
+    
+    function IsValidEstablishment(data) {
+  		return IsRequiredFieldValid(data.facility) &&
+    		IsRequiredFieldValid(data.neighborhood) &&
+    		IsRequiredFieldValid(data.country) &&
+    		IsRequiredFieldValid(data.city) &&
+    		IsValidFacilityType(data.type) &&
+   			IsValidSector(data.sector) &&
+    		IsValidPhoneNumber(data.telephone) &&
+    		(!('latitude' in data) || IsValidLatitude(data.latitude)) &&
+				(!('longitude' in data) || IsValidLongitude(data.longitude));
+		}
+  }
+}
