@@ -26,7 +26,7 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
             profileImageUrl = await getDownloadURL(storageRef);
         }
 
-        const addressParts = [formData.address, formData.postalCode, formData.city, formData.country].filter(
+        const addressParts = [formData.address, formData.city, formData.country].filter(
             (part) => part && part.trim() !== ""
         );
         const fullAddress = addressParts.join(", ");
@@ -52,6 +52,8 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
                 searchKeywords: [normalizeString(formData.facility), ...facilityWords, ...specialtySearch, citySearch],
                 ...(profileImageUrl && { logo: profileImageUrl }),
             };
+
+            console.log(formData, lat, lng);
 
             const auth = getAuth();
             const user = auth.currentUser;

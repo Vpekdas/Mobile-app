@@ -5,7 +5,7 @@ import InputField from "./InputField";
 
 type TeamMember = {
     name: string;
-    phone: string;
+    phone?: string;
     specialty: string[];
 };
 

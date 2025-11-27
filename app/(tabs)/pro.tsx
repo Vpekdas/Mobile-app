@@ -36,7 +36,7 @@ import TeamMemberList from "../components/TeamMemberList";
 export interface TeamMember {
     name: string;
     specialty: string[];
-    phone: string;
+    phone?: string;
 }
 
 export interface OpeningHours {
@@ -47,10 +47,8 @@ export interface OpeningHours {
 
 export type FormData = {
     facility: string;
-    address?: string;
     country?: string;
     city?: string;
-    postalCode?: string;
     town?: string;
     neighborhood?: string;
     type: FacilityType;
@@ -112,10 +110,8 @@ export default function Pro() {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
         facility: "",
-        address: "",
         country: "",
         city: "",
-        postalCode: "",
         type: FacilityType.NONE,
         sector: Sector.NONE,
         telephone: "",
@@ -131,12 +127,10 @@ export default function Pro() {
 
     const PLACEHOLDERS: Record<keyof FormData, string> = {
         facility: t("enterFacilityName"),
-        address: t("enterAddress"),
         country: t("country"),
         city: t("enterCity"),
         town: t("town"),
         neighborhood: t("neighborhood"),
-        postalCode: t("enterPostalCode"),
         type: t("selectType"),
         sector: t("selectSector"),
         telephone: t("enterTelephone"),

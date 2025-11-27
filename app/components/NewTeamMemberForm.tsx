@@ -6,7 +6,7 @@ import InputField from "./InputField";
 
 type TeamMember = {
     name: string;
-    phone: string;
+    phone?: string;
     specialty: string[];
 };
 
@@ -24,7 +24,7 @@ export default function NewTeamMemberForm({ specialties, onAddMember }: Props) {
     });
 
     const handleAdd = () => {
-        if (newMember.name.trim() !== "" && newMember.phone.trim() !== "" && newMember.specialty.length > 0) {
+        if (newMember.name.trim() !== "" && newMember.specialty.length > 0) {
             onAddMember(newMember);
             setNewMember({ name: "", phone: "", specialty: [] });
         } else {
