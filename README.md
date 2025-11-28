@@ -67,16 +67,16 @@ You can run the app on your computer, you need to decide on which support you wa
 
 - iOS → You need to install a simulator via Xcode.
 - Android → You probably need a simulator via Android Studio.
-- Web → Nothing special is needed; Expo will open a localhost in your browser
+- Web → Nothing special is needed, Expo will open a localhost in your browser
 
-- You need a Firebase app for iOS, Android, Web, or all. After that, Firebase will give you a plist or JSON file; you can’t just replace these API keys in [`firebaseConfig.js`](firebaseConfig.js).
+- You need a Firebase app for iOS, Android, Web, or all. After that, Firebase will give you a plist or JSON file, you can just replace these API keys in [`firebaseConfig.js`](firebaseConfig.js).
 - For Android, you must fill in SHA256 with your keychain. Expo will ask you to generate it if you don’t have it, and then you must use the same in the Android Firebase app.
 - Don’t forget to modify some or all fields starting with `X` in [`app.config.js`](app.config.js)
-- [Google GeoCoding API](https://developers.google.com/maps/documentation/geocoding/overview), this key is necessary if you want to register a facility, since I check if the coordinate is correctly retrieved; otherwise, it will block you from registering a facility.
+- [Google GeoCoding API](https://developers.google.com/maps/documentation/geocoding/overview), this key is necessary if you want to register a facility, since I check if the coordinate is correctly retrieved, otherwise it will block you from registering a facility.
 - Firebase requires a Blaze subscription because I use the storage service to store pictures.
 
 > [!NOTE]
-> I paid exactly 0.00 euros during development process, so don't be scared, i even reach 35kk of reading request in Firebase and the free quota is 50kk of read per day.
+> I paid exactly 0.00 € during development process, so don't be scared, i even reach 35kk of reading request in Firebase and the free quota is 50kk of read per day.
   
 ## Run
 
@@ -95,6 +95,9 @@ npx expo run:ios
 - It will transform React code into Swift. It can take some time, but in the end, it should open the iOS simulator with the app running inside it.
 
 - You can also build an .ipa, but it seems like you will need a developer account. Maybe you can build locally and bypass this (needs testing). You can try running:
+```bash
+eas build -p ios --profile production --local                                                                                         ─╯
+```
 
 ### Android
 
