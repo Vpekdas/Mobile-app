@@ -53,7 +53,6 @@ As far as I’ve understood, the Firebase API key is not that secret, so I left 
 - **Expo** – Simplifies development, deployment, and building for mobile platforms
 - **Google Geocoding API** – Retrieves coordinates for addresses and locations
 
-  
 ### Challenges and Future Features
 
 Well, since it was my first dive into mobile apps, I didn’t know which architecture or stack to choose. So, with a little bit of research, I wanted a fast MVP to present to my customer. I had already heard about React Native, and since I had done my portfolio in React, I decided to use it instead of Flutter or C# (if I do a mobile project again, I’ll probably go with C#).
@@ -64,12 +63,21 @@ Challenges were just starting. I discovered the development process with Expo, t
 
 ## Installation
 
-You can easily run the app on your computer, you need to decide on which support you want to run:
+You can run the app on your computer, you need to decide on which support you want to run:
 
 - iOS → You need to install a simulator via Xcode.
 - Android → You probably need a simulator via Android Studio.
 - Web → Nothing special is needed; Expo will open a localhost in your browser
 
+- You need a Firebase app for iOS, Android, Web, or all. After that, Firebase will give you a plist or JSON file; you can’t just replace these API keys in [`firebaseConfig.js`](firebaseConfig.js).
+- For Android, you must fill in SHA256 with your keychain. Expo will ask you to generate it if you don’t have it, and then you must use the same in the Android Firebase app.
+- Don’t forget to modify some or all fields starting with `X` in [`app.config.js`](app.config.js)
+- [Google GeoCoding API](https://developers.google.com/maps/documentation/geocoding/overview), this key is necessary if you want to register a facility, since I check if the coordinate is correctly retrieved; otherwise, it will block you from registering a facility.
+- Firebase requires a Blaze subscription because I use the storage service to store pictures.
+
+> [!NOTE]
+> I paid exactly 0.00 euros during development process, so don't be scared, i even reach 35kk of reading request in Firebase and the free quota is 50kk of read per day.
+  
 ## Run
 
 To run the program, Expo will handle most of the setup for you, as long as you have the necessary prerequisites:
