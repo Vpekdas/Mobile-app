@@ -1,19 +1,19 @@
 export default ({ config }) => ({
     ...config,
-    owner: "7y77xkpsgg",
-    name: "NiE",
-    slug: "nie",
+    owner: "XOwnerX",
+    name: "XAppNameX",
+    slug: "X",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/logo/app_logo.jpeg",
-    scheme: "nie",
+    icon: "XPathToLogoX",
+    scheme: "X",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     runtimeVersion: {
         policy: "appVersion",
     },
     updates: {
-        url: "https://u.expo.dev/539fd5d7-2981-4a3b-bd4f-d76b89dc55fc",
+        url: "XExpoURLX",
         enabled: true,
         fallbackToCacheTimeout: 0,
         checkAutomatically: "ON_LOAD",
@@ -23,7 +23,7 @@ export default ({ config }) => ({
     },
     ios: {
         supportsTablet: true,
-        bundleIdentifier: "com.captainplouf.NiE",
+        bundleIdentifier: "XBundleX",
         infoPlist: {
             ITSAppUsesNonExemptEncryption: false,
             NSLocationWhenInUseUsageDescription:
@@ -36,19 +36,19 @@ export default ({ config }) => ({
 
     android: {
         adaptiveIcon: {
-            foregroundImage: "./assets/logo/app_logo.jpeg",
+            foregroundImage: "XPathToForegroundImageX",
             backgroundColor: "#E6F4FE",
-            monochromeImage: "./assets/images/android-icon-monochrome.png",
+            monochromeImage: "XPathToMonoChromeImageX",
         },
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
-        package: "com.captainplouf.NiE",
+        package: "XPackageX",
         googleServicesFile: "./google-services.json",
     },
 
     web: {
         output: "static",
-        favicon: "./assets/images/favicon.png",
+        favicon: "XPathToFaviconX",
     },
 
     plugins: [
@@ -56,7 +56,7 @@ export default ({ config }) => ({
         [
             "expo-splash-screen",
             {
-                image: "./assets/logo/logo.jpeg",
+                image: "XPathToSplashScreenX",
                 imageWidth: 200,
                 resizeMode: "contain",
                 backgroundColor: "#ffffff",
@@ -87,9 +87,8 @@ export default ({ config }) => ({
 
     extra: {
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-
         eas: {
-            projectId: "539fd5d7-2981-4a3b-bd4f-d76b89dc55fc",
+            projectId: "XExpoProjectIdX",
         },
     },
 });
