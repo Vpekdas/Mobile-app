@@ -13,7 +13,9 @@ type RouteParams = {
         address: string;
         country: string;
         city: string;
-        postalCode: string;
+        town?: string;
+        neighborhood?: string;
+        postalCode?: string;
         type: FacilityType;
         sector: Sector;
         telephone: string;

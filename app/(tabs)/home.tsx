@@ -22,7 +22,7 @@ export default function Home() {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <Image source={require("../../assets/logo/home.jpeg")} style={styles.image} resizeMode="cover" />
+                    <Image source={require("../../assets/images/android-icon-background.png")} style={styles.image} resizeMode="cover" />
                     <View style={styles.news}>
                         <View style={styles.textContainer}>
                             <Text style={styles.text}>{t("helpFindingProfessionals")}</Text>

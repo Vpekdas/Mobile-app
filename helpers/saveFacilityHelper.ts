@@ -26,9 +26,13 @@ export const saveFacilityData = async (formData: any, facilityImage: string | nu
             profileImageUrl = await getDownloadURL(storageRef);
         }
 
-        const addressParts = [formData.address, formData.city, formData.country].filter(
-            (part) => part && part.trim() !== ""
-        );
+        const addressParts = [
+            formData.facility,
+            formData.address,
+            formData.postalCode,
+            formData.city,
+            formData.country,
+        ].filter((part) => part && part.trim() !== "");
         const fullAddress = addressParts.join(", ");
         const response = await Geocoder.from(fullAddress);
 

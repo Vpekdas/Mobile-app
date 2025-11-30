@@ -5,27 +5,27 @@ const { googleMapsApiKey } = Constants.expoConfig.extra;
 
 const firebaseConfig = Platform.select({
     ios: {
-        apiKey: "AIzaSyChCJx61VIOJ8Z1iw01bIscYWjsqUtNqWk",
-        projectId: "nie-1-cafaf",
-        storageBucket: "nie-1-cafaf.firebasestorage.app",
-        messagingSenderId: "355643408378",
-        appId: "1:355643408378:ios:6af115e58273da6630ae43",
+        apiKey: "AIzaSyCG5bnWGxkjjit4ucHanUfBXAf-5kMNDX0",
+        projectId: "test-ac80a",
+        storageBucket: "test-ac80a.firebasestorage.app",
+        messagingSenderId: "132103483370",
+        appId: "1:132103483370:ios:2ee135f44a5375e3fb0c93",
     },
     android: {
-        apiKey: "AIzaSyD96PE3xkAYIv-VPCp0X0mnEfN1ukttC2M",
-        projectId: "nie-1-cafaf",
-        storageBucket: "nie-1-cafaf.firebasestorage.app",
-        messagingSenderId: "355643408378",
-        appId: "1:355643408378:android:6e205b7e266abd2e30ae43"
+        apiKey: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
     },
     default: {
-        apiKey: "AIzaSyD9OjsPRbv4fV1HRemXQvdug26tQbJU1AI",
-        authDomain: "nie-1-cafaf.firebaseapp.com",
-        projectId: "nie-1-cafaf",
-        storageBucket: "nie-1-cafaf.firebasestorage.app",
-        messagingSenderId: "355643408378",
-        appId: "1:355643408378:web:f371aab718804ea530ae43",
-        measurementId: "G-0T3E1KMH95"
+        apiKey: "",
+        authDomain: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: "",
+        measurementId: ""
     },
 });
 

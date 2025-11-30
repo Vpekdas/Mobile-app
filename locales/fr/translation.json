@@ -106,9 +106,9 @@
   "noTeamMembers": "Aucun membre de l'équipe ajouté pour le moment.",
   "accountType" : "Type de compte",
   "sex": "Sexe",
-  "companyPhone" : "📞 Téléphone : 07 51 96 80 18",
-  "companyName": "🏢 Nom de l'entreprise : ",
-  "companyAddress": "📍 Adresse : Rue Simone Veil, 95370 montigny-lès-cormeilles",
+  "companyPhone" : "Téléphone : ",
+  "companyName": "Nom de l'entreprise : ",
+  "companyAddress": "Adresse :",
   "followUs": "Suivez-nous",
   "hospital": "Hôpital" ,
   "clinic": "Clinique" ,
@@ -151,8 +151,10 @@
   "friday": "Vendredi",
   "saturday": "Samedi",
   "sunday": "Dimanche",
-  "remove": "Enlever"
-
+  "remove": "Enlever",
+  "enterTown": "Entrez la commune",
+  "enterNeighborhood": "Entrez le quartier",
+  "enterFacilityAddress": "Enter l'addresse"
 }
 
 

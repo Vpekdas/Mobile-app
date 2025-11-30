@@ -102,9 +102,9 @@ service cloud.firestore {
     
     function IsValidEstablishment(data) {
   		return IsRequiredFieldValid(data.facility) &&
-    		IsRequiredFieldValid(data.neighborhood) &&
-    		IsRequiredFieldValid(data.country) &&
+  		    IsRequiredFieldValid(data.address) &&
     		IsRequiredFieldValid(data.city) &&
+    		IsRequiredFieldValid(data.country) &&
     		IsValidFacilityType(data.type) &&
    			IsValidSector(data.sector) &&
     		IsValidPhoneNumber(data.telephone) &&

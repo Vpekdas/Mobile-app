@@ -2,7 +2,7 @@ import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { LogoProps } from "./app/components/Logo";
 
 export const BASIC_LOGO: LogoProps = {
-    source: require("./assets/logo/logo.jpeg"),
+    source: require("./assets/images/icon.png"),
     size: 100,
     style: {
         marginBottom: 50,
@@ -10,7 +10,7 @@ export const BASIC_LOGO: LogoProps = {
 };
 
 export const DEFAULT_PROFILE_PICTURE = {
-    source: require("./assets/logo/default_profile.png"),
+    source: require("./assets/images/react-logo.png"),
 };
 
 export const BASIC_PICKER = StyleSheet.create({
@@ -65,10 +65,12 @@ export const DEFAULT_CONTAINER_STYLE: ViewStyle = {
 
 export const PRO_FIELDS = [
     { key: "facility" },
+    { key: "address" },
     { key: "country" },
-    { key: "town" },
     { key: "city" },
+    { key: "town" },
     { key: "neighborhood" },
+    { key: "postalCode" },
     { key: "type" },
     { key: "sector" },
     { key: "telephone" },

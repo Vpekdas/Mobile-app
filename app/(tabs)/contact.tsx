@@ -11,13 +11,16 @@ export default function Contact() {
 
     const contactItems = [
         {
-            label: "✉️ E-mail : nie.sante@outlook.fr",
+            label: t("companyPhone") + " " + "0123456789",
         },
         {
-            label: t("companyName") + "NiE",
+            label: t("email") + ": " + "test@test.com",
         },
         {
-            label: t("companyAddress"),
+            label: t("companyName") + "test",
+        },
+        {
+            label: t("companyAddress") + " " + "123 Test Street, France",
         },
     ];
 
@@ -25,7 +28,6 @@ export default function Contact() {
         <ScrollView contentContainerStyle={styles.container}>
             <Logo source={BASIC_LOGO.source} size={BASIC_LOGO.size} style={BASIC_LOGO.style} />
 
-            <TextWithBorder children={t("companyPhone")}></TextWithBorder>
 
             {contactItems.map((item, idx) => {
                 return (
@@ -39,7 +41,7 @@ export default function Contact() {
 
             <View style={styles.socialIcons}>
                 <TouchableOpacity
-                    onPress={() => Linking.openURL("https://www.facebook.com/share/1BBiEK1nqU/")}
+                    onPress={() => Linking.openURL("https://www.facebook.com/")}
                     style={styles.iconTouch}
                     activeOpacity={0.7}
                 >

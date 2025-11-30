@@ -47,10 +47,12 @@ export interface OpeningHours {
 
 export type FormData = {
     facility: string;
-    country?: string;
-    city?: string;
+    address: string;
+    country: string;
+    city: string;
     town?: string;
     neighborhood?: string;
+    postalCode?: string;
     type: FacilityType;
     sector: Sector;
     telephone: string;
@@ -110,8 +112,12 @@ export default function Pro() {
     const [editingField, setEditingField] = useState<string | null>(null);
     const [formData, setFormData] = useState<FormData>({
         facility: "",
+        address: "",
         country: "",
         city: "",
+        town: "",
+        neighborhood: "",
+        postalCode: "",
         type: FacilityType.NONE,
         sector: Sector.NONE,
         telephone: "",
@@ -119,6 +125,7 @@ export default function Pro() {
         team: [],
         openingHours: DEFAULT_OPENING_HOURS,
     });
+
     const [facilityImage, setFacilityImage] = useState<string | null>(null);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [timePickerDayIndex, setTimePickerDayIndex] = useState<number | null>(null);
@@ -127,10 +134,12 @@ export default function Pro() {
 
     const PLACEHOLDERS: Record<keyof FormData, string> = {
         facility: t("enterFacilityName"),
-        country: t("country"),
+        address: t("enterFacilityAddress"),
+        country: t("enterCountry"),
         city: t("enterCity"),
-        town: t("town"),
-        neighborhood: t("neighborhood"),
+        town: t("enterTown"),
+        neighborhood: t("enterNeighborhood"),
+        postalCode: t("enterPostalCode"),
         type: t("selectType"),
         sector: t("selectSector"),
         telephone: t("enterTelephone"),
