@@ -2,8 +2,21 @@
 
 ## Screenshots
 
-> [!NOTE]
-> Soon
+| Login | Home | Account |
+|-------|------|--------|
+| ![Login](assets/screenshots/login.png) | ![Home](assets/screenshots/home.png) | ![Account](assets/screenshots/account.png) |
+
+| Account Detail | Pro | Contact |
+|----------------|-----|--------|
+| ![Account Detail](assets/screenshots/account-detail.png) | ![Pro](assets/screenshots/pro.png) | ![Contact](assets/screenshots/contact.png) |
+
+| Search | Search2 |
+|--------|---------|
+| ![Search](assets/screenshots/search.png) | ![Search2](assets/screenshots/search2.png) |
+
+## Demo
+
+https://github.com/user-attachments/assets/542d2bc4-4ddc-421e-8064-29715b518252
 
 ## Table of Contents
 1. [Description](#description)
