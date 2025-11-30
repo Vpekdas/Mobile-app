@@ -74,21 +74,21 @@ You can run the app on your computer, you need to decide on which support you wa
 - You need a Firebase app for iOS, Android, Web, or all. After that, Firebase will give you a plist or JSON file, you can just replace these API keys in [`firebaseConfig.js`](firebaseConfig.js).
 - For Android, you must fill in SHA256 with your keychain. Expo will ask you to generate it if you don’t have it, and then you must use the same in the Android Firebase app.
 - In [`app.config.js`](app.config.js), you should replace some fields : 
---  owner: "test734973557347" -> Your expo username
---  name: "test" -> Your app name
---  slug: "test" -> Your slug name
---  updates -> {url: "https://u.expo.dev/aab37c28-111e-46ac-b54e-14c7789e65f4"} -> Your expo update url (eas update:configure)
---  If you plan to simulate on ios -> {googleServicesFile} -> download and add it from Firebase.
---  If you plan to simulate on android -> {googleServicesFile} -> download and add it from Firebase.
--- extra -> {projectId} -> Create a project on expo, then choose "Init from existing project" then paste the id.
+  -  owner: "test734973557347" -> Your expo username
+  -  name: "test" -> Your app name
+  -  slug: "test" -> Your slug name
+  -  updates -> {url: "https://u.expo.dev/aab37c28-111e-46ac-b54e-14c7789e65f4"} -> Your expo update url (eas update:configure)
+  -  If you plan to simulate on ios -> {googleServicesFile} -> download and add it from Firebase.
+  -  If you plan to simulate on android -> {googleServicesFile} -> download and add it from Firebase.
+  - extra -> {projectId} -> Create a project on expo, then choose "Init from existing project" then paste the id.
         
 - [Google GeoCoding API](https://developers.google.com/maps/documentation/geocoding/overview), this key is necessary if you want to register a facility, since I check if the coordinate is correctly retrieved, otherwise it will block you from registering a facility.
 Create a .env and fill with your api key : GOOGLE_MAPS_API_KEY = "YOUR-API-KEY"
 
 - Firebase: 
--- Enable authentication with mail.
--- Create a database.
--- Create a storage (it requires a Blaze subscription)
+  - Enable authentication with mail.
+  - Create a database.
+  - Create a storage (it requires a Blaze subscription)
 
 > [!NOTE]
 > I paid exactly 0.00 € during development process, so don't be scared, i even reach 35kk of reading request in Firebase and the free quota is 50kk of read per day. Blaze subscription are free until you reached quotas.
